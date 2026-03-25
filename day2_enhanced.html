@@ -99,9 +99,55 @@ hr{border:none;border-top:1px solid var(--rule);margin:3rem 0}
 }
 .disclaimer-banner strong { color: #92400e; }
 
+/* =============================================
+   DAY NAVIGATION BAR
+   ============================================= */
+.day-nav{display:flex;gap:.45rem;margin:0 0 1.5rem;flex-wrap:wrap;font-family:var(--sans);font-size:.84rem;align-items:center}
+.day-nav .dn-label{color:var(--muted);font-size:.76rem;text-transform:uppercase;letter-spacing:.1em;margin-right:.2rem}
+.day-nav a{display:inline-flex;align-items:center;padding:.32rem .82rem;border:1.5px solid var(--rule);border-radius:20px;text-decoration:none;color:var(--muted);transition:all .15s}
+.day-nav a:hover{border-color:#2563eb;color:#2563eb}
+.day-nav a.current{background:#2563eb;border-color:#2563eb;color:#fff;font-weight:600}
+
+/* =============================================
+   KEY TAKEAWAYS BOX
+   ============================================= */
+.key-takeaways{background:linear-gradient(135deg,#1e3a8a 0%,#2563eb 100%);color:#fff;border-radius:12px;padding:1.3rem 1.6rem;margin:0 0 2.5rem}
+.key-takeaways .kt-heading{font-family:var(--sans);font-weight:700;font-size:.78rem;text-transform:uppercase;letter-spacing:.13em;margin-bottom:.9rem;opacity:.85}
+.key-takeaways ol{padding-left:1.4rem;margin:0}
+.key-takeaways li{margin-bottom:.5rem;font-size:.92rem;line-height:1.65;opacity:.95}
+.key-takeaways li:last-child{margin-bottom:0}
+
+/* =============================================
+   NEW CALLOUT VARIANTS
+   ============================================= */
+.callout.mistake{background:#fff7ed;border-color:#ea580c}
+.callout.mistake .callout-title{color:#ea580c}
+.callout.realworld{background:#f0fdf4;border-color:#059669}
+.callout.realworld .callout-title{color:#059669}
+
+/* =============================================
+   FLOATING TOC SIDEBAR
+   ============================================= */
+#float-toc{display:none;position:fixed;top:50%;right:1rem;transform:translateY(-50%);background:#fff;border:1px solid #e2e8f0;border-radius:10px;padding:.75rem .95rem;max-height:80vh;overflow-y:auto;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:.74rem;width:190px;box-shadow:0 4px 20px rgba(0,0,0,.09);z-index:100}
+#float-toc .ft-label{font-weight:700;font-size:.68rem;text-transform:uppercase;letter-spacing:.1em;color:#64748b;margin-bottom:.5rem}
+#float-toc ol{padding-left:1rem;margin:0}
+#float-toc li{margin-bottom:.22rem;line-height:1.35}
+#float-toc a{color:#94a3b8;text-decoration:none;transition:color .12s}
+#float-toc a:hover,#float-toc a.ft-active{color:#2563eb;font-weight:600}
+@media(min-width:1180px){#float-toc{display:block}}
+
 </style>
 </head>
 <body>
+
+<!-- DAY NAVIGATION -->
+<nav class="day-nav">
+  <span class="dn-label">Days:</span>
+  <a href="day01_v5.html">Day 1 — Growth</a>
+  <a href="day02_v7.html" class="current">Day 2 — Life Table</a>
+  <a href="day03_v3.html">Day 3 — Fertility</a>
+  <a href="glossary.html">Glossary</a>
+</nav>
 
 <div class="disclaimer-banner">
   <strong>⚠ Draft — AI-assisted notes, not yet reviewed.</strong>
@@ -121,6 +167,36 @@ hr{border:none;border-top:1px solid var(--rule);margin:3rem 0}
   <p>The logical arc of the day is:</p>
   <p style="margin-left:1rem; border-left:3px solid var(--acm); padding-left:1rem; font-style:italic;">Individual lifelines → sort and aggregate → survival function <span class="tip" data-key="lx">\(l_x\)</span> → differentiate for deaths → integrate for person-years → ratio for probabilities and rates → take limit for hazard rate <span class="tip" data-key="mu">\(\mu(x)\)</span></p>
   <p>Every quantity in the life table is either a <strong>stock</strong> (something measured at a point in age, like <span class="tip" data-key="lx">\(l_x\)</span>) or a <strong>flow</strong> (something accumulated over an age interval, like <span class="tip" data-key="ndx">\({}_nd_x\)</span> and <span class="tip" data-key="nlx">\({}_nL_x\)</span>). The same stock/flow distinction from Day 1 reappears here, but now in age rather than time. The calculus moves are also the same ones: differentiation gives instantaneous rates, integration gives accumulated totals. The life table is, in this sense, the Day 1 toolkit applied to the age dimension.</p>
+</div>
+
+<!-- KEY TAKEAWAYS -->
+<div class="key-takeaways">
+  <div class="kt-heading">⭐ Day 2 Key Takeaways</div>
+  <ol>
+    <li>The <strong>Lexis diagram</strong> organises all of demographic analysis: every rate is events ÷ person-years in a Lexis box. Draw the box first, confusion dissolves.</li>
+    <li>The <strong>life table</strong> converts individual lifelines into a survivorship function \(l_x\) — a smooth, non-increasing curve from 1 at birth to 0 at maximum age.</li>
+    <li><strong>Death probability \({}_nq_x\) ≠ death rate \({}_nM_x\)</strong>: they differ because some person-years in the interval are lived by people who die. \({}_nq_x \approx n\,{}_nM_x / (1 + (n - {}_na_x)\,{}_nM_x)\).</li>
+    <li>Life expectancy \(e_x = T_x / l_x\) is the ratio of total future person-years to survivors at age \(x\). <em>Period</em> \(e_0\) is a synthetic snapshot, not a forecast.</li>
+    <li>The force of mortality \(\mu(x) = -\tfrac{d}{dx}\ln l(x)\) is the continuous limit of the death rate — the instantaneous speed of dying at age \(x\).</li>
+  </ol>
+</div>
+
+<!-- FLOATING TOC -->
+<div id="float-toc">
+  <div class="ft-label">Contents</div>
+  <ol>
+    <li><a href="#s1">Taylor Cleanup</a></li>
+    <li><a href="#s2">Lexis Diagram</a></li>
+    <li><a href="#s3">Cohorts &amp; PY</a></li>
+    <li><a href="#s4">Life Table</a></li>
+    <li><a href="#s5">Survival l(x)</a></li>
+    <li><a href="#s6">d, q, p columns</a></li>
+    <li><a href="#s7">Person-Years L(x)</a></li>
+    <li><a href="#s8">T(x) &amp; e(x)</a></li>
+    <li><a href="#s9">q vs M</a></li>
+    <li><a href="#s10">Survival Chains</a></li>
+    <li><a href="#s11">Hazard μ(x)</a></li>
+  </ol>
 </div>
 
 <nav class="toc">
@@ -875,6 +951,10 @@ llxGoTo(0);
   <div class="wo" id="w6out"></div>
 </div>
 
+<div class="callout realworld">
+  <div class="callout-title">🌍 Real-World: Life Expectancy Across Time and Place</div>
+  <p><strong>Historical:</strong> England and Wales \(e_0\) in 1841 was ~41 years; by 1930 it was ~70; by 2019 it was ~81. Almost all of the 19th-century gain came from eliminating early childhood deaths (clean water, sanitation), not from extending old-age survival. <strong>Cross-country (2020):</strong> Japan female ≈ 88 · France ≈ 85 · UK ≈ 83 · USA ≈ 79 · Brazil ≈ 76 · India ≈ 70 · Nigeria ≈ 55 · Central African Republic ≈ 53.</p>
+</div>
 
 <!-- ===== SECTION 9 ===== -->
 <h2 id="s9"><span class="sn">9</span> Probability vs Rate: <span class="tip" data-key="nqx">\({}_nq_x\)</span> and <span class="tip" data-key="nmx">\({}_nM_x\)</span> Compared</h2>
@@ -947,6 +1027,10 @@ llxGoTo(0);
   <div class="wo" id="w4o"></div>
 </div>
 
+<div class="callout mistake">
+  <div class="callout-title">⚠ Common Mistake — Treating Period Life Expectancy as a Forecast</div>
+  <p>When the UK government says "life expectancy is 81 years," this is a <em>period</em> measure — a synthetic calculation using today's age-specific death rates applied to a fictional cohort. It is <strong>not</strong> a prediction of how long a baby born today will actually live. During the 20th century, actual lifespan consistently exceeded period \(e_0\) because mortality kept improving. A baby born in England in 1920 with a "period life expectancy" of ~55 years actually lived, on average, into their 70s.</p>
+</div>
 
 <!-- ===== SECTION 10 ===== -->
 <h2 id="s10"><span class="sn">10</span> Survival Chains: Why <span class="tip" data-key="npx">\({}_np_x\)</span> Multiplies but <span class="tip" data-key="nqx">\({}_nq_x\)</span> Does Not</h2>
@@ -1907,6 +1991,29 @@ function init(){
   }
 }
 document.readyState==='loading'?document.addEventListener('DOMContentLoaded',init):init();
+})();
+</script>
+
+<script>
+/* ── Floating TOC: highlight active section on scroll ── */
+(function(){
+  const ftoc = document.getElementById('float-toc');
+  if(!ftoc) return;
+  const sections = Array.from(document.querySelectorAll('h2[id]'));
+  const links = Array.from(ftoc.querySelectorAll('a[href^="#"]'));
+  if(!sections.length || !links.length) return;
+  let ticking = false;
+  function update(){
+    const scrollY = window.scrollY + window.innerHeight * 0.25;
+    let active = sections[0];
+    for(const s of sections){ if(s.offsetTop <= scrollY) active = s; }
+    links.forEach(a => {
+      a.classList.toggle('ft-active', a.getAttribute('href') === '#' + active.id);
+    });
+    ticking = false;
+  }
+  window.addEventListener('scroll', ()=>{ if(!ticking){ requestAnimationFrame(update); ticking=true; } }, {passive:true});
+  update();
 })();
 </script>
 

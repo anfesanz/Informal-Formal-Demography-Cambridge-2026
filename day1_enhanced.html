@@ -247,10 +247,56 @@ hr { border: none; border-top: 1px solid var(--rule); margin: 3rem 0; }
 }
 .disclaimer-banner strong { color: #92400e; }
 
+/* =============================================
+   DAY NAVIGATION BAR
+   ============================================= */
+.day-nav{display:flex;gap:.45rem;margin:0 0 1.5rem;flex-wrap:wrap;font-family:var(--sans);font-size:.84rem;align-items:center}
+.day-nav .dn-label{color:var(--muted);font-size:.76rem;text-transform:uppercase;letter-spacing:.1em;margin-right:.2rem}
+.day-nav a{display:inline-flex;align-items:center;padding:.32rem .82rem;border:1.5px solid var(--rule);border-radius:20px;text-decoration:none;color:var(--muted);transition:all .15s}
+.day-nav a:hover{border-color:#2563eb;color:#2563eb}
+.day-nav a.current{background:#2563eb;border-color:#2563eb;color:#fff;font-weight:600}
+
+/* =============================================
+   KEY TAKEAWAYS BOX
+   ============================================= */
+.key-takeaways{background:linear-gradient(135deg,#1e3a8a 0%,#2563eb 100%);color:#fff;border-radius:12px;padding:1.3rem 1.6rem;margin:0 0 2.5rem}
+.key-takeaways .kt-heading{font-family:var(--sans);font-weight:700;font-size:.78rem;text-transform:uppercase;letter-spacing:.13em;margin-bottom:.9rem;opacity:.85}
+.key-takeaways ol{padding-left:1.4rem;margin:0}
+.key-takeaways li{margin-bottom:.5rem;font-size:.92rem;line-height:1.65;opacity:.95}
+.key-takeaways li:last-child{margin-bottom:0}
+
+/* =============================================
+   NEW CALLOUT VARIANTS
+   ============================================= */
+.callout.mistake{background:#fff7ed;border-color:#ea580c}
+.callout.mistake .callout-title{color:#ea580c}
+.callout.realworld{background:#f0fdf4;border-color:#059669}
+.callout.realworld .callout-title{color:#059669}
+
+/* =============================================
+   FLOATING TOC SIDEBAR
+   ============================================= */
+#float-toc{display:none;position:fixed;top:50%;right:1rem;transform:translateY(-50%);background:#fff;border:1px solid #e2e8f0;border-radius:10px;padding:.75rem .95rem;max-height:80vh;overflow-y:auto;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:.74rem;width:190px;box-shadow:0 4px 20px rgba(0,0,0,.09);z-index:100}
+#float-toc .ft-label{font-weight:700;font-size:.68rem;text-transform:uppercase;letter-spacing:.1em;color:#64748b;margin-bottom:.5rem}
+#float-toc ol{padding-left:1rem;margin:0}
+#float-toc li{margin-bottom:.22rem;line-height:1.35}
+#float-toc a{color:#94a3b8;text-decoration:none;transition:color .12s}
+#float-toc a:hover,#float-toc a.ft-active{color:#2563eb;font-weight:600}
+@media(min-width:1180px){#float-toc{display:block}}
+
 </style>
 </head>
 
 <body>
+
+<!-- DAY NAVIGATION -->
+<nav class="day-nav">
+  <span class="dn-label">Days:</span>
+  <a href="day01_v5.html" class="current">Day 1 — Growth</a>
+  <a href="day02_v7.html">Day 2 — Life Table</a>
+  <a href="day03_v3.html">Day 3 — Fertility</a>
+  <a href="glossary.html">Glossary</a>
+</nav>
 
 <!-- ==================== HEADER ==================== -->
 <div class="disclaimer-banner">
@@ -267,12 +313,45 @@ hr { border: none; border-top: 1px solid var(--rule); margin: 3rem 0; }
   Four hours of lectures per day (11am–4pm). Post-workshop: each participant gives a short 5–10 minute presentation on their own illustration or derivation.
 </div>
 
+<!-- KEY TAKEAWAYS -->
+<div class="key-takeaways">
+  <div class="kt-heading">⭐ Day 1 Key Takeaways</div>
+  <ol>
+    <li>The <strong>balancing equation</strong> is the foundation of all demography — exactly four "doors" (births, deaths, in-migration, out-migration) can change a population.</li>
+    <li>Growth is <strong>multiplicative</strong>: \(K_t = K_0(1+r)^t\). The correct average over multiple periods is the geometric mean, not the arithmetic mean.</li>
+    <li>Exponential growth (\(K_t = K_0 e^{rt}\)) is the continuous limit. The <strong>Rule of 70</strong>: doubling time ≈ 70 ÷ (r expressed as a percentage).</li>
+    <li><strong>Little's Law</strong>: in a stationary population, \(N = \lambda \cdot \bar{W}\) — population = birth rate × average lifespan.</li>
+    <li>The three ways of writing the same growth model (exponential, ODE, log-linear) are all the same equation in different clothes.</li>
+  </ol>
+</div>
+
 <!-- ==================== COURSE PHILOSOPHY ==================== -->
 <div class="callout note">
   <div class="callout-title">📐 What This Course Is Trying To Do</div>
   <p>The stated aim of the course: <em>"lots of ways to show the same presentations."</em> The philosophy of the course is that the same demographic object — a growth rate, a life expectancy, a population projection — can almost always be written down in several different ways, each of which illuminates a different aspect of what is going on. A formula you can derive is far more useful than one you have memorised, because you understand when it applies and when it breaks down.</p>
   <p>Day 1 is deliberately narrow in scope. We are not trying to cover all of demography. We are trying to understand <em>one thing</em> very deeply: the relationship between a population's size at two points in time, and the growth rate that connects them. By the end of today, that single relationship will have been expressed as an arithmetic identity, a geometric product, a continuous exponential, a differential equation, a log-slope, and a pair of integral formulas. Each is the same thing wearing a different shirt.</p>
   <p><strong>The thread running through everything:</strong> we start with a simple counting identity (the balancing equation), divide to get rates, multiply to get compound growth, take a limit to get continuous growth, take a log to get linearity, differentiate to get the ODE, and integrate to count births. Every step is forced — there is no arbitrariness.</p>
+</div>
+
+<!-- FLOATING TOC -->
+<div id="float-toc">
+  <div class="ft-label">Contents</div>
+  <ol>
+    <li><a href="#s1">Balancing Equation</a></li>
+    <li><a href="#s2">Stocks &amp; Flows</a></li>
+    <li><a href="#s3">Crude Rates</a></li>
+    <li><a href="#s4">Geometric Growth</a></li>
+    <li><a href="#s5">Exponential Growth</a></li>
+    <li><a href="#s6">Log-Linear</a></li>
+    <li><a href="#s7">Doubling Times</a></li>
+    <li><a href="#s8">Deep History</a></li>
+    <li><a href="#s9">Little's Law</a></li>
+    <li><a href="#s10">Who Is Alive Today?</a></li>
+    <li><a href="#s11">Taylor Rules</a></li>
+    <li><a href="#s12">Three Forms</a></li>
+    <li><a href="#s13">Logistic Growth</a></li>
+    <li><a href="#s14">Person-Years</a></li>
+  </ol>
 </div>
 
 <!-- ==================== TABLE OF CONTENTS ==================== -->
@@ -416,6 +495,10 @@ hr { border: none; border-top: 1px solid var(--rule); margin: 3rem 0; }
   <p>Think about bacteria doubling in a dish. After one hour there are twice as many. After two hours, four times as many — not three times (which adding 100% twice would give). Growth is <em>compounded</em>: each generation grows from a larger base. Human populations work the same way. A 1% birth rate in a country of 1 billion produces 10 million births; in a country of 100 million, the same 1% rate produces only 1 million births. The absolute number of births scales with population size. Multiplication captures this; addition does not.</p>
 </div>
 
+<div class="callout mistake">
+  <div class="callout-title">⚠ Common Mistake — "Crude" Does Not Mean "Inaccurate"</div>
+  <p>Crude rates are perfectly accurate for what they measure — population-wide averages. They are called "crude" only because they don't control for age structure. Comparing crude death rates between a country with a young population (e.g. Uganda) and an old one (e.g. Japan) is misleading: Japan will have a higher crude death rate even if every age-specific death rate is lower, simply because Japan has more old people. Age-standardised rates, not crude rates, should be used for cross-country comparisons of mortality or fertility levels.</p>
+</div>
 
 <!-- ==================== SECTION 4 ==================== -->
 <h2 id="s4"><span class="section-num">4</span> Geometric Growth and Averaging Rates</h2>
@@ -509,6 +592,11 @@ hr { border: none; border-top: 1px solid var(--rule); margin: 3rem 0; }
 </div>
 
 <p>As \(n\) increases (more frequent compounding), the result grows slightly. What is the limit as \(n \to \infty\)? This is the question that leads us from the discrete geometric model to the continuous exponential one — and to the number \(e\).</p>
+
+<div class="callout mistake">
+  <div class="callout-title">⚠ Common Mistake — Arithmetic vs. Geometric Averaging</div>
+  <p>When averaging growth rates over multiple periods, the <strong>arithmetic mean is wrong</strong>. If a population grows by 50% then falls by 50%, the arithmetic average is 0% — but the actual result is a 25% net loss (1.5 × 0.5 = 0.75). Always use the geometric mean for compounding quantities: \(\bar{r} = (K_t/K_0)^{1/t} - 1\). This applies to financial returns, population growth, and any quantity that multiplies period-by-period.</p>
+</div>
 
 <!-- ==================== SECTION 5 ==================== -->
 <h2 id="s5"><span class="section-num">5</span> The Number <em>e</em> and Exponential Growth</h2>
@@ -648,6 +736,10 @@ hr { border: none; border-top: 1px solid var(--rule); margin: 3rem 0; }
   <div class="wo" id="w2o"></div>
 </div>
 
+<div class="callout realworld">
+  <div class="callout-title">🌍 Real-World Numbers</div>
+  <p>World population growth has slowed markedly. At the 1960s peak, \(r \approx 2.1\%\)/year → doubling time ~33 years. By 2020, \(r \approx 1.0\%\)/year → doubling time ~70 years. The UN median projection has global population peaking around 10–11 billion in the 2080s then slowly declining. The UK in 2020: crude birth rate ≈ 10.5/1,000, crude death rate ≈ 9.4/1,000, so \(r \approx 0.11\%\)/year — a doubling time of over 600 years from natural increase alone.</p>
+</div>
 
 <!-- ==================== SECTION 7 ==================== -->
 <h2 id="s7"><span class="section-num">7</span> Doubling Times, Half-Lives, and the Rule of 70</h2>
@@ -1917,6 +2009,29 @@ function init(){
   }
 }
 document.readyState==='loading'?document.addEventListener('DOMContentLoaded',init):init();
+})();
+</script>
+
+<script>
+/* ── Floating TOC: highlight active section on scroll ── */
+(function(){
+  const ftoc = document.getElementById('float-toc');
+  if(!ftoc) return;
+  const sections = Array.from(document.querySelectorAll('h2[id]'));
+  const links = Array.from(ftoc.querySelectorAll('a[href^="#"]'));
+  if(!sections.length || !links.length) return;
+  let ticking = false;
+  function update(){
+    const scrollY = window.scrollY + window.innerHeight * 0.25;
+    let active = sections[0];
+    for(const s of sections){ if(s.offsetTop <= scrollY) active = s; }
+    links.forEach(a => {
+      a.classList.toggle('ft-active', a.getAttribute('href') === '#' + active.id);
+    });
+    ticking = false;
+  }
+  window.addEventListener('scroll', ()=>{ if(!ticking){ requestAnimationFrame(update); ticking=true; } }, {passive:true});
+  update();
 })();
 </script>
 
