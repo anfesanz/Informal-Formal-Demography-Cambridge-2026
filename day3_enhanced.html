@@ -1,0 +1,1026 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Formal Demography — Day 3</title>
+<script>
+window.MathJax = {
+  tex: { inlineMath:[['\\(','\\)']], displayMath:[['\\[','\\]']] },
+  options: { skipHtmlTags:['script','noscript','style','textarea','pre'] }
+};
+</script>
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js" async></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#f9f7f3;--surface:#fff;--text:#1c1c2e;--muted:#64748b;--rule:#e2e8f0;
+  --accent:#1e3a8a;--acm:#2563eb;--acl:#dbeafe;
+  --def-bg:#f0fdf4;--def-br:#16a34a;
+  --int-bg:#fefce8;--int-br:#ca8a04;
+  --his-bg:#faf5ff;--his-br:#9333ea;
+  --dem-bg:#fff1f2;--dem-br:#e11d48;
+  --nte-bg:#f0f9ff;--nte-br:#0284c7;
+  --serif:Georgia,'Times New Roman',serif;
+  --sans:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+  --mono:'Courier New',Courier,monospace;
+}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:var(--serif);font-size:17px;line-height:1.85;max-width:880px;margin:0 auto;padding:2.5rem 1.5rem 8rem}
+h1{font-size:2.3rem;line-height:1.2;color:var(--accent);margin-bottom:.4rem}
+h2{font-size:1.55rem;color:var(--accent);border-bottom:2px solid var(--acm);padding-bottom:.3rem;margin:3.5rem 0 1.2rem}
+h3{font-size:1.1rem;margin:2rem 0 .6rem;color:#1e3a5f}
+p{margin-bottom:1.1rem}
+ul,ol{padding-left:1.8rem;margin-bottom:1.1rem}
+li{margin-bottom:.4rem}
+.subtitle{color:var(--muted);font-style:italic;margin-bottom:.4rem;font-size:.95rem}
+.course-meta{background:var(--acl);border-left:4px solid var(--acm);padding:.9rem 1.3rem;border-radius:0 8px 8px 0;margin:1.5rem 0 2.5rem;font-size:.92rem;font-family:var(--sans);line-height:1.7}
+.sn{display:inline-flex;align-items:center;justify-content:center;background:var(--acm);color:#fff;border-radius:50%;width:1.75rem;height:1.75rem;font-family:var(--sans);font-size:.82rem;font-weight:700;margin-right:.5rem;vertical-align:middle;flex-shrink:0}
+.toc{background:var(--surface);border:1px solid var(--rule);border-radius:10px;padding:1.2rem 1.6rem;margin:0 0 3rem;font-size:.88rem}
+.toc-h{font-family:var(--sans);font-weight:700;font-size:.76rem;text-transform:uppercase;letter-spacing:.12em;color:var(--muted);margin-bottom:.7rem}
+.toc ol{padding-left:1.4rem}
+.toc li{margin-bottom:.25rem}
+.toc a{color:var(--acm);text-decoration:none}
+.toc a:hover{text-decoration:underline}
+.callout{border-left:4px solid;border-radius:0 8px 8px 0;padding:.95rem 1.3rem;margin:1.6rem 0;font-size:.92rem;line-height:1.7}
+.callout-title{font-family:var(--sans);font-weight:700;font-size:.79rem;text-transform:uppercase;letter-spacing:.07em;margin-bottom:.45rem}
+.callout p{margin-bottom:.5rem}
+.callout p:last-child{margin-bottom:0}
+.callout.definition{background:var(--def-bg);border-color:var(--def-br)}.callout.definition .callout-title{color:var(--def-br)}
+.callout.intuition{background:var(--int-bg);border-color:var(--int-br)}.callout.intuition .callout-title{color:var(--int-br)}
+.callout.history{background:var(--his-bg);border-color:var(--his-br)}.callout.history .callout-title{color:var(--his-br)}
+.callout.demography{background:var(--dem-bg);border-color:var(--dem-br)}.callout.demography .callout-title{color:var(--dem-br)}
+.callout.note{background:var(--nte-bg);border-color:var(--nte-br)}.callout.note .callout-title{color:var(--nte-br)}
+.fb{background:#0f172a;color:#e2e8f0;border-radius:10px;padding:1.2rem 1.8rem;margin:1.5rem 0;overflow-x:auto;text-align:center;font-size:1.05rem}
+.fb .fl{text-align:left;font-family:var(--sans);font-size:.74rem;color:#94a3b8;text-transform:uppercase;letter-spacing:.09em;margin-bottom:.5rem}
+.eq-table{width:100%;border-collapse:collapse;margin:1.4rem 0;font-size:.91rem}
+.eq-table th{background:var(--accent);color:#fff;padding:.5rem .9rem;text-align:left;font-family:var(--sans);font-weight:600}
+.eq-table td{padding:.5rem .9rem;border-bottom:1px solid var(--rule);vertical-align:middle}
+.eq-table tr:nth-child(even) td{background:#f8fafc}
+.lt-table{width:100%;border-collapse:collapse;margin:1.4rem 0;font-size:.78rem;font-family:var(--sans)}
+.lt-table th{background:#334155;color:#fff;padding:.4rem .55rem;text-align:center;font-size:.75rem}
+.lt-table td{padding:.35rem .55rem;border-bottom:1px solid var(--rule);text-align:right;vertical-align:top}
+.lt-table td:first-child,.lt-table td:nth-child(2){text-align:center}
+.lt-table tr:nth-child(even) td{background:#f8fafc}
+.lt-table .sep{background:#e2e8f0!important;font-weight:700;text-align:center}
+.widget{background:var(--surface);border:1.5px solid #cbd5e1;border-radius:12px;padding:1.5rem 1.6rem;margin:2.2rem 0;box-shadow:0 2px 12px rgba(0,0,0,.07)}
+.widget-title{font-family:var(--sans);font-size:.97rem;font-weight:700;color:var(--acm);margin-bottom:.25rem;display:flex;align-items:center;gap:.5rem}
+.widget-title::before{content:'⚙';font-size:1rem}
+.ws{font-family:var(--sans);font-size:.85rem;color:var(--muted);margin-bottom:1.2rem}
+.sr{display:flex;align-items:center;gap:.8rem;margin-bottom:.75rem;flex-wrap:wrap}
+.sr label{font-family:var(--sans);font-size:.86rem;color:var(--muted);min-width:240px}
+.sr input[type=range]{flex:1;min-width:120px;accent-color:var(--acm)}
+.sv{font-family:var(--mono);font-size:.88rem;font-weight:700;color:var(--acm);min-width:60px;text-align:right}
+.cb{position:relative;height:280px;margin:1rem 0}
+.cb-sm{position:relative;height:220px;margin:1rem 0}
+.wo{background:#f1f5f9;border-radius:8px;padding:.85rem 1.1rem;font-family:var(--sans);font-size:.86rem;margin-top:.8rem;line-height:1.75}
+.wo .big{font-size:1.4rem;font-weight:700;color:var(--acm)}
+.bg{display:flex;gap:.5rem;margin-bottom:.8rem;flex-wrap:wrap}
+.tb{font-family:var(--sans);font-size:.81rem;padding:.3rem .9rem;border:1.5px solid var(--acm);border-radius:20px;background:#fff;color:var(--acm);cursor:pointer;transition:all .15s}
+.tb.active,.tb:hover{background:var(--acm);color:#fff}
+hr{border:none;border-top:1px solid var(--rule);margin:3rem 0}
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:1.2rem;margin:1rem 0}
+.highlight-box{background:var(--acl);border:2px solid var(--acm);border-radius:8px;padding:.8rem 1.2rem;text-align:center;font-size:1.1rem;margin:1.2rem 0}
+.disclaimer-banner{background:#fffbeb;border:1.5px solid #f59e0b;border-radius:10px;padding:1rem 1.4rem;margin:0 0 2rem;font-family:var(--sans);font-size:.875rem;line-height:1.7;color:#78350f}
+.disclaimer-banner strong{color:#92400e}
+.markov-container{display:grid;grid-template-columns:auto 1fr;gap:1.5rem;align-items:start;margin:1rem 0}
+.matrix-table{border-collapse:collapse;font-family:var(--mono);font-size:.82rem}
+.matrix-table td{padding:.3rem .6rem;border:1px solid #cbd5e1;text-align:center;min-width:2.8rem}
+.matrix-table .state-head{background:#334155;color:#fff;font-family:var(--sans);font-size:.75rem;padding:.3rem .6rem}
+.matrix-table .state-side{background:#f1f5f9;font-family:var(--sans);font-size:.78rem;font-weight:600;padding:.3rem .6rem;text-align:right}
+@media(max-width:620px){body{font-size:15px;padding:1rem 1rem 5rem}h1{font-size:1.7rem}h2{font-size:1.3rem}.sr label{min-width:160px}.two-col{grid-template-columns:1fr}.markov-container{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+
+<div class="disclaimer-banner">
+  <strong>⚠ Draft — AI-assisted notes, not yet reviewed.</strong>
+  These notes were produced with AI assistance, drawing on both the instructor's lecture materials and personal handwritten notes taken during the course. They have not been checked for accuracy, may contain errors or omissions, and are subject to revision. They should not be taken as a definitive or authoritative account of the course content.
+</div>
+
+<p class="subtitle">Robert Chung's Informal Introduction to Formal Demography · Cambridge, 25 March 2026</p>
+<h1>Day 3: Fertility, Reproduction, and Population Projection</h1>
+
+<div class="course-meta">
+  Day 3 is the day fertility enters the picture. Until now we have worked almost entirely with mortality — the life table and its columns describe how a cohort dies away. Today we add the other side of population change: <strong>births</strong>. The goal is to combine mortality and fertility into a single number that captures whether a population replaces itself — the <strong>Net Reproduction Ratio (NRR)</strong>. The day opens with a short cleanup of the hazard rate from Day 2, makes a detour through the philosophy of demographic modelling, and then works from age-specific fertility rates through the Gross Reproduction Ratio to the NRR, before closing with <strong>population projection</strong> — the art of putting mortality, fertility, and age structure together into a matrix machine.
+</div>
+
+<div class="callout note">
+  <div class="callout-title">📐 What Day 3 Is Trying To Do</div>
+  <p>The logical arc of the day:</p>
+  <p style="margin-left:1rem;border-left:3px solid var(--acm);padding-left:1rem;font-style:italic;">Hazard rate recap → survival as product of independent hazards → life table in practice → fertility rates → TFR → GRR → NRR → generation length → r ≈ log(NRR)/μ → mean ages → matrix population projection</p>
+  <p>The central formula of the day is \(\text{NRR} = \int_{15}^{50} f(x)\,\frac{l(x)}{l(0)}\,dx \cdot F_{\text{FAB}}\), which beautifully combines a fertility schedule \(f(x)\) with a survivorship function \(l(x)\). Everything else is in service of understanding this formula and what it tells you about a population's reproductive trajectory.</p>
+</div>
+
+<nav class="toc">
+  <div class="toc-h">Contents — Day 3</div>
+  <ol>
+    <li><a href="#s1">Day 2 Cleanup: The Hazard Rate and the Survival ODE</a></li>
+    <li><a href="#s2">The Philosophy of Demographic Modelling</a></li>
+    <li><a href="#s3">Survival as a Product of Independent Hazards &nbsp;⚙ Widget 1</a></li>
+    <li><a href="#s4">Kaplan-Meier and Censoring</a></li>
+    <li><a href="#s5">Abridged Life Tables in Practice: England &amp; Wales from the HMD</a></li>
+    <li><a href="#s6">Cohort Fertility: Age-Specific Rates, TFR, and the 3D Surface</a></li>
+    <li><a href="#s7">Only Daughters Count: Tracking Generations &nbsp;⚙ Widget 2</a></li>
+    <li><a href="#s8">The Net Reproduction Ratio (NRR): Combining Mortality and Fertility &nbsp;⚙ Widget 3</a></li>
+    <li><a href="#s9">Sex Ratio at Birth and the Fraction Female</a></li>
+    <li><a href="#s10">GRR, NRR, and the Rule of Thumb: \(r \approx \log(\text{NRR})/\mu\)</a></li>
+    <li><a href="#s11">Mean Ages of Fertility and Childbearing</a></li>
+    <li><a href="#s12">Population Projections: Markov Processes and Matrix Methods &nbsp;⚙ Widget 4</a></li>
+  </ol>
+</nav>
+
+
+<!-- ===== SECTION 1 ===== -->
+<h2 id="s1"><span class="sn">1</span> Day 2 Cleanup: The Hazard Rate and the Survival ODE</h2>
+
+<p>Day 3 opened — as each day does — with a short round of cleanup from the previous day. Two threads were tidied up: the Baby Boom cohort and, more importantly, the formal derivation of the survival function from the hazard rate.</p>
+
+<h3>The Baby Boom Cohort</h3>
+
+<p>A factual note from Day 2 that needed pinning down: the <strong>Baby Boom cohort</strong> in the United States is conventionally defined as those born between <strong>1946 and 1964</strong>. The boom began in 1946 as soldiers returned from World War II and families they had deferred started, and it ended around 1964 as the contraceptive pill became widely used and the cultural moment shifted. The leading edge of the Boomers turned 60 in 2006 and began reaching retirement age from about 2011 — a demographic wave whose effects on pension systems, healthcare, and labour markets are still playing out.</p>
+
+<h3>The Hazard Rate: Three Equivalent Definitions</h3>
+
+<p>Recall from Day 2 that the <strong>hazard rate</strong> (or <strong>force of mortality</strong>) \(\mu(x)\) is the instantaneous risk of dying at exact age \(x\), given survival to that age. Formally, it is the limit of the period death rate as the age interval shrinks to zero:</p>
+
+\[ \mu(x) = \lim_{n \to 0} {}_nM_x \]
+
+<p>The lecture showed three equivalent expressions for \(\mu(x)\), each illuminating from a different angle:</p>
+
+<div class="fb">
+  <div class="fl">Three equivalent forms of the force of mortality</div>
+  \[
+    \mu(x)
+    = \frac{-\frac{d}{dx}\,l(x)}{l(x)}
+    = -\frac{d}{dx}\log l(x)
+  \]
+</div>
+
+<p>The <strong>first form</strong> (pink box on the board) is definitional: it is the rate of decrease of the survivorship function, divided by the current level. Deaths per survivor per unit age. The <strong>second form</strong> (blue box) says the same thing using the chain rule: since \(\frac{d}{dx}\log l(x) = \frac{l'(x)}{l(x)}\), the two are identical. The second form is often more convenient computationally.</p>
+
+<div class="callout intuition">
+  <div class="callout-title">💡 Intuition — The Force of Mortality as a Speedometer</div>
+  <p>Think of \(\log l(x)\) as the "log-survival odometer" — it records how far along the road of dying a cohort has come. Then \(\mu(x) = -\frac{d}{dx}\log l(x)\) is the <em>instantaneous speed</em> at which the odometer is ticking over at age \(x\). A high \(\mu(x)\) means the cohort is losing survivors fast at that age; a low \(\mu(x)\) means it is losing them slowly. In early adulthood (the "accident hump"), \(\mu(x)\) rises briefly then falls; in old age it rises steeply as the Gompertz component dominates.</p>
+  <p>The ratio form \(\mu(x) = -l'(x)/l(x)\) should remind you of the growth rate \(r = K'(t)/K(t)\) from Day 1 — they are exactly the same structure, but here for decline rather than growth. Death is negative growth.</p>
+</div>
+
+<h3>The Survival ODE and Its Solution</h3>
+
+<p>Rearranging the first form gives a <strong>first-order ordinary differential equation</strong> in \(l(x)\):</p>
+
+\[ -\frac{d}{dx}\,l(x) = \mu(x)\,l(x) \]
+
+<p>Notice the structural analogy with the growth equation from Day 1: \(-\frac{d}{dt}K(t) = r\,K(t)\). The difference is that here the "growth rate" \(\mu(x)\) can vary with age \(x\), making it a non-autonomous ODE. Solving it by separation of variables — divide both sides by \(l(x)\), integrate both sides — gives:</p>
+
+<div class="fb">
+  <div class="fl">Survival function from cumulative hazard</div>
+  \[
+    l(x) = e^{-\int_0^x \mu(y)\,dy}
+  \]
+</div>
+
+<p>The integral in the exponent, \(\int_0^x \mu(y)\,dy\), is called the <strong>cumulative hazard</strong> (sometimes written \(H(x)\) or \(\Lambda(x)\)). It is the total accumulated risk up to age \(x\) — the "lifetime dose" of mortality hazard received by surviving to age \(x\).</p>
+
+<div class="callout definition">
+  <div class="callout-title">📖 Definition — Cumulative Hazard</div>
+  <p>The <strong>cumulative hazard</strong> up to age \(x\) is defined as:
+  \[ H(x) = \int_0^x \mu(y)\,dy \]
+  and the survival function is \(l(x) = e^{-H(x)}\). Since \(\mu(y) \geq 0\) for all \(y\), \(H(x)\) is non-decreasing — the cumulative hazard never falls — and \(l(x)\) is therefore a non-increasing function, consistent with the fact that survivorship can only stay the same or fall as age increases.</p>
+</div>
+
+<p>The board then expanded the integral into a sum of pieces:</p>
+
+\[ l(x) = e^{-\left[\int_0^n \mu(y)\,dy + \int_n^{2n} \mu(y)\,dy + \int_{2n}^{3n} \mu(y)\,dy + \cdots\right]} \]
+
+<p>This chopping up of the integral is not just algebraic manipulation — it is the key insight that connects continuous hazard-rate theory to the discrete life table we use in practice.</p>
+
+
+<!-- ===== SECTION 2 ===== -->
+<h2 id="s2"><span class="sn">2</span> The Philosophy of Demographic Modelling</h2>
+
+<p>Before proceeding to fertility, the lecture paused for a brief but important philosophical interlude. Robert's view: <em>"In my view, formal demography is really about demographic modelling."</em> Two famous quotations from statisticians were offered as the framing:</p>
+
+<div class="callout history">
+  <div class="callout-title">🏛️ George Box &amp; Sam Karlin on Models</div>
+  <p><strong>George Box</strong> (1919–2013): <em>"All models are wrong; some are useful."</em></p>
+  <p><strong>Sam Karlin</strong> (1924–2007): <em>"The purpose of models is not to fit the data but to sharpen the questions."</em></p>
+  <p>Box was a British statistician responsible for Box-Jenkins time series methods and Box-Cox transformations. His quip is the most quoted sentence in all of statistics, and it is worth taking seriously: no model perfectly describes reality, so judging a model by whether it is "true" is the wrong criterion. The right criterion is whether it is useful — does it compress information helpfully? Does it make testable predictions? Does it guide our intuition?</p>
+  <p>Karlin was one of the great mathematicians of the 20th century (linear programming, game theory, stochastic processes, mathematical genetics). His point is subtler: a model's job is not to match every data point (a perfect fit can be achieved by memorising the data), but to crystallise the <em>right questions</em>. When a demographic model doesn't fit, that misfit is informative — it tells you something interesting is happening.</p>
+  <p><strong>Synthesis:</strong> The test of a model is how well it fits. But fitting is not the model's <em>purpose</em>. Its purpose is to make the right questions sharp enough to answer.</p>
+</div>
+
+<div class="callout demography">
+  <div class="callout-title">📊 Why This Matters for Demographic Practice</div>
+  <p>Demographers routinely use models that are technically "wrong" in the Box sense but enormously useful: the stable population model assumes constant fertility and mortality schedules (never true in any real population), yet it generates deep insights about the long-run implications of current rates. The life table is a fictional cohort who all experience today's age-specific death rates — no such cohort has ever existed. Brass's Relational Model Mortality system uses a standard life table and one free parameter to approximate virtually any mortality experience. These are all deliberate, controlled simplifications. Understanding <em>why</em> they work, and <em>where</em> they break down, is the core skill of formal demography.</p>
+</div>
+
+
+<!-- ===== SECTION 3 ===== -->
+<h2 id="s3"><span class="sn">3</span> Survival as a Product of Independent Hazards</h2>
+
+<h3>The Product Formula for Survival</h3>
+
+<p>The exponential form of the survival function leads immediately to a product formula. We have:</p>
+
+\[ l(x) = {}_xp_0 = e^{-\int_0^x \mu(y)\,dy} = e^{-\left[\int_0^n + \int_n^{2n} + \int_{2n}^{3n} + \cdots\right]\mu(y)\,dy} \]
+
+<p>Using the rule \(e^{a+b} = e^a \cdot e^b\), this factorises into:</p>
+
+<div class="fb">
+  <div class="fl">Survival as a product of n-year survival probabilities</div>
+  \[
+    l(x) = {}_xp_0 = ({}_np_0)({}_np_n)({}_np_{2n})\cdots({}_np_{x-n}) = \prod_i {}_np_i
+  \]
+</div>
+
+<p>In words: the probability of surviving to age \(x\) is the product of the probabilities of surviving each successive \(n\)-year interval. For 5-year age groups, this becomes:</p>
+
+\[ l(x) = ({}_5p_0)({}_5p_5)({}_5p_{10})\cdots({}_5p_{70}) \]
+
+<p>for, say, age 75. The key condition for this factorisation to work is that the individual interval hazards are <strong>independent</strong>. The lecture stated this cleanly:</p>
+
+<div class="highlight-box">
+  <strong>Probabilities multiply. Hazards add.</strong>
+</div>
+
+<p>When hazards are independent, you can add them to get the total hazard, and multiply the corresponding survival probabilities to get the overall survival probability. This is why, for example, mortality from different causes can be modelled separately and then combined: cause-specific hazards add; cause-specific survival probabilities multiply.</p>
+
+<div class="callout intuition">
+  <div class="callout-title">💡 Intuition — The Gauntlet</div>
+  <p>Imagine survival to age 70 as running a gauntlet of 14 successive five-year obstacles (ages 0–4, 5–9, …, 65–69). At each obstacle, you face a certain probability of being knocked out — that probability is \({}_5q_{5i}\), or equivalently the survival probability for that segment is \({}_5p_{5i} = 1 - {}_5q_{5i}\). To make it through the entire gauntlet, you must survive each obstacle independently. The overall survival probability is the product of the individual survival probabilities. If each segment is 95% survivable, the probability of making it through all 14 segments is \(0.95^{14} \approx 0.49\) — less than 50%, even though each individual segment is quite safe. This multiplicative compounding of risks is the fundamental structure of survival analysis.</p>
+</div>
+
+<div class="callout history">
+  <div class="callout-title">🏛️ Historical Note — The Life Table and Independent Risks</div>
+  <p>The first published life table was constructed by <strong>John Graunt</strong> in 1662 from London Bills of Mortality — a remarkable achievement for its time, though the methods were rough. The mathematically rigorous development came with <strong>Edmund Halley</strong> (yes, of the comet) in 1693, who used data from Breslau (now Wrocław) to compute the first genuinely actuarial life table. Halley was interested in annuity pricing — how much should you pay for a guaranteed income until death? The life table gave the answer. The product formula for survival was implicit in this work: each year of life is an independent gamble, and the odds of surviving \(n\) years compound multiplicatively. This multiplicative structure is what makes the life table so powerful — and it is exactly the structure that modern survival analysis (Kaplan-Meier, Cox regression) inherits.</p>
+</div>
+
+<!-- Widget 1: Survival curve from cumulative hazard -->
+<div class="widget">
+  <div class="widget-title">Widget 1 — Survival Function from Hazard Rate</div>
+  <div class="ws">Adjust the shape of the Gompertz hazard rate \(\mu(x) = a \cdot e^{bx}\) and watch how the survival curve \(l(x) = e^{-\int_0^x \mu(y)dy}\) responds. The cumulative hazard (shaded) drives survivorship down.</div>
+  <div class="sr">
+    <label>Baseline hazard <i>a</i> (×10⁻⁴)</label>
+    <input type="range" min="1" max="20" value="5" step="1" id="sld_a" oninput="updateSurv()">
+    <span class="sv" id="val_a">5</span>
+  </div>
+  <div class="sr">
+    <label>Rate of increase <i>b</i> (×10⁻²)</label>
+    <input type="range" min="4" max="15" value="8" step="1" id="sld_b" oninput="updateSurv()">
+    <span class="sv" id="val_b">8</span>
+  </div>
+  <div class="cb">
+    <canvas id="survChart"></canvas>
+  </div>
+  <div class="wo" id="survOut"></div>
+</div>
+
+
+<!-- ===== SECTION 4 ===== -->
+<h2 id="s4"><span class="sn">4</span> Kaplan-Meier and Censoring</h2>
+
+<p>In demography, because population sizes are large, the survival function \(l(x)\) looks smooth and continuous — we model it as a curve. We therefore typically fix equal intervals on the \(x\)-axis (ages 0–4, 5–9, …) and let the decrements vary. You read off values like \(l(5)\), \(l(10)\), \(l(15)\) from standard life tables.</p>
+
+<p>But in fields with small study sizes — clinical trials, epidemiology, sociology — the survival curve is <em>not</em> continuous. You have a small finite sample, each individual either dies or is lost to follow-up, and the survival curve is a step function that drops at each observed death. This is the <strong>Kaplan-Meier estimator</strong>.</p>
+
+<div class="callout definition">
+  <div class="callout-title">📖 Definition — Kaplan-Meier Estimator</div>
+  <p>The <strong>Kaplan-Meier (KM) estimator</strong> is the standard non-parametric estimator of the survival function from a sample with possibly censored observations. Rather than fixing time intervals, it lets the decrement happen at each observed event time, and the interval width varies according to when events actually occur. For a study with 25 participants, the KM curve drops in unequal steps — a large step if several people die close together, a small step if only one dies. This is the typical form in clinical trials: the time axis is fixed, but the decrement size varies. In demography it is the reverse: the decrement (age intervals) is fixed, and the event times within those intervals vary.</p>
+</div>
+
+<h3>A Side Comment: Censoring</h3>
+
+<p>The lecture briefly introduced the concept of <strong>censoring</strong>, illustrated by unemployment spell data. In any study that follows people over time, some individuals will be observed only partially:</p>
+
+<ul>
+  <li><strong>Right-censored:</strong> The person is still alive (or employed) at the end of the study. You know they survived at least as long as the observation window. (Most common in practice.)</li>
+  <li><strong>Left-censored:</strong> The event happened before the study started — you know it happened, but you don't know exactly when.</li>
+  <li><strong>Both left and right censored:</strong> The person was only observed in the middle of the period; you know neither the start nor the end precisely.</li>
+</ul>
+
+<div class="callout note">
+  <div class="callout-title">📝 Why Censoring Matters</div>
+  <p>A naive approach to censored data — simply ignoring censored individuals, treating them as if they never existed — biases your survival estimate downward: you under-count exposure time and over-estimate the death rate. The Kaplan-Meier estimator handles censoring correctly by using only the information you actually have: each person contributes exposure time up to when they were last observed, and the "risk set" at each event time is correctly reduced as people leave the study. This is exactly the person-years exposure concept from Day 2, now applied at the individual level.</p>
+  <p>This issue — how to handle partial observation — is one of the deep links between demography, epidemiology, and biostatistics. All three fields face the same problem; they just came to it from different directions.</p>
+</div>
+
+
+<!-- ===== SECTION 5 ===== -->
+<h2 id="s5"><span class="sn">5</span> Abridged Life Tables in Practice: England &amp; Wales from the HMD</h2>
+
+<p>To ground the theory, the lecture examined real abridged life table data from the <strong>Human Mortality Database (HMD)</strong> — the most comprehensive public repository of historical mortality data, covering about 40 countries. The example shown was England and Wales, with two cohorts compared: <strong>1841–1844</strong> (typical of pre-industrial mortality) and <strong>1930–1931</strong> (after major public health improvements but before the NHS).</p>
+
+<div class="callout history">
+  <div class="callout-title">🏛️ The Human Mortality Database</div>
+  <p>The <strong>Human Mortality Database (HMD)</strong>, at <em>mortality.org</em>, is a collaboration between UC Berkeley and the Max Planck Institute for Demographic Research, founded in 2000. It provides harmonised life table data for roughly 40 countries, some going back to the 17th century. The HMD is the standard reference for historical mortality analysis in academic demography and is freely accessible. Its data series have been used in hundreds of studies of mortality trends, longevity, and the determinants of mortality decline.</p>
+</div>
+
+<h3>Reading an Abridged Life Table</h3>
+
+<p>Each row covers an age group (age interval \([x, x+n)\)), and the columns record:</p>
+
+<table class="eq-table">
+  <tr><th>Column</th><th>Symbol</th><th>What it means</th></tr>
+  <tr><td>Death rate</td><td>\({}_nM_x\)</td><td>Observed deaths ÷ person-years lived in age group</td></tr>
+  <tr><td>Death probability</td><td>\({}_nq_x\)</td><td>Probability of dying within the age interval, given alive at start</td></tr>
+  <tr><td>Mean age at death</td><td>\({}_na_x\)</td><td>Average years lived within the interval by those who die in it</td></tr>
+  <tr><td>Survivors</td><td>\(l_x\)</td><td>Number alive at exact age \(x\) (radix = 100,000)</td></tr>
+  <tr><td>Deaths in interval</td><td>\({}_nd_x\)</td><td>\(l_x \cdot {}_nq_x\) — deaths occurring in the interval</td></tr>
+  <tr><td>Person-years lived</td><td>\({}_nL_x\)</td><td>Total time lived in the interval by all members of the cohort</td></tr>
+  <tr><td>Total time lived above \(x\)</td><td>\(T_x\)</td><td>\(\sum_{a=x}^{\omega} {}_nL_a\) — total future person-years from age \(x\)</td></tr>
+  <tr><td>Life expectancy</td><td>\(e_x\)</td><td>\(T_x / l_x\) — expected remaining years of life at exact age \(x\)</td></tr>
+</table>
+
+<p>Here is the data shown on the board (selected rows from each period):</p>
+
+<table class="lt-table">
+  <tr>
+    <th>Year</th><th>Age</th><th>\({}_nM_x\)</th><th>\({}_nq_x\)</th>
+    <th>\({}_na_x\)</th><th>\(l_x\)</th><th>\({}_nd_x\)</th>
+    <th>\({}_nL_x\)</th><th>\(T_x\)</th><th>\(e_x\)</th>
+  </tr>
+  <tr><td class="sep" colspan="10">England &amp; Wales — Period 1841–1844</td></tr>
+  <tr><td>1841–44</td><td>0</td><td>0.16548</td><td>0.14842</td><td>0.31</td><td>100,000</td><td>14,842</td><td>89,695</td><td>4,134,427</td><td>41.34</td></tr>
+  <tr><td>1841–44</td><td>1–4</td><td>0.03710</td><td>0.13555</td><td>1.45</td><td>85,158</td><td>11,544</td><td>311,158</td><td>4,044,732</td><td>47.50</td></tr>
+  <tr><td>1841–44</td><td>5–9</td><td>0.00961</td><td>0.04670</td><td>1.97</td><td>73,614</td><td>3,438</td><td>357,640</td><td>3,733,574</td><td>50.72</td></tr>
+  <tr><td>1841–44</td><td>10–14</td><td>0.00504</td><td>0.02489</td><td>2.50</td><td>70,176</td><td>1,747</td><td>346,524</td><td>3,375,934</td><td>48.11</td></tr>
+  <tr><td>1841–44</td><td>20–24</td><td>0.00872</td><td>0.04270</td><td>2.57</td><td>66,183</td><td>2,826</td><td>323,958</td><td>2,692,595</td><td>40.68</td></tr>
+  <tr><td>1841–44</td><td>60–64</td><td>0.03801</td><td>0.15624</td><td>2.57</td><td>37,739</td><td>5,896</td><td>174,388</td><td>544,968</td><td>14.44</td></tr>
+  <tr><td>1841–44</td><td>75–79</td><td>0.10535</td><td>0.41431</td><td>2.42</td><td>17,259</td><td>7,150</td><td>67,870</td><td>121,032</td><td>7.01</td></tr>
+  <tr><td>1841–44</td><td>105–109</td><td>0.57631</td><td>1.00000</td><td>1.74</td><td>1</td><td>1</td><td>1</td><td>1</td><td>1.74</td></tr>
+  <tr><td class="sep" colspan="10">England &amp; Wales — Period 1930–1931</td></tr>
+  <tr><td>1930–31</td><td>0</td><td>0.06733</td><td>0.06420</td><td>0.28</td><td>100,000</td><td>6,420</td><td>95,349</td><td>7,006,403</td><td>70.06</td></tr>
+  <tr><td>1930–31</td><td>1–4</td><td>0.00693</td><td>0.02723</td><td>1.38</td><td>93,580</td><td>2,549</td><td>367,526</td><td>6,911,054</td><td>73.85</td></tr>
+  <tr><td>1930–31</td><td>5–9</td><td>0.00190</td><td>0.00943</td><td>2.08</td><td>91,032</td><td>858</td><td>452,659</td><td>6,543,527</td><td>71.88</td></tr>
+  <tr><td>1930–31</td><td>10–14</td><td>0.00109</td><td>0.00507</td><td>2.48</td><td>90,174</td><td>490</td><td>449,612</td><td>6,090,868</td><td>67.55</td></tr>
+  <tr><td>1930–31</td><td>15–19</td><td>0.00110</td><td>0.00507</td><td>2.48</td><td>89,694</td><td>527</td><td>447,092</td><td>5,641,256</td><td>62.90</td></tr>
+  <tr><td>1930–31</td><td>20–24</td><td>0.00485</td><td>—</td><td>—</td><td>89,157</td><td>433</td><td>444,662</td><td>5,194,164</td><td>58.26</td></tr>
+</table>
+
+<div class="callout note">
+  <div class="callout-title">📝 What Jumps Out: Infant Mortality</div>
+  <p>The most striking difference between 1841 and 1930 is infant mortality. In 1841, \({}_1q_0 = 0.148\) — nearly 15 in every 100 babies died in their first year, and a further 13.6% of those who survived died in the next four years (ages 1–4). That means roughly 26% of all babies born were dead before age 5. By 1930, infant mortality had fallen to 6.4% and child mortality was a tiny fraction of its Victorian level. The improvement was almost entirely driven by public health: clean water, sewerage, pasteurised milk, and better nutrition — not medical treatment. Life expectancy at birth rose from 41 to 70 years over this period, almost all of that gain coming from eliminating early-childhood deaths.</p>
+  <p>Notice also the curious fact that \(e_1\) (life expectancy at age 1) in 1841 (47.5 years) <em>exceeds</em> \(e_0\) (41.3 years). This is always true in high-mortality environments: once you have survived the dangerous first year, your expected remaining life is higher than at birth, because the "lucky" survivors have already beaten the worst odds.</p>
+</div>
+
+
+<!-- ===== SECTION 6 ===== -->
+<h2 id="s6"><span class="sn">6</span> Cohort Fertility: Age-Specific Rates, TFR, and the 3D Surface</h2>
+
+<p>Having described how people die, we now describe how people are born. The lecture introduced <strong>age-specific fertility rates</strong> and the summary measures derived from them.</p>
+
+<h3>Age-Specific Fertility Rates (Both Sexes)</h3>
+
+<p>Births are counted by the age of the mother (conventionally). For an age group \([x, x+n)\), the count of births is \({}_nB_x\) and the person-years of exposure (person-years lived by women in that age group) is \({}_nK_x\). The <strong>age-specific fertility rate</strong> (ASFR) is:</p>
+
+<div class="fb">
+  <div class="fl">Age-specific fertility rate (both sexes)</div>
+  \[
+    {}_nF_x = \frac{{}_nB_x}{{}_nK_x}
+  \]
+</div>
+
+<p>Note that \({}_nB_x\) counts all births (boys and girls), and \({}_nK_x\) should be person-years of exposure — not head counts. The same denominator-is-person-years lesson from Day 2 applies here. Births only occur meaningfully between roughly ages 10–14 (rarely) and 50–54, so the standard reproductive age range is <strong>ages 15 to 49</strong> (sometimes extended to 50–54). ASFRs are zero outside this range.</p>
+
+<h3>The Total Fertility Rate (TFR)</h3>
+
+<p>The <strong>Total Fertility Rate</strong> is what you get by summing the ASFRs over all reproductive age groups, remembering to multiply by the width \(n\) of each age interval:</p>
+
+<div class="fb">
+  <div class="fl">Total Fertility Rate (discrete and continuous forms)</div>
+  \[
+    \text{TFR} = \sum_x {}_nF_x \cdot n = \int_{10}^{50} f(x)\,dx
+  \]
+</div>
+
+<div class="callout note">
+  <div class="callout-title">📝 The Undergraduate Error: Forgetting the n</div>
+  <p>Robert noted explicitly: <em>"Undergraduates always forget this \(n\)."</em> When you sum discrete age-specific fertility rates, you must multiply by the width \(n\) of each age interval. For standard 5-year age groups, \(n = 5\), so the TFR formula is \(\sum {}_5F_x \cdot 5\). The reason is that each \({}_nF_x\) is a <em>rate per year</em>, but each age group spans \(n\) years. Drawing a bar chart of the ASFRs helps: the TFR is the total <em>area</em> of all the bars, not just the sum of their heights. The \(n\) converts heights to areas. The same logic applies to computing person-years in the life table — it is always area under a curve, not the sum of point values.</p>
+</div>
+
+<h3>The 3D Fertility Surface</h3>
+
+<p>The lecture showed a striking visualisation: a 3D surface of US age-specific fertility rates from 1933 to 2021, with age on one axis, calendar year on the other, and the ASFR value on the vertical. The shape of this surface encodes the full demographic history of American fertility — the Baby Boom peak (roughly 1957–1961) appears as a ridge; the post-Boom decline shows as a drop-off; the shift toward later childbearing in recent decades is visible as the "hump" moving toward higher ages over time. Such surfaces are a powerful way to see the interaction of period and cohort effects simultaneously.</p>
+
+
+<!-- ===== SECTION 7 ===== -->
+<h2 id="s7"><span class="sn">7</span> Only Daughters Count: Tracking Generations</h2>
+
+<p>To measure <em>replacement</em> — whether a population is reproducing itself — we need to track lineages across generations. But following both sexes introduces complications (two parents per child; what counts as "one generation"?). The classical solution is to <strong>follow only the female line</strong>: track only daughters, and measure how many daughters a woman produces per lifetime.</p>
+
+<div class="callout note">
+  <div class="callout-title">📝 Why Daughters?</div>
+  <p>The convention is driven by practicality: in most historical data, births are attributed to the mother's age, not the father's. Tracking the female line also avoids the awkward problem that every birth has exactly one mother but potentially many "fathers" (in the demographic sense — a man can father children across many years, while a woman's reproductive window is constrained by biology). By focusing on daughters, we get a clean definition of a "generation": women in generation 0 → their daughters in generation 1 → their daughters in generation 2 → and so on. A Lexis diagram of this succession shows parallel diagonal bands — each generation offset by the mean age of childbearing.</p>
+</div>
+
+<!-- Widget 2: NRR generation simulator -->
+<div class="widget">
+  <div class="widget-title">Widget 2 — Generational Growth via NRR</div>
+  <div class="ws">Set an NRR and generation length to see how the population of girls grows (or shrinks) across generations. Each bar is one generation of girls, relative to the founding generation.</div>
+  <div class="sr">
+    <label>Net Reproduction Ratio (NRR = R₀)</label>
+    <input type="range" min="0.5" max="3.0" value="1.5" step="0.05" id="sld_nrr" oninput="updateGen()">
+    <span class="sv" id="val_nrr">1.50</span>
+  </div>
+  <div class="sr">
+    <label>Generation length G (years)</label>
+    <input type="range" min="20" max="35" value="28" step="1" id="sld_G" oninput="updateGen()">
+    <span class="sv" id="val_G">28</span>
+  </div>
+  <div class="cb-sm">
+    <canvas id="genChart"></canvas>
+  </div>
+  <div class="wo" id="genOut"></div>
+</div>
+
+
+<!-- ===== SECTION 8 ===== -->
+<h2 id="s8"><span class="sn">8</span> The Net Reproduction Ratio: Combining Mortality and Fertility</h2>
+
+<h3>Definition and Interpretation</h3>
+
+<p>The <strong>Net Reproduction Ratio</strong> (NRR, also written \(R_0\)) is the ratio of girls in successive generations:</p>
+
+<div class="fb">
+  <div class="fl">Net Reproduction Ratio (NRR)</div>
+  \[
+    \text{NRR} = R_0 = \frac{\text{girl babies in generation } i+1}{\text{girl babies in generation } i}
+  \]
+</div>
+
+<p>Its interpretation is elegantly simple:</p>
+<ul>
+  <li>NRR &gt; 1 ⟺ the population grows ⟺ \(r > 0\)</li>
+  <li>NRR &lt; 1 ⟺ the population shrinks ⟺ \(r < 0\)</li>
+  <li>NRR = 1 ⟺ the population exactly replaces itself ⟺ \(r = 0\)</li>
+</ul>
+
+<div class="callout history">
+  <div class="callout-title">🏛️ Anderson, May, and R₀</div>
+  <p>In 1978, Roy Anderson and Robert May convened a meeting (at Hesterbeek, in the Netherlands) that extended the concept of \(R_0\) far beyond demography into infectious disease epidemiology. In epidemiology, \(R_0\) (the "basic reproduction number") is the average number of secondary cases produced by one infectious individual in a fully susceptible population. The COVID-19 pandemic made this quantity famous: if \(R_0 > 1\) the epidemic grows; if \(R_0 < 1\) it dies out. The mathematical structure is identical to the demographic NRR — it is the same downstream multiplier concept, just applied to a different kind of "offspring." This is an example of how demographic ideas propagate into adjacent fields. Robert Chung's notation \(R_0, R_1, R_n\) echoes this unified framework.</p>
+</div>
+
+<h3>Computing the NRR: The Formula</h3>
+
+<p>To compute the NRR we need to count how many daughters survive to be born. Start with a woman aged \(x\): she faces a fertility rate \(f(x)\) (births per year per woman of age \(x\)), a probability of surviving to age \(x\) given by \(l(x)/l(0)\), and the fraction of those births that are female, \(F_{\text{FAB}}\). Integrating over all reproductive ages:</p>
+
+<div class="fb">
+  <div class="fl">Net Reproduction Ratio (continuous form)</div>
+  \[
+    \text{NRR} = \int_{15}^{50} f(x)\,\frac{l(x)}{l(0)}\,dx \cdot F_{\text{FAB}}
+  \]
+</div>
+
+<p>In the discrete life table version, using 5-year age groups:</p>
+
+<div class="fb">
+  <div class="fl">NRR (discrete form)</div>
+  \[
+    \text{NRR} = \sum_x {}_nF_x \cdot {}_nL_x \cdot F_{\text{FAB}}
+  \]
+</div>
+
+<p>where \({}_nL_x\) is the person-years column of the life table (person-years lived in the age group by the cohort), which captures both the width of the age interval and the survivorship. This formula is a product of three conceptually distinct pieces:</p>
+
+<table class="eq-table">
+  <tr><th>Term</th><th>Meaning</th><th>Type</th></tr>
+  <tr><td>\(f(x)\)</td><td>Births per woman per year at age \(x\), both sexes</td><td>Fertility measure</td></tr>
+  <tr><td>\(l(x)/l(0)\)</td><td>Probability of surviving from birth to age \(x\)</td><td>Mortality measure</td></tr>
+  <tr><td>\(F_{\text{FAB}}\)</td><td>Fraction of births that are female</td><td>Sex ratio adjustment</td></tr>
+</table>
+
+<div class="callout intuition">
+  <div class="callout-title">💡 Intuition — The Yellow Shaded Area</div>
+  <p>On the board, Robert drew a fertility curve \(f(x)\) (the bell-shaped curve of births by age), then shaded the area under \(f(x) \cdot l(x) \cdot F_{\text{FAB}}\) in yellow. That yellow area is the NRR. Why yellow? Because it represents the daughters that actually make it to birth — some of the potential births are "eaten" by mortality (the survivorship \(l(x)/l(0)\) is less than 1 for all ages) and some are filtered to sons (the \(F_{\text{FAB}}\) factor). The yellow area is always smaller than the total area under \(f(x)\), which is the GRR — and that is why NRR &lt; GRR always.</p>
+</div>
+
+<!-- Widget 3: NRR calculator -->
+<div class="widget">
+  <div class="widget-title">Widget 3 — NRR vs GRR: The Role of Survivorship</div>
+  <div class="ws">Adjust female survivorship at mean childbearing age and the GRR to see how NRR changes. The key relationship is NRR ≈ GRR × l(μ), where l(μ) is survivorship at the mean age of childbearing.</div>
+  <div class="sr">
+    <label>Gross Reproduction Rate (GRR)</label>
+    <input type="range" min="0.8" max="4.0" value="1.6" step="0.05" id="sld_grr" oninput="updateNRR()">
+    <span class="sv" id="val_grr">1.60</span>
+  </div>
+  <div class="sr">
+    <label>Survivorship at mean age of childbearing l(μ)/l(0)</label>
+    <input type="range" min="0.50" max="1.00" value="0.92" step="0.01" id="sld_lmu" oninput="updateNRR()">
+    <span class="sv" id="val_lmu">0.92</span>
+  </div>
+  <div class="cb-sm">
+    <canvas id="nrrChart"></canvas>
+  </div>
+  <div class="wo" id="nrrOut"></div>
+</div>
+
+
+<!-- ===== SECTION 9 ===== -->
+<h2 id="s9"><span class="sn">9</span> Sex Ratio at Birth and the Fraction Female</h2>
+
+<p>To convert births-of-both-sexes into daughters-only, we need the <strong>Sex Ratio at Birth (SRB)</strong> and the <strong>Fraction Female at Birth (F_FAB)</strong>.</p>
+
+<div class="callout definition">
+  <div class="callout-title">📖 Definitions — SRB and F_FAB</div>
+  <p>The <strong>Sex Ratio at Birth</strong> is the number of male births per female birth:
+  \[ \text{SRB} = \frac{M}{F} \approx 1.05 \]
+  The <strong>Fraction Female at Birth</strong> is the proportion of all births that are female:
+  \[ F_{\text{FAB}} = \frac{F}{F+M} = \frac{1}{1+\text{SRB}} \]
+  and consequently \(F_{\text{MAB}} = 1 - F_{\text{FAB}}\). If SRB = 1.05, then:
+  \[ F_{\text{FAB}} = \frac{1}{1+1.05} = \frac{1}{2.05} \approx 0.4878 \]</p>
+</div>
+
+<h3>Primary, Secondary, Tertiary Sex Ratio</h3>
+
+<p>There are three definitions depending on the stage of life at which the sex ratio is measured:</p>
+<ul>
+  <li><strong>Primary:</strong> at fertilisation (immediately after egg is fertilised). SRB is higher than 1.05 here — estimates range from 1.05 to 1.3.</li>
+  <li><strong>Secondary:</strong> at birth (the standard definition). SRB ≈ 1.05 for large national populations.</li>
+  <li><strong>Tertiary:</strong> at reproductive maturity (roughly age 15–18). Because male mortality is higher in childhood and adolescence, the sex ratio has converged closer to 1.0 by this stage.</li>
+</ul>
+
+<div class="callout note">
+  <div class="callout-title">📝 Berkeley's Default Value and a Warning Sign</div>
+  <p>The Berkeley default value for \(F_{\text{FAB}}\) is <strong>0.4886</strong>, which implies SRB = \((1 - 0.4886)/0.4886 = 0.5114/0.4886 \approx 1.047\). This is a conventional choice for when you don't have exact birth registration data. If you see an SRB very far from 1.05 in a dataset, treat it as a warning sign: either the data quality is poor, or something unusual (and potentially bad) is happening — such as selective reporting of female births, or sex-selective abortion.</p>
+  <p><strong>US Birth Cohort of 1934 example from the board:</strong></p>
+  <ul>
+    <li>NRR = 1.494</li>
+    <li>TFR = 3.28</li>
+    <li>GRR = 1.601</li>
+    <li>\(F_{\text{FAB}} = 0.4877\) (actual; close to the 0.4886 default)</li>
+  </ul>
+  <p>Notice that NRR/GRR ≈ 1.494/1.601 ≈ 0.933. This ratio is approximately \(l(\mu)/l(0)\) — survivorship at the mean age of childbearing (roughly age 27–28 for this cohort). For the well-studied 1934 cohort, the approximation NRR ≈ GRR × l(μ) is indeed close to exact.</p>
+</div>
+
+
+<!-- ===== SECTION 10 ===== -->
+<h2 id="s10"><span class="sn">10</span> GRR, NRR, and the Rule of Thumb: \(r \approx \log(\text{NRR})/\mu\)</h2>
+
+<h3>GRR and NRR: What's the Difference?</h3>
+
+<p>The <strong>Gross Reproduction Rate (GRR)</strong> asks: how many daughters would a woman have if <em>nobody died before the end of the reproductive period?</em> It is:</p>
+
+<div class="fb">
+  <div class="fl">Gross Reproduction Rate</div>
+  \[
+    \text{GRR} = \int_{15}^{50} f(x)\,dx \cdot F_{\text{FAB}} = \text{TFR} \cdot F_{\text{FAB}}
+  \]
+</div>
+
+<p>The GRR simply counts daughters per woman, ignoring the fact that some women die before they can give birth to some of those daughters. The NRR corrects for this by weighting the fertility schedule by survivorship:</p>
+
+<div class="fb">
+  <div class="fl">NRR compared to GRR</div>
+  \[
+    \text{NRR} = \int_{15}^{50} f(x)\,\frac{l(x)}{l(0)}\,dx \cdot F_{\text{FAB}}
+  \]
+</div>
+
+<p>Because \(l(x)/l(0) \leq 1\) for all \(x\), we always have NRR ≤ GRR. The ratio NRR/GRR = \(\bar{z}\), where \(\bar{z}\) is approximately the average level of survivorship during the reproductive years. The claim made on the board: <em>\(\bar{z}\) is close to \(l(\mu)\), the survivorship at the mean age of childbearing.</em></p>
+
+<p>Therefore:</p>
+
+<div class="highlight-box">
+  \[ \text{NRR} \approx \text{GRR} \cdot l(\mu) \]
+</div>
+
+<p>This is a useful decomposition: NRR is a product of a fertility measure (GRR) and a mortality measure (\(l(\mu)\)). The "NRR = 1" condition for replacement can be read as: GRR × l(μ) = 1, meaning you need higher fertility if mortality is higher (lower l(μ)). In sub-Saharan Africa, where l(μ) might be 0.80 or 0.85, replacement-level GRR needs to be above 1.2 rather than the ~1.05 needed in a low-mortality country.</p>
+
+<div class="callout demography">
+  <div class="callout-title">📊 The NRR Phase Plot</div>
+  <p>The lecture showed a <strong>phase plot</strong> with GRR on one axis and l(μ) on the other, with contour lines marking NRR = 0.8, 1.0, and 1.2. Historical data points for different countries and eras scatter across this plot. The contours are hyperbolas — the equation GRR × l(μ) = NRR defines a rectangular hyperbola. Countries in the upper-left quadrant (high fertility, high child mortality) and countries in the lower-right (low fertility, low mortality) can both sit on the NRR = 1 contour. The plot reveals that a country's demographic transition — the move from high fertility/high mortality to low fertility/low mortality — traces a curved path across this diagram.</p>
+</div>
+
+<h3>Connecting NRR to the Growth Rate r</h3>
+
+<p>From Day 1, recall that if a population multiplies by factor \(M\) over time \(t\):</p>
+\[ r = \frac{\log M}{t} \qquad t = \frac{\log M}{r} \]
+
+<p>Now, over one generation of length \(G\), a population of girls multiplies by NRR. So:</p>
+
+\[ \text{NRR} = e^{rG} \implies \frac{\log \text{NRR}}{r} = G \quad \text{or equivalently} \quad r = \frac{\log \text{NRR}}{G} \]
+
+<p>This is the "full story" — an exact relationship given \(G\). The problem is that \(G\), the <strong>mean generation length</strong>, is hard to measure precisely (it depends on the full age-specific fertility schedule and the mortality schedule). The simplification: use the <strong>mean age of childbearing</strong> \(\mu\) as an estimator of \(G\):</p>
+
+<div class="fb">
+  <div class="fl">The "incredibly useful" rule of thumb</div>
+  \[
+    r \approx \frac{\log \text{NRR}}{\mu}
+  \]
+</div>
+
+<p>Robert called this <em>"an incredibly useful rule of thumb."</em> It lets you estimate the intrinsic growth rate of a population using just two numbers: the NRR and the mean age at which women give birth. For example, if NRR = 1.5 and the mean age of childbearing is 28 years, then \(r \approx \log(1.5)/28 = 0.405/28 \approx 0.014\) — about 1.4% per year.</p>
+
+<div class="callout intuition">
+  <div class="callout-title">💡 Intuition — Why Mean Age Is the Right Estimate of G</div>
+  <p>Think about what generation length means: it is the average time between a woman's birth and the births of her daughters. That is precisely the average age at which she gives birth — i.e., the mean age of the fertility schedule weighted by survivorship (so that women who die young contribute less). This is the mean age of net maternity, \(\mu\). It is the "centre of mass" of the NRR integrand \(f(x) \cdot l(x)/l(0)\). So using \(\mu\) as an estimate of \(G\) is not just an approximation of convenience — it is conceptually the right thing.</p>
+</div>
+
+
+<!-- ===== SECTION 11 ===== -->
+<h2 id="s11"><span class="sn">11</span> Mean Ages of Fertility and Childbearing</h2>
+
+<p>The lecture defined several related "mean age" concepts, each of which is a weighted average of age with a different weighting function. All have the same general form:</p>
+
+\[ \bar{x} = \frac{\int x \cdot w(x)\,dx}{\int w(x)\,dx} \]
+
+<p>where \(w(x)\) is the appropriate weight. The four main variants are:</p>
+
+<table class="eq-table">
+  <tr><th>Name</th><th>Symbol</th><th>Formula</th><th>Weight \(w(x)\)</th></tr>
+  <tr>
+    <td>Mean age of fertility schedule</td>
+    <td>\(\bar{m}\)</td>
+    <td>\(\dfrac{\int x\,f(x)\,dx}{\int f(x)\,dx}\)</td>
+    <td>\(f(x)\)</td>
+  </tr>
+  <tr>
+    <td>Mean age of net maternity<br>(= mean age of childbearing)</td>
+    <td>\(\mu\)</td>
+    <td>\(\dfrac{\int x\,f(x)\,l(x)\,dx}{\int f(x)\,l(x)\,dx}\)</td>
+    <td>\(f(x)\,l(x)\)</td>
+  </tr>
+  <tr>
+    <td>Mean age of reproduction at rate r</td>
+    <td>\(A_r\)</td>
+    <td>\(\dfrac{\int x\,f(x)\,l(x)\,e^{-rx}\,dx}{\int f(x)\,l(x)\,e^{-rx}\,dx}\)</td>
+    <td>\(f(x)\,l(x)\,e^{-rx}\)</td>
+  </tr>
+  <tr>
+    <td>Mean age of stable age structure</td>
+    <td>\(\bar{x}_r\)</td>
+    <td>\(\dfrac{\int x\,l(x)\,e^{-rx}\,dx}{\int l(x)\,e^{-rx}\,dx}\)</td>
+    <td>\(l(x)\,e^{-rx}\)</td>
+  </tr>
+</table>
+
+<div class="callout intuition">
+  <div class="callout-title">💡 Intuition — Why the Weight Matters</div>
+  <p>Each of these mean ages answers a slightly different question. \(\bar{m}\) asks: "At what age, on average, does a woman who is alive and fertile give birth?" It weights only by the fertility schedule — it doesn't care whether high-fertility ages have high or low mortality. \(\mu\) (mean age of net maternity) asks: "At what age, on average, does a woman actually give birth, accounting for the fact that some women die before reaching the older fertile ages?" It weights by both fertility and survivorship. In low-mortality populations, \(\bar{m}\) and \(\mu\) are very close; in high-mortality populations, \(\mu < \bar{m}\) because high-age fertility is discounted more heavily by mortality.</p>
+  <p>\(A_r\) further discounts by the growth-rate factor \(e^{-rx}\): in a growing population (\(r > 0\)), younger ages are relatively more numerous (they haven't died yet and there are more births recently), so births are concentrated at younger ages, pulling \(A_r\) below \(\mu\). In a declining population (\(r < 0\)), the reverse holds. When \(r = 0\), \(A_r = \mu\). So \(A_r\) gives the mean age of reproduction in a population growing or declining at rate \(r\).</p>
+</div>
+
+
+<!-- ===== SECTION 12 ===== -->
+<h2 id="s12"><span class="sn">12</span> Population Projections: Markov Processes and Matrix Methods</h2>
+
+<p>The final major topic of Day 3 brings everything together: <strong>population projection</strong> — formally combining mortality, fertility, and age structure into a single model that can be stepped forward in time.</p>
+
+<h3>Putting Mortality, Fertility, and Growth into One Model</h3>
+
+<p>The general framework introduced is: model a population as a vector of counts across discrete states, and describe how that vector evolves over time via a <strong>transition matrix</strong>. The states can be anything — age groups, marital status categories, disease stages, employment statuses.</p>
+
+<h3>Marital Status as a Worked Example</h3>
+
+<p>As a simple illustration, the lecture used <strong>marital status</strong>. A woman at any given time is in exactly one of five states:</p>
+<ul>
+  <li>Single (never married)</li>
+  <li>Married</li>
+  <li>Widowed</li>
+  <li>Divorced</li>
+  <li>Dead</li>
+</ul>
+
+<p>These states are <strong>exclusive</strong> (she can only be in one at a time) and <strong>complete</strong> (they cover all possibilities). In each time period, she can transition from one state to any other reachable state — but the time period must be short enough that she cannot make two state changes within a single step (e.g., you can't go from Single to Widowed in one period without passing through Married).</p>
+
+<div class="callout definition">
+  <div class="callout-title">📖 Definition — Markov Process (Chain)</div>
+  <p>A <strong>Markov process</strong> is a model in which the future state of a system depends only on its current state, not on its history. In the demographic context: if we know a woman is currently Married, the probability of her transitioning to Widowed next period does not depend on how long she has been married or what her status was before. Label each arrow in the state diagram with the transition probability, and you have a Markov chain. The collection of all transition probabilities in a matrix is called the <strong>transition matrix</strong>. Named after Andrei Markov (1856–1922), a Russian mathematician who developed the theory in the 1900s.</p>
+</div>
+
+<h3>The Transition Matrix</h3>
+
+<p>On the board, the transition matrix \(A_0\) was written out for the marital status model with 5 states (S = Single, M = Married, W = Widowed, Div = Divorced, Death). Reading the matrix: entry \(A_{ij}\) gives the probability of moving <em>from</em> state \(j\) (column) <em>to</em> state \(i\) (row) in one time period. The column sums equal 1 (everyone must go somewhere).</p>
+
+<div class="markov-container">
+<div>
+<table class="matrix-table">
+  <tr>
+    <td></td>
+    <td class="state-head">S</td>
+    <td class="state-head">M</td>
+    <td class="state-head">W</td>
+    <td class="state-head">Div</td>
+    <td class="state-head">Death</td>
+  </tr>
+  <tr>
+    <td class="state-side">S</td>
+    <td>.5</td><td>0</td><td>0</td><td>0</td><td>0</td>
+  </tr>
+  <tr>
+    <td class="state-side">M</td>
+    <td>.4</td><td>.7</td><td>.2</td><td>.3</td><td>0</td>
+  </tr>
+  <tr>
+    <td class="state-side">W</td>
+    <td>0</td><td>.1</td><td>.7</td><td>0</td><td>0</td>
+  </tr>
+  <tr>
+    <td class="state-side">Div</td>
+    <td>0</td><td>.1</td><td>0</td><td>.6</td><td>0</td>
+  </tr>
+  <tr>
+    <td class="state-side">Death</td>
+    <td>.1</td><td>.1</td><td>.1</td><td>.1</td><td>1.0</td>
+  </tr>
+</table>
+</div>
+<div>
+<p>Reading this matrix column by column: a Single woman (column 1) has probability 0.5 of staying Single, 0.4 of getting Married, and 0.1 of dying. A Married woman (column 2) has 0.7 of staying Married, 0.1 of becoming Widowed, 0.1 of getting Divorced, and 0.1 of dying. Death is an <strong>absorbing state</strong> (column 5): once dead, you stay dead (probability 1.0). Note the matrix entries in each column sum to 1.</p>
+<p>This matrix \(A_0\) applies at time 0. The matrices \(A_1, A_2, \ldots\) may differ if transition probabilities change over time (e.g., as marriage rates evolve).</p>
+</div>
+</div>
+
+<h3>The Population Vector and Its Evolution</h3>
+
+<p>At time 0, we have a population vector:</p>
+
+\[ \mathbf{k}_0 = \begin{pmatrix} k_{S,0} \\ k_{M,0} \\ k_{W,0} \\ k_{Div,0} \\ k_{Death,0} \end{pmatrix} \]
+
+<p>where each entry is the number of women in that state at time 0. The evolution rule is simple matrix multiplication:</p>
+
+<div class="fb">
+  <div class="fl">Population projection by matrix multiplication</div>
+  \[
+    \mathbf{k}_1 = A_0\,\mathbf{k}_0, \qquad
+    \mathbf{k}_2 = A_1\,\mathbf{k}_1 = A_1 A_0\,\mathbf{k}_0, \qquad
+    \mathbf{k}_t = A_{t-1}A_{t-2}\cdots A_1 A_0\,\mathbf{k}_0
+  \]
+</div>
+
+<p>If the transition matrix is <strong>constant across time</strong> — i.e., \(A_0 = A_1 = A_2 = \cdots = A\) — then the system simplifies beautifully to:</p>
+
+<div class="highlight-box">
+  \[ \mathbf{k}_t = A^t\,\mathbf{k}_0 \]
+</div>
+
+<p>This is matrix exponentiation: stepping forward \(t\) periods is equivalent to raising the transition matrix to the power \(t\). The long-run behaviour is determined by the <strong>eigenvalues</strong> of \(A\): the dominant eigenvalue gives the long-run growth rate, and the corresponding eigenvector gives the stable state distribution (the mix of states the population converges to, regardless of starting conditions).</p>
+
+<div class="callout intuition">
+  <div class="callout-title">💡 Intuition — Matrix Powers and Eigenvalues</div>
+  <p>Recall from linear algebra that multiplying a matrix by a vector repeatedly is equivalent to projecting the vector onto the matrix's eigenvectors and scaling each component by the corresponding eigenvalue. The dominant eigenvalue \(\lambda_1\) (the largest in absolute value) governs what happens in the long run: if \(\lambda_1 > 1\), the population grows; if \(\lambda_1 < 1\), it declines; if \(\lambda_1 = 1\) (which happens with constant mortality in the age-structured model), it eventually stabilises at a fixed age distribution. The eigenvector corresponding to \(\lambda_1\) is the <strong>stable state distribution</strong> — the mix of ages (or marital statuses) the population converges to. This is the discrete analogue of what we will call the <strong>stable population</strong> in continuous theory.</p>
+</div>
+
+<h3>The Actual Structured Population Projection</h3>
+
+<p>The final sketch on the board (page 9) showed what a real demographic projection looks like. For simplicity: one sex (females), 5-year age groups (0–4, 5–9, 10–14, 15–19, 20–24, …, 45–49, 50–54), and a 5-year projection period (chosen to match the age group width). The population vector has one entry per age group. The transition matrix has two components:</p>
+<ul>
+  <li><strong>Survivorships \(l(x)\):</strong> most people in age group [x, x+5) survive to move into age group [x+5, x+10). The relevant probability is \(l(x+5)/l(x)\).</li>
+  <li><strong>Fertilities:</strong> women in reproductive age groups (20–24 through 45–49) give birth to babies who populate the 0–4 age group 5 years later. The contribution from each age group is calculated using the ASFRs and appropriate survivorship.</li>
+</ul>
+
+<p>This is the <strong>Leslie matrix</strong> — one of the most widely used tools in formal demography, introduced by Patrick Holt Leslie in 1945. The Leslie matrix embeds both mortality and fertility in a single projection machine: multiply the current age distribution by the Leslie matrix to get the age distribution 5 years hence. Repeat to project arbitrarily far into the future.</p>
+
+<div class="callout history">
+  <div class="callout-title">🏛️ Historical Note — P.H. Leslie and the Leslie Matrix</div>
+  <p><strong>Patrick Holt Leslie</strong> (1900–1972) was a British ecologist at the Bureau of Animal Population in Oxford. In a landmark 1945 paper in <em>Biometrika</em>, he showed that age-structured population dynamics could be encoded in a matrix and studied using linear algebra. The key insight was that the dominant eigenvalue of the matrix gives the long-run growth rate, and the corresponding eigenvector gives the stable age distribution — properties that follow directly from the Perron-Frobenius theorem for non-negative matrices. The Leslie matrix approach is now standard in ecology, demography, conservation biology, and actuarial science. It was later extended by <strong>Hal Caswell</strong> (whose 2001 textbook <em>Matrix Population Models</em> is the standard reference) to handle more complex life histories and perturbation analysis.</p>
+</div>
+
+<!-- Widget 4: Markov projection simulator -->
+<div class="widget">
+  <div class="widget-title">Widget 4 — Markov Projection: Marital Status Over Time</div>
+  <div class="ws">Set the initial distribution of women across marital statuses and watch how the population evolves over 10 periods using the transition matrix from the lecture. The system converges to a stable distribution determined by the matrix's dominant eigenvector.</div>
+  <div class="sr">
+    <label>Initial % Single</label>
+    <input type="range" min="0" max="100" value="40" step="5" id="sld_s0" oninput="updateMarkov()">
+    <span class="sv" id="val_s0">40%</span>
+  </div>
+  <div class="sr">
+    <label>Initial % Married</label>
+    <input type="range" min="0" max="100" value="40" step="5" id="sld_m0" oninput="updateMarkov()">
+    <span class="sv" id="val_m0">40%</span>
+  </div>
+  <div class="cb">
+    <canvas id="markovChart"></canvas>
+  </div>
+  <div class="wo" id="markovOut"></div>
+</div>
+
+<hr>
+
+<div class="callout note">
+  <div class="callout-title">📝 Day 3 Summary: The Big Picture</div>
+  <p>Day 3 was the most concept-dense day so far. The key results to carry forward are:</p>
+  <ul>
+    <li>The <strong>survival function</strong> is \(l(x) = e^{-\int_0^x \mu(y)dy}\): survival is exponential decay driven by the cumulative hazard. Probabilities multiply; hazards add.</li>
+    <li>The <strong>NRR</strong> combines fertility (\(f(x)\)), mortality (\(l(x)\)), and sex ratio (\(F_{\text{FAB}}\)) into a single generational replacement measure. NRR = 1 means exact replacement.</li>
+    <li>NRR ≈ GRR × l(μ): a decomposition into a pure fertility measure and a pure mortality measure.</li>
+    <li>The <strong>rule of thumb</strong> \(r \approx \log(\text{NRR})/\mu\) links the NRR (generational multiplier) to the instantaneous growth rate \(r\) via the mean age of childbearing \(\mu\).</li>
+    <li><strong>Population projection</strong> is matrix multiplication: \(\mathbf{k}_t = A^t \mathbf{k}_0\). The long-run behaviour is governed by the dominant eigenvalue and eigenvector of the Leslie matrix.</li>
+    <li>All of these ideas — NRR, stable population, eigenvalues — will come together in Days 4 and 5 when we study the <strong>stable population model</strong> and <strong>Lotka's equation</strong>.</li>
+  </ul>
+</div>
+
+<script>
+// ============================================================
+// Widget 1: Survival curve (Gompertz)
+// ============================================================
+let survChart;
+function buildSurv(){
+  const ctx = document.getElementById('survChart').getContext('2d');
+  survChart = new Chart(ctx,{
+    type:'line',
+    data:{labels:[],datasets:[
+      {label:'Survivorship l(x)',data:[],borderColor:'#2563eb',borderWidth:2.5,fill:false,tension:0.3,pointRadius:0},
+      {label:'Hazard rate μ(x)×10',data:[],borderColor:'#e11d48',borderWidth:1.5,borderDash:[4,3],fill:false,tension:0.3,pointRadius:0}
+    ]},
+    options:{
+      responsive:true,maintainAspectRatio:false,
+      scales:{
+        x:{title:{display:true,text:'Age x'},ticks:{maxTicksLimit:10}},
+        y:{title:{display:true,text:'Value'},min:0,max:1.05}
+      },
+      plugins:{legend:{position:'top'}}
+    }
+  });
+}
+function updateSurv(){
+  const a = parseInt(document.getElementById('sld_a').value)*1e-4;
+  const b = parseInt(document.getElementById('sld_b').value)*1e-2;
+  document.getElementById('val_a').textContent = parseInt(document.getElementById('sld_a').value);
+  document.getElementById('val_b').textContent = parseInt(document.getElementById('sld_b').value);
+  const ages=[]; const lx=[]; const mu=[];
+  let H=0, dx=1;
+  for(let x=0;x<=100;x++){
+    const muX = a*Math.exp(b*x);
+    H += muX*dx;
+    ages.push(x);
+    lx.push(Math.exp(-H));
+    mu.push(Math.min(muX*10, 1.0)); // scaled for visibility
+  }
+  survChart.data.labels = ages;
+  survChart.data.datasets[0].data = lx;
+  survChart.data.datasets[1].data = mu;
+  survChart.update();
+  const e0 = lx.reduce((s,v)=>s+v,0);
+  document.getElementById('survOut').innerHTML =
+    `<strong>Results:</strong> With a = ${(a*1e4).toFixed(0)}×10⁻⁴, b = ${(b*1e2).toFixed(0)}×10⁻², approximate life expectancy at birth e₀ ≈ <span class="big">${e0.toFixed(1)}</span> years. The hazard rate (dashed, scaled ×10) shows the characteristic J-shaped Gompertz curve — slow rise through adulthood, then rapid acceleration in old age.`;
+}
+buildSurv(); updateSurv();
+
+// ============================================================
+// Widget 2: Generational growth
+// ============================================================
+let genChart;
+function buildGen(){
+  const ctx = document.getElementById('genChart').getContext('2d');
+  const labels = ['Gen 0','Gen 1','Gen 2','Gen 3','Gen 4','Gen 5'];
+  genChart = new Chart(ctx,{
+    type:'bar',
+    data:{labels:labels,datasets:[{
+      label:'Relative size of girl population',
+      data:Array(6).fill(0),
+      backgroundColor:labels.map((_,i)=>i===0?'#1e3a8a':i<3?'#e11d48':'#2563eb'),
+      borderRadius:4
+    }]},
+    options:{
+      responsive:true,maintainAspectRatio:false,
+      scales:{y:{title:{display:true,text:'Population (Gen 0 = 1)'},min:0}},
+      plugins:{legend:{display:false}}
+    }
+  });
+}
+function updateGen(){
+  const nrr = parseFloat(document.getElementById('sld_nrr').value);
+  const G = parseInt(document.getElementById('sld_G').value);
+  document.getElementById('val_nrr').textContent = nrr.toFixed(2);
+  document.getElementById('val_G').textContent = G;
+  const vals = [1,nrr,nrr**2,nrr**3,nrr**4,nrr**5];
+  genChart.data.datasets[0].data = vals;
+  genChart.data.datasets[0].backgroundColor = vals.map((v,i)=>{
+    if(i===0) return '#334155';
+    return v>1?'#16a34a':'#e11d48';
+  });
+  const maxY = Math.max(Math.max(...vals)*1.1, 1.2);
+  genChart.options.scales.y.max = parseFloat(maxY.toFixed(1));
+  genChart.update();
+  const r = Math.log(nrr)/G;
+  const T2 = nrr>1 ? (Math.log(2)/r).toFixed(1)+' years' : '—';
+  document.getElementById('genOut').innerHTML =
+    `<strong>NRR = ${nrr.toFixed(2)}, G = ${G} years → r ≈ ${r.toFixed(4)} per year</strong><br>
+    After 5 generations (${5*G} years) the girl population is <span class="big">${vals[5].toFixed(2)}×</span> its starting size.
+    ${nrr>1?`Doubling time ≈ ${T2}.`:nrr<1?`Half-life ≈ ${(Math.log(0.5)/r).toFixed(0)} years.`:`Population exactly replaces itself — stationary.`}`;
+}
+buildGen(); updateGen();
+
+// ============================================================
+// Widget 3: NRR vs GRR
+// ============================================================
+let nrrChart;
+function buildNRR(){
+  const ctx = document.getElementById('nrrChart').getContext('2d');
+  nrrChart = new Chart(ctx,{
+    type:'bar',
+    data:{labels:['GRR (ignores mortality)','NRR = GRR × l(μ)'],
+      datasets:[{
+        data:[0,0],
+        backgroundColor:['#94a3b8','#2563eb'],
+        borderRadius:6,
+        borderWidth:0
+      }]
+    },
+    options:{
+      indexAxis:'y',
+      responsive:true,maintainAspectRatio:false,
+      scales:{
+        x:{title:{display:true,text:'Daughters per woman'},min:0,max:4.5},
+        y:{ticks:{font:{size:13}}}
+      },
+      plugins:{legend:{display:false}}
+    }
+  });
+}
+function updateNRR(){
+  const grr = parseFloat(document.getElementById('sld_grr').value);
+  const lmu = parseFloat(document.getElementById('sld_lmu').value);
+  document.getElementById('val_grr').textContent = grr.toFixed(2);
+  document.getElementById('val_lmu').textContent = lmu.toFixed(2);
+  const nrr = grr*lmu;
+  nrrChart.data.datasets[0].data = [grr, nrr];
+  nrrChart.data.datasets[0].backgroundColor = [
+    '#94a3b8',
+    nrr>1.05?'#16a34a':nrr<0.95?'#e11d48':'#ca8a04'
+  ];
+  nrrChart.update();
+  const status = nrr>1?`growing (r > 0)`:`declining (r < 0)`;
+  const gap = ((1-lmu)*100).toFixed(1);
+  document.getElementById('nrrOut').innerHTML =
+    `<strong>GRR = ${grr.toFixed(2)}, l(μ) = ${lmu.toFixed(2)} → NRR = ${nrr.toFixed(3)}</strong><br>
+    ${gap}% of potential daughters are "lost" to pre-reproductive mortality. Population is <strong>${nrr>1?'above':'below'}</strong> replacement (NRR ${nrr>1?'>':'<'} 1): ${status}. Replacement requires TFR ≈ ${(2.1/lmu).toFixed(2)} for this level of mortality.`;
+}
+buildNRR(); updateNRR();
+
+// ============================================================
+// Widget 4: Markov chain (marital status)
+// ============================================================
+let markovChart;
+// Transition matrix from the board (column → next state)
+// States: S, M, W, Div, (Death excluded from display)
+// A[i][j] = prob of going from j to i
+const A = [
+  [0.5, 0.0, 0.0, 0.0, 0.0],  // to S
+  [0.4, 0.7, 0.2, 0.3, 0.0],  // to M
+  [0.0, 0.1, 0.7, 0.0, 0.0],  // to W
+  [0.0, 0.1, 0.0, 0.6, 0.0],  // to Div
+  [0.1, 0.1, 0.1, 0.1, 1.0]   // to Death
+];
+
+function matMulVec(M, v){
+  return M.map(row => row.reduce((s,m,j)=>s+m*v[j], 0));
+}
+
+function buildMarkov(){
+  const ctx = document.getElementById('markovChart').getContext('2d');
+  const labels = Array.from({length:11},(_,i)=>`t=${i}`);
+  markovChart = new Chart(ctx,{
+    type:'line',
+    data:{labels:labels,datasets:[
+      {label:'Single',data:[],borderColor:'#2563eb',fill:true,backgroundColor:'rgba(37,99,235,.15)',tension:0.3,pointRadius:2},
+      {label:'Married',data:[],borderColor:'#16a34a',fill:true,backgroundColor:'rgba(22,163,74,.15)',tension:0.3,pointRadius:2},
+      {label:'Widowed',data:[],borderColor:'#9333ea',fill:true,backgroundColor:'rgba(147,51,234,.1)',tension:0.3,pointRadius:2},
+      {label:'Divorced',data:[],borderColor:'#ca8a04',fill:true,backgroundColor:'rgba(202,138,4,.1)',tension:0.3,pointRadius:2},
+      {label:'Dead',data:[],borderColor:'#e11d48',fill:true,backgroundColor:'rgba(225,29,72,.1)',tension:0.3,pointRadius:2},
+    ]},
+    options:{
+      responsive:true,maintainAspectRatio:false,
+      scales:{
+        y:{title:{display:true,text:'Fraction of living population (excl. dead)'},min:0,max:1,stacked:false}
+      },
+      plugins:{legend:{position:'top'}}
+    }
+  });
+}
+
+function updateMarkov(){
+  const sS = parseInt(document.getElementById('sld_s0').value);
+  let sM = parseInt(document.getElementById('sld_m0').value);
+  document.getElementById('val_s0').textContent = sS+'%';
+  document.getElementById('val_m0').textContent = sM+'%';
+
+  // Clamp so total doesn't exceed 100
+  if(sS + sM > 95) sM = 95 - sS;
+  const sW = Math.max(0, Math.round((100-sS-sM)*0.5));
+  const sD = Math.max(0, 100-sS-sM-sW);
+
+  let v = [sS/100, sM/100, sW/100, sD/100, 0];
+  const series = [[],[],[],[],[]];
+
+  for(let t=0;t<=10;t++){
+    for(let i=0;i<5;i++) series[i].push(+(v[i]*100).toFixed(1));
+    v = matMulVec(A, v);
+  }
+
+  for(let i=0;i<5;i++) markovChart.data.datasets[i].data = series[i];
+  markovChart.update();
+
+  const finals = series.map(s=>s[s.length-1]);
+  document.getElementById('markovOut').innerHTML =
+    `Starting: Single ${sS}%, Married ${sM}%, Widowed ${sW}%, Divorced ${sD}%.<br>
+    After 10 periods: Single ≈ <strong>${finals[0]}%</strong>, Married ≈ <strong>${finals[1]}%</strong>, Widowed ≈ <strong>${finals[2]}%</strong>, Divorced ≈ <strong>${finals[3]}%</strong>, Dead ≈ <strong>${finals[4]}%</strong>. The distribution converges toward the stable state regardless of starting conditions — determined solely by the transition matrix.`;
+}
+buildMarkov(); updateMarkov();
+</script>
+</body>
+</html>
