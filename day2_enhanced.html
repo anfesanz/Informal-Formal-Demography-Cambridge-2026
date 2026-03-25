@@ -1,0 +1,1286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Formal Demography — Day 2</title>
+<script>
+window.MathJax = {
+  tex: { inlineMath:[['\\(','\\)']], displayMath:[['\\[','\\]']] },
+  options: { skipHtmlTags:['script','noscript','style','textarea','pre'] }
+};
+</script>
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js" async></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#f9f7f3;--surface:#fff;--text:#1c1c2e;--muted:#64748b;--rule:#e2e8f0;
+  --accent:#1e3a8a;--acm:#2563eb;--acl:#dbeafe;
+  --def-bg:#f0fdf4;--def-br:#16a34a;
+  --int-bg:#fefce8;--int-br:#ca8a04;
+  --his-bg:#faf5ff;--his-br:#9333ea;
+  --dem-bg:#fff1f2;--dem-br:#e11d48;
+  --nte-bg:#f0f9ff;--nte-br:#0284c7;
+  --serif:Georgia,'Times New Roman',serif;
+  --sans:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+  --mono:'Courier New',Courier,monospace;
+}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:var(--serif);font-size:17px;line-height:1.85;max-width:880px;margin:0 auto;padding:2.5rem 1.5rem 8rem}
+h1{font-size:2.3rem;line-height:1.2;color:var(--accent);margin-bottom:.4rem}
+h2{font-size:1.55rem;color:var(--accent);border-bottom:2px solid var(--acm);padding-bottom:.3rem;margin:3.5rem 0 1.2rem}
+h3{font-size:1.1rem;margin:2rem 0 .6rem;color:#1e3a5f}
+p{margin-bottom:1.1rem}
+ul,ol{padding-left:1.8rem;margin-bottom:1.1rem}
+li{margin-bottom:.4rem}
+.subtitle{color:var(--muted);font-style:italic;margin-bottom:.4rem;font-size:.95rem}
+.course-meta{background:var(--acl);border-left:4px solid var(--acm);padding:.9rem 1.3rem;border-radius:0 8px 8px 0;margin:1.5rem 0 2.5rem;font-size:.92rem;font-family:var(--sans);line-height:1.7}
+.sn{display:inline-flex;align-items:center;justify-content:center;background:var(--acm);color:#fff;border-radius:50%;width:1.75rem;height:1.75rem;font-family:var(--sans);font-size:.82rem;font-weight:700;margin-right:.5rem;vertical-align:middle;flex-shrink:0}
+.toc{background:var(--surface);border:1px solid var(--rule);border-radius:10px;padding:1.2rem 1.6rem;margin:0 0 3rem;font-size:.88rem}
+.toc-h{font-family:var(--sans);font-weight:700;font-size:.76rem;text-transform:uppercase;letter-spacing:.12em;color:var(--muted);margin-bottom:.7rem}
+.toc ol{padding-left:1.4rem}
+.toc li{margin-bottom:.25rem}
+.toc a{color:var(--acm);text-decoration:none}
+.toc a:hover{text-decoration:underline}
+.callout{border-left:4px solid;border-radius:0 8px 8px 0;padding:.95rem 1.3rem;margin:1.6rem 0;font-size:.92rem;line-height:1.7}
+.callout-title{font-family:var(--sans);font-weight:700;font-size:.79rem;text-transform:uppercase;letter-spacing:.07em;margin-bottom:.45rem}
+.callout p{margin-bottom:.5rem}
+.callout p:last-child{margin-bottom:0}
+.callout.definition{background:var(--def-bg);border-color:var(--def-br)}.callout.definition .callout-title{color:var(--def-br)}
+.callout.intuition{background:var(--int-bg);border-color:var(--int-br)}.callout.intuition .callout-title{color:var(--int-br)}
+.callout.history{background:var(--his-bg);border-color:var(--his-br)}.callout.history .callout-title{color:var(--his-br)}
+.callout.demography{background:var(--dem-bg);border-color:var(--dem-br)}.callout.demography .callout-title{color:var(--dem-br)}
+.callout.note{background:var(--nte-bg);border-color:var(--nte-br)}.callout.note .callout-title{color:var(--nte-br)}
+.fb{background:#0f172a;color:#e2e8f0;border-radius:10px;padding:1.2rem 1.8rem;margin:1.5rem 0;overflow-x:auto;text-align:center;font-size:1.05rem}
+.fb .fl{text-align:left;font-family:var(--sans);font-size:.74rem;color:#94a3b8;text-transform:uppercase;letter-spacing:.09em;margin-bottom:.5rem}
+.eq-table{width:100%;border-collapse:collapse;margin:1.4rem 0;font-size:.91rem}
+.eq-table th{background:var(--accent);color:#fff;padding:.5rem .9rem;text-align:left;font-family:var(--sans);font-weight:600}
+.eq-table td{padding:.5rem .9rem;border-bottom:1px solid var(--rule);vertical-align:middle}
+.eq-table tr:nth-child(even) td{background:#f8fafc}
+.lt-table{width:100%;border-collapse:collapse;margin:1.4rem 0;font-size:.85rem;font-family:var(--sans)}
+.lt-table th{background:#334155;color:#fff;padding:.45rem .7rem;text-align:center}
+.lt-table td{padding:.4rem .7rem;border-bottom:1px solid var(--rule);text-align:center;vertical-align:top}
+.lt-table tr:nth-child(even) td{background:#f8fafc}
+.lt-table .highlight{background:#dbeafe!important;font-weight:600}
+.widget{background:var(--surface);border:1.5px solid #cbd5e1;border-radius:12px;padding:1.5rem 1.6rem;margin:2.2rem 0;box-shadow:0 2px 12px rgba(0,0,0,.07)}
+.widget-title{font-family:var(--sans);font-size:.97rem;font-weight:700;color:var(--acm);margin-bottom:.25rem;display:flex;align-items:center;gap:.5rem}
+.widget-title::before{content:'⚙';font-size:1rem}
+.ws{font-family:var(--sans);font-size:.85rem;color:var(--muted);margin-bottom:1.2rem}
+.sr{display:flex;align-items:center;gap:.8rem;margin-bottom:.75rem;flex-wrap:wrap}
+.sr label{font-family:var(--sans);font-size:.86rem;color:var(--muted);min-width:220px}
+.sr input[type=range]{flex:1;min-width:120px;accent-color:var(--acm)}
+.sv{font-family:var(--mono);font-size:.88rem;font-weight:700;color:var(--acm);min-width:60px;text-align:right}
+.cb{position:relative;height:270px;margin:1rem 0}
+.cb-sm{position:relative;height:220px;margin:1rem 0}
+.wo{background:#f1f5f9;border-radius:8px;padding:.85rem 1.1rem;font-family:var(--sans);font-size:.86rem;margin-top:.8rem;line-height:1.75}
+.wo .big{font-size:1.4rem;font-weight:700;color:var(--acm)}
+.bg{display:flex;gap:.5rem;margin-bottom:.8rem;flex-wrap:wrap}
+.tb{font-family:var(--sans);font-size:.81rem;padding:.3rem .9rem;border:1.5px solid var(--acm);border-radius:20px;background:#fff;color:var(--acm);cursor:pointer;transition:all .15s}
+.tb.active,.tb:hover{background:var(--acm);color:#fff}
+hr{border:none;border-top:1px solid var(--rule);margin:3rem 0}
+.lexis-canvas{border:1px solid var(--rule);border-radius:8px;background:#fff;display:block;margin:.8rem auto}
+@media(max-width:620px){body{font-size:15px;padding:1rem 1rem 5rem}h1{font-size:1.7rem}h2{font-size:1.3rem}.sr label{min-width:160px}}
+</style>
+</head>
+<body>
+
+<p class="subtitle">Robert Chung's Informal Introduction to Formal Demography · Cambridge, 24 March 2026</p>
+<h1>Day 2: Age, the Lexis Diagram, and the Life Table</h1>
+
+<div class="course-meta">
+  Day 2 moves from <em>when</em> to <em>who</em>. Yesterday we tracked only total population size \(K(t)\) — ignoring all characteristics of people except that they were alive. Today we introduce <strong>age</strong>, the most fundamental demographic characteristic, and build the primary tool of mortality analysis: the <strong>life table</strong>. The day also completes the Day 1 cleanup on Taylor series and introduces a crucial new concept — the <strong>Lexis diagram</strong> — that organises almost all of demographic thinking.
+</div>
+
+<div class="callout note">
+  <div class="callout-title">📐 What Day 2 Is Trying To Do</div>
+  <p>Day 1 tracked a single number — total population size \(K(t)\) — and derived a surprisingly rich toolkit from it. But in doing so we ignored almost everything that makes a population a population: its age structure, its sex composition, its distribution across space. Day 2 introduces the most fundamental of these characteristics: <strong>age</strong>. This requires one genuinely new object — the Lexis diagram — and one genuinely new tool — the life table.</p>
+  <p>The logical arc of the day is:</p>
+  <p style="margin-left:1rem; border-left:3px solid var(--acm); padding-left:1rem; font-style:italic;">Individual lifelines → sort and aggregate → survival function \(l_x\) → differentiate for deaths → integrate for person-years → ratio for probabilities and rates → take limit for hazard rate \(\mu(x)\)</p>
+  <p>Every quantity in the life table is either a <strong>stock</strong> (something measured at a point in age, like \(l_x\)) or a <strong>flow</strong> (something accumulated over an age interval, like \({}_nd_x\) and \({}_nL_x\)). The same stock/flow distinction from Day 1 reappears here, but now in age rather than time. The calculus moves are also the same ones: differentiation gives instantaneous rates, integration gives accumulated totals. The life table is, in this sense, the Day 1 toolkit applied to the age dimension.</p>
+</div>
+
+<nav class="toc">
+  <div class="toc-h">Contents — Day 2</div>
+  <ol>
+    <li><a href="#s1">Day 1 Cleanup: Taylor Series Expanded &amp; the Fourier Foreshadowing</a></li>
+    <li><a href="#s2">Introducing Age: The Lexis Diagram &nbsp;⚙ Widget 1</a></li>
+    <li><a href="#s3">Cohorts, Periods, and Person-Years of Exposure</a></li>
+    <li><a href="#s4">Building the Life Table from First Principles</a></li>
+    <li><a href="#s5">The Survival Function \(l_x\) and Life Table Notation</a></li>
+    <li><a href="#s6">The Core Life Table Columns: \({}_nd_x\), \({}_nq_x\), \({}_np_x\) &nbsp;⚙ Widget 2</a></li>
+    <li><a href="#s7">Person-Years in the Life Table: \({}_nL_x\) and \({}_nM_x\)</a></li>
+    <li><a href="#s8">Complete Life Table: \(T_x\) and Life Expectancy \(e_x\) &nbsp;⚙ Widget 3 &amp; 6</a></li>
+    <li><a href="#s9">Probability vs Rate: \({}_nq_x\) and \({}_nM_x\) Compared &nbsp;⚙ Widget 4</a></li>
+    <li><a href="#s10">Survival Chains: Why \({}_np_x\) Multiplies but \({}_nq_x\) Does Not</a></li>
+    <li><a href="#s11">The Hazard Rate (Force of Mortality) \(\mu(x)\) &nbsp;⚙ Widget 5</a></li>
+  </ol>
+</nav>
+
+
+<!-- ===== SECTION 1 ===== -->
+<h2 id="s1"><span class="sn">1</span> Day 1 Cleanup: Taylor Series Expanded &amp; the Fourier Foreshadowing</h2>
+
+<p>Day 2 opened with ten minutes of cleanup from yesterday — two extensions to the Taylor series that are worth recording.</p>
+
+<h3>Taylor Series Around Any Point</h3>
+
+<p>Yesterday we expanded functions around \(x = 0\). The general form expands around any point \(a\):</p>
+
+<div class="fb">
+  <div class="fl">General Taylor Series (expansion around point a)</div>
+  \[
+    f(x) = f(a) + f'(a)(x-a) + \frac{f''(a)}{2!}(x-a)^2 + \frac{f'''(a)}{3!}(x-a)^3 + \cdots
+    = \sum_{i=0}^{\infty} \frac{f^{(i)}(a)}{i!}(x-a)^i
+  \]
+</div>
+
+<p>The expansion around \(a = 0\) is just the special case we saw yesterday. The general form is useful any time you want a good approximation near a specific value — for instance, approximating a mortality rate near a particular age, or expanding a growth function near a known starting population.</p>
+
+<div class="callout intuition">
+  <div class="callout-title">💡 Intuition — Taylor Around a ≠ 0</div>
+  <p>Think of it as "zoom in near the point \(a\)." The shifted variable \((x - a)\) is small when \(x\) is close to \(a\), so higher-order terms decay quickly — giving a good approximation in that neighbourhood. This is exactly how computers evaluate transcendental functions like \(\sin\), \(\cos\), and \(\ln\): split the domain into intervals, expand around a convenient point in each, and use just a few terms.</p>
+</div>
+
+<h3>The Fourier Foreshadowing</h3>
+
+<p>Chung's side-comment: all smooth continuous functions can be approximated by Taylor (polynomial) series. But there is a parallel and equally fundamental result for periodic functions — Fourier series. The connection is deeper than it looks: the Taylor expansions of \(e^x\), \(\sin(x)\), and \(\cos(x)\) are so similar in structure because all three are manifestations of the same object in complex analysis, linked by Euler's formula \(e^{ix} = \cos x + i\sin x\). This is why knowing the Taylor expansion of \(e^x\) almost gives you the expansions of \(\sin\) and \(\cos\) for free:</p>
+
+\[
+  e^x = 1 + x + \frac{x^2}{2!} + \frac{x^3}{3!} + \frac{x^4}{4!} + \cdots
+\]
+\[
+  \sin(x) = x - \frac{x^3}{3!} + \frac{x^5}{5!} - \frac{x^7}{7!} + \cdots
+  \qquad
+  \cos(x) = 1 - \frac{x^2}{2!} + \frac{x^4}{4!} - \frac{x^6}{6!} + \cdots
+\]
+
+<p>Notice: \(\sin\) uses the odd-power terms of \(e^x\) (with alternating signs); \(\cos\) uses the even-power terms. They share the same factorial denominators. Setting \(x = iy\) (imaginary) in the \(e^x\) expansion, separating real and imaginary parts, and using \(i^2=-1\) recovers both expansions simultaneously. The demography connection: in spectral analysis of demographic time series — detecting seasonal cycles in birth or death data — Fourier methods are the tool of choice.</p>
+
+<div class="callout history">
+  <div class="callout-title">🏛️ Historical Note — Fourier Series</div>
+  <p>Just as Taylor's theorem says <em>any smooth function can be approximated by polynomials</em>, <strong>Fourier's theorem</strong> says <em>any periodic function can be approximated by a sum of sines and cosines</em>:</p>
+  \[ f(x) \approx a_0 + \sum_{n=1}^{\infty}\left[a_n\cos\!\left(\frac{2\pi n x}{T}\right) + b_n\sin\!\left(\frac{2\pi n x}{T}\right)\right] \]
+  <p><strong>Jean-Baptiste Joseph Fourier</strong> (1768–1830) introduced this idea in 1807 while studying heat conduction. The idea was controversial — Lagrange rejected it — but it turned out to be one of the most powerful ideas in all of mathematics. Fourier series underlie signal processing, image compression (JPEG), quantum mechanics, and MRI scanning. In demography, related spectral methods are used to detect periodic patterns in time-series data (e.g., seasonal cycles in births or deaths). This is a connection worth exploring later.</p>
+  <p>A deeper link: Euler's formula \(e^{ix} = \cos x + i\sin x\) connects the exponential function to trigonometry. This is why the Taylor expansions of \(e^x\), \(\sin x\), and \(\cos x\) are so related — they are all manifestations of the same underlying structure in complex analysis.</p>
+</div>
+
+
+<!-- ===== SECTION 2 ===== -->
+<h2 id="s2"><span class="sn">2</span> Introducing Age: The Lexis Diagram</h2>
+
+<p>All of Day 1 worked with a single variable: \(K(t)\), total population at calendar time \(t\). We ignored every characteristic of people except that they were alive. As Chung wrote at the top of the board: <em>"so far, we've only looked at \(K(t)\) — we ignored all characteristics other than size."</em> Today we introduce the most fundamental characteristic: <strong>age</strong>.</p>
+
+<p>This requires a new notation. Write \(K(x, t)\) for the number of people aged \(x\) at calendar time \(t\). Now our object of study is a function of <em>two</em> variables — and thinking clearly about it requires a diagram that shows both dimensions at once.</p>
+
+<div class="callout definition">
+  <div class="callout-title">📖 Definition — The Lexis Diagram</div>
+  <p>A <strong>Lexis diagram</strong> is a two-dimensional plane with <strong>time</strong> (calendar year) on the horizontal axis and <strong>age</strong> on the vertical axis. Each individual life is represented as a diagonal line — starting at their birth year on the \(x\)-axis (age 0) and rising at 45° as they age over time, ending with a dot when they die.</p>
+  <p>Three types of regions are natural in a Lexis diagram:</p>
+  <ul>
+    <li>A vertical strip (fixed calendar period, all ages) = a <strong>period</strong></li>
+    <li>A horizontal strip (fixed age group, all periods) = an <strong>age group</strong></li>
+    <li>A diagonal band (fixed birth cohort, all ages and times) = a <strong>cohort</strong></li>
+  </ul>
+</div>
+
+<div class="callout history">
+  <div class="callout-title">🏛️ Historical Note — Wilhelm Lexis and Francis Galton</div>
+  <p><strong>Wilhelm Lexis</strong> (1837–1914) was a German statistician and economist who introduced the diagram that bears his name in 1875. He used it to visualise the relationship between demographic events, age, and time — a visualisation tool so useful it became standard in demography and epidemiology.</p>
+  <p><strong>Francis Galton</strong> (1822–1911) in connection with branching processes and lineages — the question of how family lines survive or die out over generations. Galton, Darwin's cousin, founded the field of eugenics (now discredited) but also made genuine mathematical contributions: he co-invented regression and correlation with Karl Pearson, and the <strong>Galton–Watson process</strong> (branching process) models the survival of surnames and family lines over generations. The connection to Lexis diagrams is that following lineages through time is, conceptually, following diagonal lines in the Lexis plane.</p>
+</div>
+
+<div class="callout demography">
+  <div class="callout-title">📊 Why This Matters for Demography</div>
+  <p>The Lexis diagram is the organisational backbone of almost all demographic analysis. Every demographic rate can be understood as a ratio whose numerator is the number of events (deaths, births, marriages) occurring in a particular <em>box</em> of the Lexis diagram, and whose denominator is the total person-years of exposure in that box. Almost every confusion about demographic rates — "is this a period rate or a cohort rate?", "is this the right denominator?" — can be resolved by drawing the appropriate Lexis box. Biostatistics, epidemiology, and demography are all, at their core, disciplines that work with different kinds of Lexis boxes. That is the unifying triangle: the three fields share a common mathematical structure.</p>
+</div>
+
+<!-- WIDGET 1: Lexis Diagram -->
+<div class="widget">
+  <div class="widget-title">Widget 1 — Interactive Lexis Diagram</div>
+  <div class="ws">Click to toggle between cohort view (diagonal bands), period view (vertical strips), and age view (horizontal bands). Life lines are shown as 45° diagonals.</div>
+  <div class="bg">
+    <button class="tb active" onclick="setLexis('cohort')">Cohort view</button>
+    <button class="tb" onclick="setLexis('period')">Period view</button>
+    <button class="tb" onclick="setLexis('age')">Age-group view</button>
+    <button class="tb" onclick="setLexis('none')">Just lives</button>
+  </div>
+  <canvas id="lexisCanvas" class="lexis-canvas" width="600" height="400"></canvas>
+  <div class="wo" id="lexisOut">
+    <strong>Cohort view:</strong> Each diagonal band follows people born in the same year. Their life lines run parallel — all dying at different ages but born together. Mortality analysis of a cohort reads along the diagonal.
+  </div>
+</div>
+
+
+<!-- ===== SECTION 3 ===== -->
+<h2 id="s3"><span class="sn">3</span> Cohorts, Periods, and Person-Years of Exposure</h2>
+
+<p>The Lexis diagram immediately forces a question that we deferred in Day 1: when we wrote \(b = \text{Births}/\text{Pop}\) and \(d = \text{Deaths}/\text{Pop}\), what exactly was in the denominator? We used \(K(t)\) — total population at a point in time. But Chung returns to this and sharpens it: the <strong>correct denominator is not \(K(t)\) exactly, but rather the total population-duration of exposure</strong> to the risk of the event. That is, the sum of the lengths of all lifelines passing through the relevant Lexis box. The proper denominator is <strong>person-years</strong>.</p>
+
+<p>For most practical purposes, the mid-year population (which we derived at the end of Day 1) is an excellent approximation. But understanding <em>why</em> requires the Lexis diagram — and it becomes genuinely important in age-specific analysis, where the boxes are smaller and the approximation is cruder.</p>
+
+<h3>Adding Up Life Lines: Cohort Life Expectancy</h3>
+
+<p>Imagine taking all the diagonal life lines in a single birth cohort — say, everyone born in 1900 — and measuring their total length. The sum of all those lengths gives the <strong>total person-years lived</strong> by that cohort. Divide by the number of people in the cohort, and you get the average length — the <strong>cohort life expectancy at birth</strong>, \(e_0\).</p>
+
+<div class="fb">
+  \[
+    e_0^{\text{cohort}} = \frac{\text{Total person-years lived by cohort}}{\text{Number born in cohort}}
+  \]
+</div>
+
+<div class="callout note">
+  <div class="callout-title">📝 Cohort vs Period — A Critical Distinction</div>
+  <p><strong>Cohort life expectancy</strong> follows real people through their lives. To measure it, you literally have to wait for the entire cohort to die — for a 1900 birth cohort, that means waiting until roughly 2010. This is exact but slow.</p>
+  <p><strong>Period life expectancy</strong> (what national statistics agencies usually report) asks: "if a person born today experienced the age-specific death rates currently observed, how long would they live?" It is a synthetic measure — a snapshot of current mortality — not a prediction for any real cohort. When the UK government says "life expectancy at birth is 81 years," this is a period measure. During periods of improving mortality (as in most of the 20th century), period life expectancy <em>underestimates</em> the life expectancy a newborn will actually experience.</p>
+  <p>This distinction will matter a lot when we study stable population theory later in the week.</p>
+</div>
+
+<h3>What is the Right Denominator? Exposure and Person-Years</h3>
+
+<p>A key question: when we compute \(b = \text{Births}/\text{Pop}\) or \(d = \text{Deaths}/\text{Pop}\), what exactly should the denominator be?</p>
+
+<p>The conceptually correct answer is: <strong>person-years of exposure</strong> to the risk of the event. For births, it's person-years lived by people capable of giving birth. For deaths, it's person-years lived by people capable of dying (i.e., everyone). This is the <em>area of the relevant Lexis box</em>.</p>
+
+<div class="callout intuition">
+  <div class="callout-title">💡 Intuition — Why the Box Size Matters</div>
+  <p>Imagine tracking car accidents per driver. You wouldn't count the number of drivers on January 1st as your denominator if you're measuring accidents over the whole year — some drivers might die, move away, or acquire licences mid-year. What you really want is "driver-years of exposure": the total number of years of driving in your population. Someone who drove for 6 months contributes 0.5 driver-years. This is exactly the person-years concept. The bigger the Lexis box (wider time period, broader age range), the more we need to worry about exposure being non-uniform — people entering and leaving the risk set during the observation window.</p>
+  <p>The Biostatistics ↔ Epidemiology ↔ Demography triangle reflects the fact that all three fields grapple with this same problem: correctly measuring exposure time as the denominator for event rates. The fields developed independently but arrived at the same mathematical machinery.</p>
+  </div>
+
+<div class="callout note">
+  <div class="callout-title">📐 Calculus Refresher — What is an Integral?</div>
+  <p>An <strong>integral</strong> \(\int_a^b f(t)\,dt\) is the <em>area under the curve</em> \(f(t)\) between \(t=a\) and \(t=b\). Think of slicing the time period into many thin strips of width \(dt\). In each strip, the contribution is approximately \(f(t)\cdot dt\) — the height of the curve times the width of the slice. The integral adds all these tiny contributions. When \(f(t) = K(t)\) is population size, each slice \(K(t)\,dt\) is a tiny parcel of "person-time," and the integral gives the total person-years lived during the period.</p>
+  <p>The key insight for this course: <strong>integral = area under the curve</strong>. When the exact area is hard to compute, the <strong>trapezoid rule</strong> approximates it: area ≈ ½ × (left height + right height) × width. This approximation is excellent when the curve is nearly linear over the interval.</p>
+</div>
+
+<p>In practice, as we saw at the end of Day 1, the <strong>mid-period population</strong> is a good approximation of person-years exposure for short periods, because if population changes smoothly and linearly over the period:</p>
+
+<div class="fb">
+  \[
+    \text{PY exposure} = \int_{t_1}^{t_2} K(t)\,dt \approx (t_2-t_1)\cdot K\!\left(\tfrac{t_1+t_2}{2}\right)
+    \approx (t_2-t_1)\cdot\frac{K(t_1)+K(t_2)}{2}
+  \]
+</div>
+
+<p>And by linearity: \(\frac{K(t_1)+K(t_2)}{2} = K\!\left(\frac{t_1+t_2}{2}\right)\) — the average of endpoints equals the midpoint value. This is why every statistical bureau reports mid-year population estimates. The longer the period, the more concerned we need to be about non-linearity.</p>
+
+
+<!-- ===== SECTION 4 ===== -->
+<h2 id="s4"><span class="sn">4</span> Building the Life Table from First Principles</h2>
+
+<p>The Lexis diagram shows us individual lifelines. The life table is what you get when you take a large collection of those lifelines, strip away everything except their lengths, and systematically summarise the result. Chung's construction starts from the picture and arrives at the mathematics by a sequence of simple, forced steps.</p>
+
+<p>The <strong>life table</strong> is the central tool of mortality analysis — over 350 years old and still essential from pension planning to insurance pricing to epidemiology.</p>
+
+<h3>From Lexis Lines to a Sorted Distribution</h3>
+
+<p>Start with a real cohort in the Lexis diagram — say, 2,136 people born in the same year. Each has a lifeline of a different length. Now apply four steps that Chung walks through on the board:</p>
+
+<ol>
+  <li><strong>Take all 2,136 life lines.</strong> Lay them out; they are diagonals of varying lengths.</li>
+  <li><strong>Sort by length, shortest first.</strong> The first person died at, say, age 1; the last died at age 103. The sorted sequence is <em>monotonically non-decreasing</em> in age at death.</li>
+  <li><strong>Flip the numbering.</strong> Instead of numbering from first death (1) to last death (2,136), flip: the longest-lived person is line 1, the shortest-lived is line 2,136. Now the sequence is monotonically decreasing — each successive line is shorter than or equal to the last.</li>
+  <li><strong>Rotate the picture</strong> so that age runs along the horizontal axis. What you see is a staircase that starts at 2,136 (age 0), steps down by one each time someone dies, and reaches 0 at the last death.</li>
+</ol>
+
+<p>With a large enough cohort, this discrete staircase becomes smooth. Normalise by dividing by the initial cohort size: start at 1.0 at age 0, decrease to 0 at the maximum age. This smooth decreasing curve is the <strong>survival function \(l_x\)</strong>.</p>
+
+<div class="callout note">
+  <div class="callout-title">📝 Why the Lines Are "Always There"</div>
+  <p>Chung emphasises this on the slides: when we focus on the life table, we typically look only at the <em>endpoints</em> of the lifelines — the dots where people die. But the lifelines are always there underneath. The area between the survival curve and the horizontal axis is exactly the sum of the lengths of all those lifelines — the total person-years lived. Every column of the life table that involves an integral (\({}_nL_x\), \(T_x\)) is just counting up parts of those lines. The life table never forgets the lines; it just doesn't draw them explicitly.</p>
+</div>
+
+<div class="callout history">
+  <div class="callout-title">🏛️ Historical Note — The Life Table's Origins</div>
+  <p>The life table is one of the oldest statistical tools. <strong>John Graunt</strong> (1662) produced a crude version from London's Bills of Mortality. The first mathematically rigorous life table was constructed by <strong>Edmund Halley</strong> (of Halley's Comet fame) in 1693, using mortality data from the city of Breslau (now Wrocław). Halley intended it to price annuities — he showed the Royal Society that you could calculate the fair price of a life annuity by summing the probability of the annuitant being alive at each future age, weighted by the payment at that age. This is still how actuaries price annuities today. The modern framework — columns for \(l_x\), \(d_x\), \(q_x\), \(L_x\), \(T_x\), \(e_x\) — was systematised by demographers at Berkeley and standardised internationally in the 20th century. The notation "goes back to the 17th century" and is frankly "atrocious" — but you have to learn it because everyone uses it.</p>
+</div>
+
+<div class="callout note">
+  <div class="callout-title">📝 Cohort vs Period Life Tables</div>
+  <p>A <strong>cohort life table</strong> follows a real birth cohort through time until everyone has died. This is the conceptually pure version but requires decades of data.</p>
+  <p>A <strong>period life table</strong> uses the age-specific death rates observed in a single calendar year (or short period) and applies them to a hypothetical cohort. This is the standard product of national statistics agencies. Period life tables are produced annually; cohort life tables require ~100 years of data. The principle of "start with cohort, then period" means understanding the cohort table first clarifies what the period table is doing.</p>
+  <p><strong>Abridged vs complete:</strong> An <strong>abridged</strong> life table uses 5-year age groups (0–4, 5–9, 10–14 ...); a <strong>complete</strong> life table uses single years of age. Abridged tables are more common in practice because single-year data is often too thin or unreliable.</p>
+</div>
+
+
+<!-- ===== SECTION 5 ===== -->
+<h2 id="s5"><span class="sn">5</span> The Survival Function \(l_x\) and Life Table Notation</h2>
+
+<p>We have the survival function. Now we need notation. Chung's verdict on the life table's notation: it goes back to the 17th century and is "frankly atrocious" — but you have to learn it because literally everyone uses it. The notation is full of left-subscripts, right-subscripts, and single letters whose meanings you must memorise. The good news is that once the core columns are understood, everything else is a definition built from them.</p>
+
+<div class="callout note">
+  <div class="callout-title">📝 Stocks and Flows in the Life Table</div>
+  <p>The same stock/flow distinction from Day 1 reappears here in the age dimension. In the life table:</p>
+  <ul>
+    <li><strong>Stocks</strong> (measured at a point in age): \(l_x\) — proportion surviving to exact age \(x\)</li>
+    <li><strong>Flows</strong> (accumulated over an age interval): \({}_nd_x\), \({}_nq_x\), \({}_nL_x\), \(T_x\) — events, probabilities, and time lived between two ages</li>
+  </ul>
+  <p>Just as in Day 1, stocks and flows need to be kept distinct. \(l_x\) is a snapshot at exact age \(x\). \({}_nL_x\) is the area under the \(l\) curve between \(x\) and \(x+n\) — accumulated over an interval. Confusing them is the life table equivalent of confusing population size with births.</p>
+</div>
+
+<div class="callout definition">
+  <div class="callout-title">📖 Definition — Life Table Radix and the \(l_x\) column</div>
+  <p>The <strong>radix</strong> \(l_0\) is the starting population of the hypothetical cohort. The Berkeley convention (used in this course) sets \(l_0 = 1\) (or sometimes 1.0), so all subsequent \(l_x\) values are proportions. Some tables use \(l_0 = 100{,}000\) to give integer-friendly numbers.</p>
+  <p>\(l_x\) = the <strong>proportion of the starting cohort surviving to exact age \(x\)</strong>. It is the continuous survival curve — a monotonically decreasing function from \(l_0 = 1\) down to \(l_\omega \to 0\), where \(\omega\) is the maximum lifespan (often taken as 110 in practice).</p>
+  <p>\(l_x\) is also called the <strong>survivorship function</strong> or <strong>survival function</strong>. The area under this curve has a direct interpretation — we will see this shortly.</p>
+</div>
+
+<p>The shape of \(l_x\) varies dramatically across species and historical periods — and it tells you a great deal about the mortality schedule at a glance:</p>
+
+<table class="eq-table">
+  <tr><th>Shape of \(l_x\)</th><th>What it means</th><th>Example</th></tr>
+  <tr><td>Near-rectangular (stays near 1 until old age, then drops steeply)</td><td>Low mortality at all young ages, deaths concentrated at old age</td><td>Modern high-income countries</td></tr>
+  <tr><td>Convex, drops steeply early then flattens</td><td>High infant/child mortality; those who survive tend to live long</td><td>Most of pre-industrial history, oysters</td></tr>
+  <tr><td>Nearly linear decline</td><td>Roughly constant mortality rate at all ages</td><td>Some birds ("passive birds")</td></tr>
+  <tr><td>Steep initial drop, then plateau</td><td>Very high infant mortality; sharp minimum age survivors reach</td><td>Many marine invertebrates</td></tr>
+</table>
+
+<div class="callout intuition">
+  <div class="callout-title">💡 Intuition — Humans vs Oysters</div>
+  <p>Oysters produce millions of larvae, almost all of which die within days — a catastrophically steep early drop in \(l_x\). The tiny fraction that attach to a surface and survive infancy live for decades. Human \(l_x\) is almost the opposite: high survival through childhood and working ages, with most deaths concentrated in old age. A rectangular \(l_x\) is a sign of a society where medicine and public health have eliminated most premature death. The <em>rectangularisation of the survival curve</em> — the gradual shift toward a more rectangular shape over the 20th century — is one of the most visible demographic signatures of the epidemiological transition.</p>
+</div>
+
+
+<!-- ===== SECTION 6 ===== -->
+<h2 id="s6"><span class="sn">6</span> The Core Life Table Columns: \({}_nd_x\), \({}_nq_x\), \({}_np_x\)</h2>
+
+<p>Once we have \(l_x\), all other columns follow from definitions. Here is the notation system, translated into plain English:</p>
+
+<div class="callout definition">
+  <div class="callout-title">📖 Definition — The Left-Subscript Notation</div>
+  <p>The atrocious 17th-century convention: a left subscript \(n\) means "over an interval of \(n\) years," and a right subscript \(x\) means "starting at age \(x\)." So \({}_nq_x\) means "the quantity \(q\), measured over \(n\) years starting at age \(x\)." When \(n=1\) it is often dropped. In an abridged table, \(n=5\) throughout (except possibly the first age group, which may use \(n=1\) or \(n=4\) to capture the high infant mortality of the first year).</p>
+</div>
+
+<table class="lt-table">
+  <tr>
+    <th>Column</th><th>Notation</th><th>Definition</th><th>Plain English</th>
+  </tr>
+  <tr>
+    <td>Deaths between \(x\) and \(x+n\)</td>
+    <td class="highlight">\({}_nd_x\)</td>
+    <td>\(l_x - l_{x+n}\)</td>
+    <td>How many (out of the original cohort) die in this age interval</td>
+  </tr>
+  <tr>
+    <td>Probability of dying</td>
+    <td class="highlight">\({}_nq_x\)</td>
+    <td>\(\dfrac{{}_nd_x}{l_x} = \dfrac{l_x - l_{x+n}}{l_x}\)</td>
+    <td>Given you reached age \(x\), the probability of dying before \(x+n\)</td>
+  </tr>
+  <tr>
+    <td>Probability of surviving</td>
+    <td class="highlight">\({}_np_x\)</td>
+    <td>\(1 - {}_nq_x = \dfrac{l_{x+n}}{l_x}\)</td>
+    <td>Given you reached age \(x\), the probability of surviving to \(x+n\)</td>
+  </tr>
+</table>
+
+<p>Notice the simple and exact relationships:</p>
+<div class="fb">
+  \[
+    {}_nq_x + {}_np_x = 1
+    \qquad \text{and} \qquad
+    {}_np_x = \frac{l_{x+n}}{l_x}
+    \qquad \text{and} \qquad
+    l_{x+n} = l_x \cdot {}_np_x
+  \]
+</div>
+
+<div class="callout intuition">
+  <div class="callout-title">💡 Intuition — Conditional Probability and "Having Made It"</div>
+  <p>The key word in the definition of \({}_nq_x\) is <em>given you reached age \(x\)</em>. This is a conditional probability. The denominator is \(l_x\), not \(l_0\) — because we're asking about the experience of people who have already survived to their \(x\)th birthday. For example, \({}_5q_{25}\) = "given you are alive at age 25, what is the probability you die before age 30?" It is the fraction of the (already-reduced) cohort alive at 25 that dies in the next 5 years: \({}_5d_{25} / l_{25} = (l_{25} - l_{30}) / l_{25}\).</p>
+  <p>This conditional structure is why \({}_nq_x\) values do <em>not</em> simply add up to 1 across age groups — they are each conditional on a different starting point. What does add up to \(l_0 = 1\): the unconditional probabilities \({}_nd_x / l_0\) (which are just the fractions of the original cohort dying in each interval).</p>
+</div>
+
+<h3>The Key Identity: Deaths Sum to One</h3>
+
+<p>Since all \({}_nd_x\) values are fractions of the same starting cohort, and since everyone eventually dies, they must sum to exactly \(l_0\):</p>
+
+<div class="fb">
+  <div class="fl">Deaths Sum to the Radix</div>
+  \[
+    \sum_{x} {}_nd_x = l_0 = 1
+  \]
+</div>
+
+<p>This is just accounting: every member of the cohort dies in exactly one age interval, contributing one \({}_nd_x\) to the sum. Plotting \({}_nd_x\) as a histogram against age gives the <strong>age-at-death distribution</strong> — a proper probability distribution that sums to 1. In a modern life table it looks like a bell curve concentrated in old age; in a pre-industrial life table it is bimodal (infant spike plus an older-age hump). This distribution is sometimes written \(f(x)\) in continuous notation, and it is the density function corresponding to the survival function \(l(x)\).</p>
+
+<div class="callout note">
+  <div class="callout-title">📝 Calculus Tip — l_x and its Density</div>
+  <p>In continuous notation, \(l(x)\) is the survival function and \(-l'(x)\) is its density — the rate at which people are dying at exact age \(x\). The minus sign appears because \(l(x)\) is decreasing: as age increases, fewer people remain, so \(l'(x) < 0\). The density \(-l'(x)\) is always positive. Integrating the density from 0 to \(\infty\) recovers the total: \(\int_0^\infty (-l'(x))\,dx = l(0) - l(\infty) = 1 - 0 = 1\). The discrete \({}_nd_x = l_x - l_{x+n}\) is the integral of this density over the age interval \([x, x+n]\).</p>
+</div>
+
+<!-- WIDGET 2: Survival curve explorer -->
+<div class="widget">
+  <div class="widget-title">Widget 2 — Survival Curve \(l_x\) Explorer</div>
+  <div class="ws">Choose a mortality regime and see how the shape of \(l_x\) changes. The area under the curve equals \(T_0\), whose value divided by \(l_0 = 1\) gives life expectancy \(e_0\).</div>
+  <div class="bg">
+    <button class="tb active" onclick="setRegime('modern')">Modern (rich country)</button>
+    <button class="tb" onclick="setRegime('historical')">Pre-industrial</button>
+    <button class="tb" onclick="setRegime('highinfant')">High infant mortality</button>
+    <button class="tb" onclick="setRegime('linear')">Constant hazard</button>
+  </div>
+  <div class="cb"><canvas id="c2"></canvas></div>
+  <div class="wo" id="w2o"></div>
+</div>
+
+
+<!-- ===== SECTION 7 ===== -->
+<h2 id="s7"><span class="sn">7</span> Person-Years in the Life Table: \({}_nL_x\) and \({}_nM_x\)</h2>
+
+<p>We have stocks (\(l_x\)) and flow-counts (\({}_nd_x\), \({}_nq_x\)). Now we need a measure of <em>time lived</em> in each age interval — the exposure denominator. This is \({}_nL_x\), and it is computed by integrating the survival curve over the interval. That integration is almost always approximated by a trapezoid — but the slides show the exact algebraic form that the trapezoid comes from, which is worth seeing once.</p>
+
+<div class="callout note">
+  <div class="callout-title">📐 Calculus Refresher — Area Under the Survival Curve</div>
+  <p>Recall that \(l(x)\) is the fraction of the original cohort still alive at age \(x\). It is a smooth, decreasing curve from 1 (at birth) to 0 (at maximum age). The formula \({}_nL_x = \int_x^{x+n} l(y)\,dy\) asks: <em>what is the area under this curve between ages \(x\) and \(x+n\)?</em></p>
+  <p>Geometrically: imagine the curve drawn on paper. The area of the shaded band between ages \(x\) and \(x+n\) is exactly \({}_nL_x\). Since \(l(y)\) is the fraction alive at each age \(y\), integrating it over an age band gives the total years contributed — everyone alive at each moment contributes their fraction of a life-year.</p>
+  <p>When \(l(y)\) is nearly linear within the band (usually true for most adult age groups), the area is well approximated by the trapezoid: \(\frac{l_x + l_{x+n}}{2} \times n\). This is the same trapezoid rule from the refresher above.</p>
+</div>
+
+<div class="callout definition">
+  <div class="callout-title">📖 Definition — \({}_nL_x\): Person-Years Lived</div>
+  <p>\({}_nL_x\) = the total <strong>person-years lived</strong> by the cohort between exact ages \(x\) and \(x+n\). Formally, it is the area under the \(l(y)\) curve between \(x\) and \(x+n\):</p>
+  \[ {}_nL_x = \int_x^{x+n} l(y)\,dy \]
+  <p>In the Lexis diagram picture, \({}_nL_x\) is the total length of all the horizontal life-line segments that fall within the Lexis box defined by ages \(x\) to \(x+n\). The life lines are always there underneath the life table, even when we look only at the endpoint dots.</p>
+</div>
+
+<h3>The Exact Algebraic Form</h3>
+
+<p>The trapezoid is an approximation. But there is also an <em>exact</em> algebraic breakdown of \({}_nL_x\) that is worth knowing. Consider the \({}_nd_x\) people who die in the interval \([x, x+n)\). On average they die at the midpoint — having lived roughly \(n/2\) years in the interval. The \(l_{x+n}\) survivors each contribute the full \(n\) years. So:</p>
+
+<div class="fb">
+  <div class="fl">Exact Decomposition of \({}_nL_x\) (from slides)</div>
+  \[
+    {}_nL_x = n \cdot l_{x+n} + \tfrac{1}{2}\cdot n \cdot {}_nd_x
+    = n\cdot l_{x+n} + \tfrac{n}{2}\cdot(l_x - l_{x+n})
+    = \tfrac{n}{2}(l_x + l_{x+n})
+  \]
+</div>
+
+<p>The last step shows this is exactly the trapezoid rule — the two expressions are identical when deaths are uniformly distributed within the interval. So the "trapezoid approximation" and this "exact" decomposition give the same answer under the uniform distribution of deaths assumption. In practice, the trapezoid \(\frac{n}{2}(l_x + l_{x+n})\) is the standard formula used for all adult age groups.</p>
+
+<div class="callout note">
+  <div class="callout-title">📝 Rule of Thumb: \({}_nL_x \approx n \cdot l_x\)</div>
+  <p>For age groups where mortality is low (most adult ages), \(l_{x+n} \approx l_x\), so \(\frac{n}{2}(l_x + l_{x+n}) \approx n \cdot l_x\). This gives the rule of thumb from the slides: \({}_nL_x \approx n \cdot l_x\). It is crude but useful for quick mental estimates, and leads directly to the approximation \({}_nM_x \approx \frac{1}{n} \cdot {}_nq_x\).</p>
+</div>
+
+<p>Now we can define the <strong>age-specific mortality rate</strong> — the critical link between the life table and observed data:</p>
+
+<div class="fb">
+  <div class="fl">Age-Specific Mortality Rate</div>
+  \[
+    {}_nM_x = \frac{{}_nd_x}{{}_nL_x}
+    = \frac{\text{deaths aged }x\text{ to }x+n}{\text{person-years lived aged }x\text{ to }x+n}
+  \]
+</div>
+
+<div class="callout intuition">
+  <div class="callout-title">💡 Intuition — Rate vs Probability: The Crucial Distinction</div>
+  <p><strong>A probability</strong> (\({}_nq_x\)) answers: "out of those who entered this age interval, what fraction died?" Denominator = people <em>entering</em> the interval = \(l_x\). This is dimensionless and between 0 and 1.</p>
+  <p><strong>A rate</strong> (\({}_nM_x\)) answers: "given the total time lived in this interval, how many deaths occurred per person-year?" Denominator = person-years <em>lived during</em> the interval = \({}_nL_x\). This has units of "deaths per person-year" — it can in principle exceed 1 (though it rarely does in practice for broad age groups).</p>
+  <p>Both measure the same underlying mortality process but from different angles. The distinction matters enormously in practice because <strong>observed data gives you rates</strong> (\({}_nM_x\) — deaths from vital registration divided by mid-year population) while <strong>life tables are built on probabilities</strong> (\({}_nq_x\)). Converting between the two is a core actuarial and demographic skill. We will see the exact conversion formula later, and an approximation that is excellent for small \(n\).</p>
+</div>
+
+<div class="callout demography">
+  <div class="callout-title">📊 Why This Matters for Demography</div>
+  <p>When a government publishes an age-specific death rate for the 25–29 age group, they compute: (deaths of 25–29-year-olds during 2024) / (mid-year population aged 25–29 in 2024). This is an observed \({}_5M_{25}\). To build a life table — which requires \({}_5q_{25}\) — you need to convert from the observed rate to the probability. The conversion is not trivial in the first year of life (where mortality is very non-uniform) or at the oldest ages (where small numbers cause instability). Much of the craft of demography lies in these conversions.</p>
+</div>
+
+
+<!-- ===== SECTION 8 ===== -->
+<h2 id="s8"><span class="sn">8</span> Complete Life Table: \(T_x\) and Life Expectancy \(e_x\)</h2>
+
+<p>We have \({}_nL_x\) for every age interval — the person-years lived in each band. Now we simply sum these up from age \(x\) to the end of life. The result is \(T_x\), and dividing by \(l_x\) gives the life expectancy at age \(x\). This is the payoff: from a survival curve, via person-years, to the single number people actually care about.</p>
+
+<div class="callout note">
+  <div class="callout-title">📝 Computing \(T_x\): Sum from the Bottom Up</div>
+  <p>In a discrete life table, \(T_x\) is computed by summing \({}_nL_y\) for all \(y \geq x\) — starting from the oldest age group and accumulating downward. This "bottom-up" summation is the standard computational procedure: \(T_{85} = {}_\infty L_{85}\), then \(T_{80} = T_{85} + {}_5L_{80}\), then \(T_{75} = T_{80} + {}_5L_{75}\), and so on. Life table software always computes \(T_x\) this way. The reason: every older interval contributes to the remaining life expectancy of everyone who has survived to age \(x\), so you need to accumulate all future person-years.</p>
+</div>
+
+<div class="callout definition">
+  <div class="callout-title">📖 Definition — \(T_x\): Total Person-Years from Age \(x\) Onwards</div>
+  <p>\(T_x\) = total person-years lived by the cohort from age \(x\) until death. It is the sum of all \({}_nL_y\) for \(y \geq x\):</p>
+  \[
+    T_x = \sum_{y=x,x+n,x+2n,\ldots} {}_nL_y = \int_x^{\omega} l(y)\,dy
+  \]
+  <p>So \(T_0\) = total area under the entire \(l(x)\) curve = total person-years ever lived by the cohort.</p>
+  <p>In the Lexis diagram: \(T_x\) is the total length of all horizontal life-line segments at age \(x\) or above.</p>
+</div>
+
+<div class="fb">
+  <div class="fl">Life Expectancy at Age x</div>
+  \[
+    e_x = \frac{T_x}{l_x}
+  \]
+  <p style="color:#94a3b8;font-size:.9rem;margin-top:.5rem">
+    In particular: \(e_0 = T_0 / l_0 = T_0\) (since \(l_0 = 1\)).
+    This is the average remaining years of life for someone who has just reached age \(x\).
+  </p>
+</div>
+
+<div class="callout intuition">
+  <div class="callout-title">💡 Intuition — \(e_x\) as "Average Remaining Life"</div>
+  <p>\(T_x\) is the total person-years lived by <em>everyone still alive at age \(x\)</em>. Divide by \(l_x\) — the number alive at age \(x\) — and you get the average. It is exactly the same operation as "total kilometres driven by all cars aged 5 or more, divided by the number of such cars = average remaining kilometres per 5-year-old car."</p>
+  <p>Note that \(e_x\) is the <em>remaining</em> life expectancy — the expected <em>additional</em> years, not the total years lived. At age 65, \(e_{65} \approx 20\) in a modern rich country means someone aged 65 can expect to live about 20 more years (to age 85), not that their total life expectancy is 20.</p>
+  <p><strong>Connection to Day 1:</strong> Recall the stationary population identity \(b \cdot e_0 = 1\). The \(e_0\) there is exactly \(T_0 / l_0 = T_0\) — the area under the entire \(l(x)\) curve. The identity \(b \cdot e_0 = 1\) is now completely transparent: in a stationary population, \(b = 1/e_0\), meaning the birth rate equals the reciprocal of the average time each person spends alive — the reciprocal of the area under the survival curve.</p>
+</div>
+
+<h3>The \({}_nd_x\) Distribution and the Bell Curve of Deaths</h3>
+
+<p>One more important quantity: \({}_nd_x\) tells us how deaths are distributed across age. In a modern \(l_x\) with its roughly rectangular shape, the \({}_nd_x\) values — plotted as a histogram against age — form a roughly bell-shaped (normal) distribution concentrated at old ages. In a pre-industrial \(l_x\) with high infant mortality, the distribution is bimodal: a spike in infancy and another at older ages (the "bathtub" curve). This distribution of deaths by age is called the <strong>age at death distribution</strong> or sometimes \(f(x)\) in continuous notation.</p>
+
+<!-- WIDGET 3: Full life table -->
+<div class="widget">
+  <div class="widget-title">Widget 3 — Life Table Calculator: All Columns</div>
+  <div class="ws">Select a mortality regime to see the complete abridged life table with all columns computed. \(T_x\) and \(e_x\) are calculated by summing from the bottom up.</div>
+  <div class="bg">
+    <button class="tb active" onclick="setLT('modern')">Modern</button>
+    <button class="tb" onclick="setLT('historical')">Pre-industrial</button>
+    <button class="tb" onclick="setLT('highinfant')">High infant mortality</button>
+  </div>
+  <div style="overflow-x:auto">
+    <table class="lt-table" id="ltTable">
+      <tr>
+        <th>Age \(x\)</th>
+        <th>\(l_x\)</th>
+        <th>\({}_5d_x\)</th>
+        <th>\({}_5q_x\)</th>
+        <th>\({}_5p_x\)</th>
+        <th>\({}_5L_x\)</th>
+        <th>\({}_5M_x\) (×1000)</th>
+        <th>\(T_x\)</th>
+        <th>\(e_x\)</th>
+      </tr>
+    </table>
+  </div>
+  <div class="wo" id="w3o"></div>
+</div>
+
+
+<!-- WIDGET 6: Area under l(x) — nLx and Tx visualised -->
+<div class="widget">
+  <div class="widget-title">Widget 6 — Area under \(l(x)\): Visualising \({}_nL_x\) and \(T_x\)</div>
+  <div class="ws">
+    The <span style="color:#16a34a;font-weight:600">green shaded band</span> is \({}_nL_x\) — person-years lived in the selected age interval (area under the curve in that band).
+    The <span style="color:#2563eb;font-weight:600">blue region</span> is \(T_x\) — total person-years from age \(x\) onwards (area from the selected age to the end).
+    The <span style="color:#ea580c;font-weight:600">orange dashed line</span> shows the trapezoid approximation for \({}_nL_x\).
+    Move the slider to select a different age group.
+  </div>
+  <div class="bg">
+    <button class="tb active" onclick="setW6regime('modern')">Modern</button>
+    <button class="tb" onclick="setW6regime('historical')">Pre-industrial</button>
+    <button class="tb" onclick="setW6regime('highinfant')">High infant mortality</button>
+  </div>
+  <div class="sr">
+    <label>Selected age group (start of interval)</label>
+    <input type="range" id="w6age" min="0" max="17" value="8" oninput="upW6()">
+    <span class="sv" id="w6agev">40–45</span>
+  </div>
+  <div class="cb"><canvas id="c6"></canvas></div>
+  <div class="wo" id="w6o"></div>
+</div>
+
+
+<!-- ===== SECTION 9 ===== -->
+<h2 id="s9"><span class="sn">9</span> Probability vs Rate: \({}_nq_x\) and \({}_nM_x\) Compared</h2>
+
+<p>This section addresses something that trips up almost everyone encountering life tables for the first time. We have two measures of mortality in each age interval — the probability of dying (\({}_nq_x\)) and the mortality rate (\({}_nM_x\)). They measure the same underlying phenomenon but use different denominators, and they are <em>not</em> simply proportional. The difference matters because real data delivers rates (\({}_nM_x\), from vital registration divided by census population), while life table construction requires probabilities (\({}_nq_x\)).</p>
+
+<div class="fb">
+  <div class="fl">Exact Relationship</div>
+  \[
+    {}_nq_x = \frac{{}_nd_x}{l_x} \qquad {}_nM_x = \frac{{}_nd_x}{{}_nL_x}
+    \qquad \Longrightarrow \qquad
+    {}_nM_x = \frac{{}_nq_x \cdot l_x}{{}_nL_x}
+  \]
+</div>
+
+<p>Since \({}_nL_x \approx n \cdot \bar l_x\) where \(\bar l_x\) is the average of \(l_x\) and \(l_{x+n}\), and \(l_x > \bar l_x\) (deaths reduce \(l\) throughout the interval), we have \({}_nL_x < n \cdot l_x\), and therefore \({}_nM_x > {}_nq_x / n\).</p>
+
+<p>A very useful rule of thumb:</p>
+
+<div class="fb">
+  <div class="fl">Rule of Thumb — Approximate Conversion</div>
+  \[
+    {}_nL_x \approx n \cdot l_x \quad\text{(rough)} \implies {}_nM_x \approx \frac{1}{n} \cdot {}_nq_x
+  \]
+  <p style="color:#94a3b8;font-size:.9rem;margin-top:.5rem">
+    Better approximation (UDD assumption — uniform distribution of deaths):
+    \({}_nq_x = \frac{n \cdot {}_nM_x}{1 + \frac{n}{2}\cdot {}_nM_x}\)
+  </p>
+</div>
+
+<div class="callout note">
+  <div class="callout-title">📝 The UDD Assumption</div>
+  <p>The "uniform distribution of deaths" (UDD) assumption says that within each age interval, deaths are distributed uniformly — i.e., a person who dies between ages \(x\) and \(x+n\) is equally likely to die at any point in the interval. Under this assumption, the average exposure time for a person who dies is \(n/2\) years. This gives \({}_nL_x = n \cdot l_{x+n} + (n/2) \cdot {}_nd_x\), and leads to the conversion formula above. The UDD assumption breaks down badly in the first year of life (infant mortality is very front-loaded — many neonatal deaths in the first week) and at the oldest ages, but it is a reasonable approximation for most adult age groups.</p>
+</div>
+
+<!-- WIDGET 4: nqx vs nMx -->
+<div class="widget">
+  <div class="widget-title">Widget 4 — Rate vs Probability: \({}_nM_x\) ↔ \({}_nq_x\)</div>
+  <div class="ws">See how the mortality rate and probability of dying relate across age groups. Compare the exact and approximate conversions.</div>
+  <div class="sr">
+    <label>Age interval width \(n\)</label>
+    <input type="range" id="w4n" min="1" max="10" value="5" oninput="upW4()">
+    <span class="sv" id="w4nv">5</span>
+  </div>
+  <div class="bg">
+    <button class="tb active" onclick="setW4regime('modern')">Modern mortality</button>
+    <button class="tb" onclick="setW4regime('historical')">Pre-industrial</button>
+  </div>
+  <div class="cb"><canvas id="c4"></canvas></div>
+  <div class="wo" id="w4o"></div>
+</div>
+
+
+<!-- ===== SECTION 10 ===== -->
+<h2 id="s10"><span class="sn">10</span> Survival Chains: Why \({}_np_x\) Multiplies but \({}_nq_x\) Does Not</h2>
+
+<p>One of the most emphatic points in the whole lecture — Chung underlines it. Survival probabilities multiply in sequence; death probabilities do not. This is not just a technicality; it reflects a genuine difference in what the two quantities measure, and getting it wrong produces badly incorrect answers.</p>
+
+<div class="callout intuition">
+  <div class="callout-title">💡 Intuition — The Lexis Diagram View of Why</div>
+  <p>Draw two adjacent 5-year Lexis boxes: ages 20–25 and 25–30. You want the probability of dying somewhere in the combined interval 20–30.</p>
+  <p>The <em>survivors</em> story is simple: to be alive at 30, you must survive the first box <strong>and</strong> then survive the second. These two events are independent (whether you die in the second box doesn't depend on exactly how you navigated the first, given you survived). So probabilities multiply: \({}_{10}p_{20} = {}_5p_{20} \cdot {}_5p_{25}\).</p>
+  <p>The <em>deaths</em> story is more complicated: to die somewhere in 20–30, you could die in the first box OR you could survive the first box and then die in the second. These are mutually exclusive events, so you might think they add — but the problem is that \({}_5q_{25}\) is a <em>conditional</em> probability, conditional on having survived to 25. If you're asking "out of those entering at age 20, what fraction die before 30?", the correct calculation is \({}_{10}q_{20} = 1 - {}_{10}p_{20} = 1 - {}_5p_{20}\cdot{}_5p_{25}\). Expanding this gives \({}_5q_{20} + {}_5p_{20}\cdot{}_5q_{25}\) — not simply \({}_5q_{20} + {}_5q_{25}\).</p>
+</div>
+
+<div class="fb">
+  <div class="fl">The Chain Rule of Survival — Full Derivation</div>
+  \[
+    {}_np_x = \frac{l_{x+n}}{l_x}
+    \qquad\Longrightarrow\qquad
+    \frac{l_{x+4n}}{l_x}
+    = \frac{l_{x+n}}{l_x}\cdot\frac{l_{x+2n}}{l_{x+n}}\cdot\frac{l_{x+3n}}{l_{x+2n}}\cdot\frac{l_{x+4n}}{l_{x+3n}}
+    = ({}_np_x)({}_np_{x+n})({}_np_{x+2n})({}_np_{x+3n})
+  \]
+  <p style="color:#94a3b8;font-size:.88rem;margin-top:.6rem">All intermediate \(l\) values cancel — a telescoping product. Survival probabilities multiply because they are independent sequential events.</p>
+</div>
+
+<div class="callout note">
+  <div class="callout-title">📝 Why You Cannot Do This With \({}_nq_x\)</div>
+  <p>The correct expression for the probability of dying somewhere in \([x, x+4n)\) is:</p>
+  \[{}_{4n}q_x = 1 - {}_{4n}p_x = 1 - ({}_np_x)({}_np_{x+n})({}_np_{x+2n})({}_np_{x+3n})\]
+  \[= 1 - (1-{}_nq_x)(1-{}_nq_{x+n})(1-{}_nq_{x+2n})(1-{}_nq_{x+3n})\]
+  <p>Expanding this product gives cross-terms — it is <em>not</em> simply \({}_nq_x + {}_nq_{x+n} + {}_nq_{x+2n} + {}_nq_{x+3n}\). Those cross terms represent people who survive one interval and die in a later one. The only exception where addition works: if all death probabilities are very small, the cross terms vanish and \({}_{4n}q_x \approx \sum {}_nq_{x+kn}\). But this is an approximation, not an identity.</p>
+  <p>Chung's emphasis on the board: <strong>probabilities of surviving multiply; probabilities of dying do not simply add</strong>. The \(l_x\) column encodes this correctly — the "engine" of the life table is the chain \(l_{x+n} = l_x \cdot {}_np_x\), not any formula for \(q\).</p>
+</div>
+
+<div class="callout intuition">
+  <div class="callout-title">💡 Intuition — Why Survival Probabilities Multiply</div>
+  <p>To survive from age 20 to age 30, you must <em>first</em> survive 20 to 25, <em>and then</em> survive 25 to 30. These are sequential, independent events. The probability of both is the product of the individual probabilities: \({}_5p_{20} \times {}_5p_{25} = l_{25}/l_{20} \times l_{30}/l_{25} = l_{30}/l_{20} = {}_{10}p_{20}\). The intermediate \(l_{25}\) cancels out — a telescoping product. This only works for survival (\(p\)) not death (\(q\)), because to die at some point in a 10-year window you might die in the first 5 years OR survive the first 5 years and then die in the next 5. These events overlap in a complicated way that prevents simple addition.</p>
+  <p>More precisely: \({}_{10}q_{20} = 1 - {}_{10}p_{20} = 1 - {}_5p_{20} \cdot {}_5p_{25} = 1 - (1-{}_5q_{20})(1-{}_5q_{25})\), which after expanding is NOT simply \({}_5q_{20} + {}_5q_{25}\).</p>
+</div>
+
+<div class="callout demography">
+  <div class="callout-title">📊 Why This Matters in Practice</div>
+  <p>The chain rule is used constantly. For instance: to compute the probability of dying between ages 20 and 50 in an abridged life table, you multiply six five-year survival probabilities: \({}_{30}p_{20} = {}_5p_{20} \cdot {}_5p_{25} \cdot {}_5p_{30} \cdot {}_5p_{35} \cdot {}_5p_{40} \cdot {}_5p_{45}\). This is much cleaner than trying to combine \({}_5q\) values. The key formula \(l_{x+n} = l_x \cdot {}_np_x\) is the engine of the whole life table — it chains survival probabilities together to build the \(l_x\) column step by step.</p>
+</div>
+
+
+<!-- ===== SECTION 11 ===== -->
+<h2 id="s11"><span class="sn">11</span> The Hazard Rate (Force of Mortality) \(\mu(x)\)</h2>
+
+<p>Everything so far has been discrete: age intervals of width \(n\). What happens as we shrink \(n \to 0\)? We get the instantaneous mortality rate — the <strong>force of mortality</strong> or <strong>hazard rate</strong> \(\mu(x)\). This is the life table's equivalent of the Day 1 move from geometric to exponential growth: the limit of a discrete ratio becomes a continuous derivative. And just as in Day 1, the result has three equivalent forms and connects directly to the log-derivative structure.</p>
+
+<h3>Deriving \(\mu(x)\) Step by Step</h3>
+
+<p>Start from the discrete mortality rate \({}_nM_x\) and take the limit as \(n \to 0\). Use the exact decomposition: \({}_nd_x = l_x - l_{x+n}\) and \({}_nL_x \approx n \cdot l_{x+n} + \frac{1}{2}\cdot n \cdot {}_nd_x\) from the slides.</p>
+
+<div class="fb">
+  <div class="fl">Taking the Limit — Step by Step</div>
+  \[
+    {}_nM_x = \frac{{}_nd_x}{{}_nL_x}
+    = \frac{l_x - l_{x+n}}{n\cdot l_{x+n} + \tfrac{n}{2}(l_x - l_{x+n})}
+    = \frac{l_x - l_{x+n}}{n\cdot\dfrac{l_x + l_{x+n}}{2}}
+  \]
+  \[
+    = \frac{l_x - l_{x+n}}{n} \cdot \frac{2}{l_x + l_{x+n}}
+    \xrightarrow{\;n \to 0\;}
+    \frac{-l'(x)}{l(x)} \cdot \frac{2}{2}
+    = \frac{-l'(x)}{l(x)}
+  \]
+</div>
+
+<p>The limit works because: (1) \(\frac{l_x - l_{x+n}}{n} \to -l'(x)\) by the definition of the derivative, and (2) \(\frac{l_x + l_{x+n}}{2} \to l(x)\) as the two endpoints converge. The result is:</p>
+
+<div class="fb">
+  <div class="fl">The Force of Mortality</div>
+  \[
+    \mu(x) = \lim_{n\to 0}\,{}_nM_x = \frac{-l'(x)}{l(x)} = -\frac{d}{dx}\ln l(x)
+  \]
+</div>
+
+<div class="callout note">
+  <div class="callout-title">📝 Calculus Tip — The Log-Derivative Appears Again</div>
+  <p>In Day 1 we showed that the proportional growth rate of a population is \(r = \frac{d}{dt}\ln K(t)\). Here we have \(\mu(x) = -\frac{d}{dx}\ln l(x)\) — the proportional rate of <em>decrease</em> of the survival function. The minus sign appears because \(l(x)\) is decreasing. The structure is identical: the hazard rate is the (negative) log-derivative of the survival function, exactly as the growth rate is the log-derivative of the population. The Day 1 toolkit applies directly, just with age instead of time and decreasing rather than increasing.</p>
+</div>
+
+<h3>Two Consequences from the Slides</h3>
+
+<p>Chung derives two important consequences:</p>
+
+<p><strong>Consequence ①: \(\mu(x)\) works like a mortality rate.</strong></p>
+
+<p>From \(\mu(x) = -l'(x)/l(x)\), we get \(\mu(x) \cdot l(x) = -l'(x)\). So the force of mortality times the survival function equals the rate of decrease of the survival function — exactly how you would expect an instantaneous mortality rate to behave. Differentiating both sides and rearranging gives the ODE:</p>
+
+\[l'(x) = -\mu(x)\,l(x)\]
+
+<p>This says: the rate of change of survivors equals minus the hazard times the current number of survivors. Compare to Day 1's \(K'(t) = r\,K(t)\) — same structure, negative \(r\), age playing the role of time.</p>
+
+<p><strong>Consequence ②: \(l(x)\) is the exponential of the cumulative hazard.</strong></p>
+
+<p>From \(\mu(x) = -\frac{d}{dx}\ln l(x)\), integrate both sides from 0 to \(x\):</p>
+
+\[
+  -\int_0^x \mu(y)\,dy = \ln l(x) - \ln l(0) = \ln l(x) \qquad\text{(since \(l(0)=1\))}
+\]
+
+<div class="fb">
+  <div class="fl">Survival Function from the Hazard</div>
+  \[
+    l(x) = e^{-\int_0^x \mu(y)\,dy}
+    \qquad\text{and}\qquad
+    {}_np_x = \frac{l(x+n)}{l(x)} = e^{-\int_x^{x+n}\mu(y)\,dy}
+  \]
+</div>
+
+<h3>Factoring \(l(x)\) into a Product of Survival Probabilities</h3>
+
+<p>The cumulative hazard from 0 to \(x\) can be split into consecutive intervals of width \(n\):</p>
+
+\[
+  \int_0^x \mu(y)\,dy = \int_0^n\mu\,dy + \int_n^{2n}\mu\,dy + \int_{2n}^{3n}\mu\,dy + \cdots
+\]
+
+\[
+  l(x) = e^{-\int_0^x\mu} = \left(e^{-\int_0^n\mu}\right)\!\left(e^{-\int_n^{2n}\mu}\right)\!\left(e^{-\int_{2n}^{3n}\mu}\right)\cdots
+\]
+
+<p>But each factor is exactly a survival probability: \(e^{-\int_{kn}^{(k+1)n}\mu(y)\,dy} = {}_np_{kn}\). So:</p>
+
+<div class="fb">
+  <div class="fl">l(x) as a Product of Survival Probabilities</div>
+  \[
+    l(x) = ({}_np_0)({}_np_n)({}_np_{2n})\cdots = \prod_{k=0}^{x/n - 1} {}_np_{kn}
+  \]
+</div>
+
+<p>This is the continuous-time proof of the chain rule for survival: \(l(x)\) is the product of all the individual interval survival probabilities. These are the \({}_np_x\) values that the life table computes — and the formula shows they must multiply, not add.</p>
+
+<h3>Three Equivalent Forms — The Day 1 Pattern Reappears</h3>
+
+<p>Recall from Day 1 that exponential growth had three equivalent forms. Here, in exactly parallel fashion, the survival function does too:</p>
+
+<table class="eq-table">
+  <tr><th>Form</th><th>Equation</th><th>What it says</th></tr>
+  <tr><td>Definition</td><td>\(\mu(x) = -\dfrac{l'(x)}{l(x)}\)</td><td>Instantaneous proportional rate of decrease of \(l(x)\)</td></tr>
+  <tr><td>Differential equation</td><td>\(l'(x) = -\mu(x)\,l(x)\)</td><td>Change in \(l\) is proportional to \(l\) (negative — declining)</td></tr>
+  <tr><td>Log derivative</td><td>\(\dfrac{d}{dx}\ln l(x) = -\mu(x)\)</td><td>Log-survival decreases at rate \(\mu(x)\)</td></tr>
+</table>
+
+<h3>Recovering \(l(x)\) from \(\mu(x)\): The Fundamental Formula</h3>
+
+<p>Integrating the log-derivative form from 0 to \(x\):</p>
+
+<div class="fb">
+  <div class="fl">Survival Function from the Force of Mortality</div>
+  \[
+    \ln l(x) - \ln l(0) = -\int_0^x \mu(y)\,dy
+    \qquad\Longrightarrow\qquad
+    l(x) = l(0)\cdot e^{-\int_0^x \mu(y)\,dy} = e^{-\int_0^x \mu(y)\,dy}
+  \]
+  <p style="color:#94a3b8;font-size:.9rem;margin-top:.5rem">(using \(l(0)=1\))</p>
+</div>
+
+<p>And the probability of surviving from \(x\) to \(x+n\):</p>
+
+<div class="fb">
+  \[
+    {}_np_x = \frac{l(x+n)}{l(x)} = e^{-\int_x^{x+n}\mu(y)\,dy}
+  \]
+</div>
+
+<div class="callout intuition">
+  <div class="callout-title">💡 Intuition — The Integral of Hazard as "Accumulated Risk"</div>
+  <p>Think of \(\int_0^x \mu(y)\,dy\) as the <em>total accumulated hazard</em> from birth to age \(x\). If hazard were constant (\(\mu(y) = \mu\) for all \(y\)), the integral is just \(\mu x\), and \(l(x) = e^{-\mu x}\) — which is just exponential decay, like radioactive decay. For varying hazard, we integrate up all the instantaneous risks. The survival function is the exponential of the negative cumulative hazard. This formulation is extremely powerful: if you can specify \(\mu(x)\) as any function you like, you immediately get a corresponding \(l(x)\). The <strong>Gompertz model</strong> (used in actuarial science) assumes \(\mu(x) = a e^{bx}\) — hazard increases exponentially with age. The <strong>Makeham model</strong> adds a constant background hazard: \(\mu(x) = a e^{bx} + c\).</p>
+</div>
+
+<div class="callout history">
+  <div class="callout-title">🏛️ Historical Note — Gompertz and the Exponential Hazard</div>
+  <p><strong>Benjamin Gompertz</strong> (1779–1865) was a British actuary and mathematician who in 1825 proposed that the force of mortality increases exponentially with age: \(\mu(x) = a e^{bx}\). This captures a key biological observation: the probability of dying roughly doubles every 8–10 years in adulthood (a regularity called the <strong>Gompertz–Makeham law</strong>). The Gompertz model is still widely used in actuarial science and gerontology. The Gompertz model is parameterised by its hazard function \(\mu(x)\), and the corresponding \(l(x)\) is obtained by the integral formula above. The big debate in contemporary demography is whether this exponential increase in hazard continues at very old ages (110+) or whether it decelerates or plateaus — a live empirical question with implications for pension planning and the biology of ageing.</p>
+</div>
+
+<h3>The Main Story: "It's All Related"</h3>
+
+<p>The force of mortality \(\mu(x)\) ties everything together:</p>
+
+<div class="fb">
+  \[
+    \mu(x) = -\frac{d}{dx}\ln l(x)
+    \quad\Longleftrightarrow\quad
+    l(x) = e^{-\int_0^x\mu(y)\,dy}
+    \quad\Longleftrightarrow\quad
+    {}_np_x = e^{-\int_x^{x+n}\mu(y)\,dy}
+  \]
+</div>
+
+<p>This means:</p>
+<ul>
+  <li>Specify \(\mu(x)\) and you immediately have \(l(x)\) and all derived quantities.</li>
+  <li>Estimate \({}_nM_x\) from data, take the limit, and you estimate \(\mu(x)\).</li>
+  <li>The continuous hazard formulation sets up naturally for <strong>multiple causes of death</strong> (each cause has its own hazard \(\mu_i(x)\), and they add up: \(\mu(x) = \sum_i \mu_i(x)\)) and <strong>cause-deleted life tables</strong> (what would \(l(x)\) look like if we eliminated cause \(i\)? Remove \(\mu_i\) from the sum).</li>
+</ul>
+
+<div class="callout demography">
+  <div class="callout-title">📊 Why This Matters — Multiple Decrement and Competing Risks</div>
+  <p>The continuous hazard framework makes the algebra of multiple causes of death transparent. If people can die from heart disease (\(\mu_H\)), cancer (\(\mu_C\)), or accidents (\(\mu_A\)), the all-cause hazard is just \(\mu = \mu_H + \mu_C + \mu_A\). To ask "how long would people live if we cured heart disease?", simply remove \(\mu_H\) from the total and recalculate \(l(x) = e^{-\int(\mu_C + \mu_A)dx}\). This is a <strong>cause-deleted life table</strong>, widely used in public health to quantify the mortality impact of specific diseases. It is also the basis of <strong>competing risks analysis</strong> in biostatistics. The formula \(l(x) = e^{-\int \mu(y)dy}\) makes the independence of hazards — and therefore the additivity — precise and tractable.</p>
+</div>
+
+<!-- WIDGET 5: Hazard → survival -->
+<div class="widget">
+  <div class="widget-title">Widget 5 — Hazard Rate \(\mu(x)\) → Survival Curve \(l(x)\)</div>
+  <div class="ws">Choose a hazard model and see the resulting survival curve. The survival function is computed as \(l(x) = e^{-\int_0^x \mu(y)dy}\).</div>
+  <div class="bg">
+    <button class="tb active" onclick="setHazard('constant')">Constant hazard</button>
+    <button class="tb" onclick="setHazard('gompertz')">Gompertz (exponential)</button>
+    <button class="tb" onclick="setHazard('makeham')">Makeham</button>
+    <button class="tb" onclick="setHazard('bathtub')">Bathtub (early + old)</button>
+  </div>
+  <div class="sr">
+    <label>Scale parameter (intensity)</label>
+    <input type="range" id="w5s" min="1" max="100" value="30" oninput="upW5()">
+    <span class="sv" id="w5sv">×1.0</span>
+  </div>
+  <div class="cb"><canvas id="c5"></canvas></div>
+  <div class="wo" id="w5o"></div>
+</div>
+
+<hr>
+
+<!-- ===== SUMMARY ===== -->
+<div class="callout note">
+  <div class="callout-title">📝 Day 2 Summary — The Logical Arc</div>
+  <p>Day 2 started from individual lifelines in the Lexis diagram and built the entire life table apparatus by a sequence of forced steps:</p>
+  <ul>
+    <li><strong>§1:</strong> Taylor cleanup — general expansion around \(a\); Fourier as the periodic counterpart; sin/cos/e^x all connected via Euler's formula</li>
+    <li><strong>§2:</strong> \(K(t)\) → \(K(x,t)\); the Lexis diagram as a 2D view of a 3D surface; lifelines as 45° diagonals</li>
+    <li><strong>§3:</strong> Correcting Day 1's denominator — the right denominator for \(b\) and \(d\) is person-years of exposure, not \(K(t)\); person-years = area of the Lexis box</li>
+    <li><strong>§4:</strong> Sort lifelines by length → monotone staircase → smooth \(l(x)\); normalise by radix → survival function from \(l_0 = 1\) to 0</li>
+    <li><strong>§5:</strong> \(l_x\) is a stock (snapshot at age \(x\)); all interval quantities are flows; Σ \({}_nd_x\) = \(l_0\) = 1</li>
+    <li><strong>§6:</strong> \({}_nd_x = l_x - l_{x+n}\); \({}_nq_x = {}_nd_x/l_x\) (conditional probability); \({}_np_x = l_{x+n}/l_x\) (complement)</li>
+    <li><strong>§7:</strong> \({}_nL_x\) = area under \(l(x)\) between \(x\) and \(x+n\) ≈ \(\frac{n}{2}(l_x + l_{x+n})\); \({}_nM_x = {}_nd_x/{}_nL_x\) = mortality rate</li>
+    <li><strong>§8:</strong> \(T_x = \int_x^\omega l(y)\,dy\) = total person-years from age \(x\); \(e_x = T_x/l_x\) = life expectancy; \(e_0 = T_0\) ties back to Day 1's stationary identity</li>
+    <li><strong>§9:</strong> Rate (\({}_nM_x\)) vs probability (\({}_nq_x\)): different denominators (\({}_nL_x\) vs \(l_x\)); real data gives rates; life tables need probabilities; UDD conversion</li>
+    <li><strong>§10:</strong> \({}_np_x\) values multiply (telescoping); \({}_nq_x\) values do not add; the engine of the life table is \(l_{x+n} = l_x \cdot {}_np_x\)</li>
+    <li><strong>§11:</strong> \(n \to 0\) → hazard \(\mu(x) = -l'(x)/l(x) = -\frac{d}{dx}\ln l(x)\); three forms again; \(l(x) = e^{-\int_0^x\mu}\); factors into product of \({}_np_x\)</li>
+  </ul>
+  <p style="margin-top:.8rem"><strong>Day 3</strong> will use this toolkit to study the <strong>stable population model</strong> — what happens to the age structure of a population growing at constant rate \(r\) with a fixed set of age-specific birth and death rates.</p>
+</div>
+
+<div class="callout note">
+  <div class="callout-title">📝 Consolidation — Calculus Moves Used in Day 2</div>
+  <p>Day 2 introduced three calculus operations beyond what Day 1 required:</p>
+  <ol style="margin-top:.5rem">
+    <li><strong>Differentiation of a decreasing function</strong> (§11): \(l(x)\) is decreasing, so \(l'(x) < 0\). The derivative \(l'(x)\) is the rate of change of the survival function — negative, because the number of survivors falls as age increases. The proportional rate of decrease \(-l'(x)/l(x)\) is the hazard rate \(\mu(x)\). This is exactly the same log-derivative structure as Day 1: \(\frac{d}{dx}\ln l(x) = l'(x)/l(x)\), just now applied to a decreasing function and with a minus sign.</li>
+    <li><strong>Integration of \(l(x)\) over an age band</strong> (§7): \({}_nL_x = \int_x^{x+n} l(y)\,dy\) is the area under the survival curve in an age interval. The trapezoid approximation \(\frac{n}{2}(l_x + l_{x+n})\) is the only formula needed in practice. The exact derivation from the slides shows where it comes from: survivors contribute \(n\) years each, deaths contribute \(n/2\) years on average.</li>
+    <li><strong>Integration of \(-\mu(x)\) to recover \(l(x)\)</strong> (§11): \(l(x) = e^{-\int_0^x\mu(y)\,dy}\). This is the anti-derivative of the log-derivative: integrating \(-\mu = \frac{d}{dx}\ln l\) from 0 to \(x\) gives \(\ln l(x) - \ln l(0) = -\int_0^x\mu\), then exponentiate both sides. The key step — "integrate a derivative to get the original function" — is the Fundamental Theorem of Calculus.</li>
+  </ol>
+  <p><strong>If any of these feel shaky:</strong> the most useful practice is to verify the three-forms table for \(\mu(x)\) from left to right. Start with \(\mu(x) = -l'(x)/l(x)\), rearrange to get \(l'(x) = -\mu(x)l(x)\), then integrate both sides of \(\frac{d}{dx}\ln l = -\mu\) to recover \(l(x) = e^{-\int\mu}\). Each step uses only one calculus rule. Doing this derivation yourself once — rather than just reading it — is the best way to make it stick.</p>
+</div>
+
+
+<!-- =============================================
+     ALL WIDGET JAVASCRIPT
+     ============================================= -->
+<script>
+// ─── Shared mortality schedules ──────────────────────────────
+// Each returns nqx values for age groups: 0,1,5,10,15,...,80,85+
+// Roughly 5-year groups (first two: 0, 1-4, then 5-year groups)
+
+const AGES  = [0,1,5,10,15,20,25,30,35,40,45,50,55,60,65,70,75,80,85];
+const WIDTHS= [1,4,5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5,999];
+
+const REGIMES = {
+  modern: {
+    label: 'Modern (rich country)',
+    nqx: [0.0040,0.0008,0.0006,0.0008,0.0025,0.0030,0.0035,0.0045,0.0060,0.0090,
+          0.0140,0.0220,0.0360,0.0600,0.0950,0.1500,0.2300,0.3400,1.0000]
+  },
+  historical: {
+    label: 'Pre-industrial',
+    nqx: [0.200,0.080,0.040,0.030,0.030,0.035,0.040,0.045,0.055,0.070,
+          0.090,0.120,0.160,0.210,0.280,0.370,0.480,0.620,1.0000]
+  },
+  highinfant: {
+    label: 'High infant mortality',
+    nqx: [0.120,0.050,0.025,0.015,0.015,0.018,0.020,0.025,0.035,0.055,
+          0.080,0.120,0.175,0.250,0.340,0.450,0.580,0.720,1.0000]
+  },
+  linear: {
+    label: 'Constant hazard',
+    nqx: [0.010,0.010,0.012,0.012,0.013,0.013,0.014,0.015,0.016,0.018,
+          0.020,0.025,0.030,0.040,0.055,0.080,0.120,0.200,1.0000]
+  }
+};
+
+function buildLT(regime) {
+  const r = REGIMES[regime];
+  const lx = [1.0];
+  const ndx=[], nqx=r.nqx, npx=[], nLx=[], nMx=[];
+  for(let i=0;i<AGES.length;i++){
+    const q = Math.min(nqx[i],1);
+    npx.push(1-q);
+    ndx.push(lx[i]*q);
+    lx.push(lx[i]*(1-q)); // will have one extra at end
+    const n = i < WIDTHS.length ? WIDTHS[i] : 5;
+    const Lval = i < AGES.length-1
+      ? (n/2)*(lx[i]+lx[i+1])
+      : lx[i]/0.05; // open-ended approx
+    nLx.push(Lval);
+    nMx.push(ndx[i]/(Lval||1e-9));
+  }
+  // T_x and e_x — sum from bottom up
+  const Tx=new Array(AGES.length).fill(0);
+  Tx[AGES.length-1]=nLx[AGES.length-1];
+  for(let i=AGES.length-2;i>=0;i--) Tx[i]=Tx[i+1]+nLx[i];
+  const ex = AGES.map((_,i)=>Tx[i]/(lx[i]||1e-9));
+  return {lx:lx.slice(0,AGES.length), ndx, nqx:r.nqx, npx, nLx, nMx, Tx, ex, label:r.label};
+}
+
+// ─── Widget 1: Lexis Diagram ──────────────────────────────────
+const lexisDesc = {
+  cohort: '<strong>Cohort view:</strong> Each diagonal band follows people born in the same year. Life lines run parallel — born together, dying at different ages. Mortality analysis of a cohort reads along the diagonal.',
+  period: '<strong>Period view:</strong> Each vertical strip captures all events (births, deaths) in one calendar year, regardless of age. Period life tables are built from these vertical slices.',
+  age:    '<strong>Age-group view:</strong> Horizontal bands capture everyone in a given age range. Age-specific rates use these bands as their denominators.',
+  none:   '<strong>Just life lines:</strong> Each diagonal line is one individual life — starting at their birth year (age 0) and ending at death. Some are long, some are short.'
+};
+let lexisMode = 'cohort';
+function setLexis(m){ lexisMode=m; drawLexis(); document.getElementById('lexisOut').innerHTML=lexisDesc[m]; document.querySelectorAll('#widget1 .tb,.widget .tb').forEach(b=>b.classList.remove('active')); event.target.classList.add('active'); }
+
+function drawLexis(){
+  const cv = document.getElementById('lexisCanvas');
+  const W=cv.width, H=cv.height;
+  const ctx=cv.getContext('2d');
+  ctx.clearRect(0,0,W,H);
+
+  const pad={l:50,r:20,t:20,b:40};
+  const pw=W-pad.l-pad.r, ph=H-pad.t-pad.b;
+
+  // Axes
+  ctx.strokeStyle='#334155'; ctx.lineWidth=1.5;
+  ctx.beginPath(); ctx.moveTo(pad.l,pad.t); ctx.lineTo(pad.l,pad.t+ph);
+  ctx.lineTo(pad.l+pw,pad.t+ph); ctx.stroke();
+
+  // Labels
+  ctx.fillStyle='#334155'; ctx.font='12px sans-serif'; ctx.textAlign='center';
+  ctx.fillText('Calendar year',pad.l+pw/2,H-5);
+  ctx.save(); ctx.translate(14,pad.t+ph/2); ctx.rotate(-Math.PI/2); ctx.fillText('Age',0,0); ctx.restore();
+
+  // Scale: x=1940..2040 (100 years), age=0..90
+  const xScale=t=>(t-1940)/100*pw+pad.l;
+  const yScale=a=>pad.t+ph-(a/90)*ph;
+
+  // Grid
+  ctx.strokeStyle='#e2e8f0'; ctx.lineWidth=0.5;
+  for(let y=1940;y<=2040;y+=10){ctx.beginPath();ctx.moveTo(xScale(y),pad.t);ctx.lineTo(xScale(y),pad.t+ph);ctx.stroke()}
+  for(let a=0;a<=90;a+=10){ctx.beginPath();ctx.moveTo(pad.l,yScale(a));ctx.lineTo(pad.l+pw,yScale(a));ctx.stroke()}
+  // Axis ticks
+  ctx.fillStyle='#64748b'; ctx.font='10px sans-serif'; ctx.textAlign='center';
+  for(let y=1940;y<=2040;y+=20) ctx.fillText(y,xScale(y),pad.t+ph+14);
+  ctx.textAlign='right';
+  for(let a=0;a<=90;a+=10) ctx.fillText(a,pad.l-5,yScale(a)+4);
+
+  // Overlay shading
+  if(lexisMode==='cohort'){
+    // diagonal parallelogram bands for birth cohort ranges
+    [[1950,1960],[1970,1980],[1992,2002]].forEach(([y1,y2],i)=>{
+      ctx.fillStyle=`rgba(37,99,235,${0.10+i*0.03})`;
+      ctx.beginPath();
+      ctx.moveTo(xScale(y1), yScale(0));
+      ctx.lineTo(xScale(y1+90), yScale(90));
+      ctx.lineTo(xScale(y2+90), yScale(90));
+      ctx.lineTo(xScale(y2), yScale(0));
+      ctx.closePath(); ctx.fill();
+    });
+  } else if(lexisMode==='period'){
+    [[1960,1970],[1985,1995],[2010,2020]].forEach(([y1,y2],i)=>{
+      ctx.fillStyle=`rgba(22,163,74,${0.10+i*0.03})`;
+      ctx.fillRect(xScale(y1),pad.t,xScale(y2)-xScale(y1),ph);
+    });
+  } else if(lexisMode==='age'){
+    [[20,30],[50,60],[70,80]].forEach(([a1,a2],i)=>{
+      ctx.fillStyle=`rgba(225,29,72,${0.10+i*0.03})`;
+      ctx.fillRect(pad.l,yScale(a2),pw,yScale(a1)-yScale(a2));
+    });
+  }
+
+  // Life lines (diagonal) — 25 lives spread across 1940–2025 birth years
+  // Each entry: [birth_year, age_at_death]
+  const lives=[
+    [1942,79],[1945,68],[1948,91],[1950,54],[1953,83],
+    [1956,75],[1959,88],[1962,64],[1965,81],[1968,72],
+    [1971,90],[1974,69],[1977,85],[1980,57],[1983,77],
+    [1986,82],[1989,70],[1992,87],[1995,74],[1998,80],
+    [2001,78],[2004,83],[2007,76],[2012,85],[2018,79]
+  ];
+  ctx.strokeStyle='#1e3a8a'; ctx.lineWidth=1.4;
+  lives.forEach(([born,age])=>{
+    const deadYear=born+age;
+    // Clip start to left edge of diagram (year 1940)
+    const startYr=Math.max(born,1940);
+    const startAge=startYr-born;
+    const x1=xScale(startYr), y1=yScale(startAge);
+    // Clip end to right edge (year 2040) and max age 90
+    const endAge=Math.min(age, 90, 2040-born);
+    const x2=xScale(born+endAge), y2=yScale(endAge);
+    if(x1>pad.l+pw) return; // entirely off right edge
+    ctx.beginPath(); ctx.moveTo(x1,y1); ctx.lineTo(x2,y2); ctx.stroke();
+    // Red dot at death if it occurs within visible window
+    if(deadYear<=2040 && age<=90){
+      ctx.fillStyle='#ef4444'; ctx.beginPath(); ctx.arc(x2,y2,2.5,0,2*Math.PI); ctx.fill();
+    }
+  });
+}
+drawLexis();
+
+// ─── Widget 2: Survival Curve Explorer ───────────────────────
+let ch2=null, w2regime='modern';
+function setRegime(r){ w2regime=r; upW2(); document.querySelectorAll('#c2').forEach(()=>{}); event.target.parentElement.querySelectorAll('.tb').forEach(b=>b.classList.remove('active')); event.target.classList.add('active'); }
+function upW2(){
+  const lt=buildLT(w2regime);
+  const ages=[...AGES,110];
+  const lxVals=[...lt.lx,0];
+  if(ch2) ch2.destroy();
+  ch2=new Chart(document.getElementById('c2'),{
+    type:'line',
+    data:{labels:ages,datasets:[
+      {label:'l(x) — survival function',data:lxVals,borderColor:'#1e3a8a',backgroundColor:'rgba(30,58,138,.1)',
+       borderWidth:2.5,pointRadius:3,fill:true,tension:0.3},
+      {label:'Deaths d(x) (scaled)',data:lt.ndx.map(v=>v*3).concat(0),borderColor:'#ef4444',
+       backgroundColor:'rgba(239,68,68,.1)',borderWidth:1.5,pointRadius:0,fill:true,tension:0.3}
+    ]},
+    options:{responsive:true,maintainAspectRatio:false,animation:{duration:200},
+      plugins:{legend:{position:'top'}},
+      scales:{
+        x:{title:{display:true,text:'Age'}},
+        y:{title:{display:true,text:'l(x) / deaths (scaled)'},min:0,max:1.05}
+      }
+    }
+  });
+  document.getElementById('w2o').innerHTML=
+    `<strong>${lt.label}</strong> — Life expectancy at birth: <span class="big">${lt.ex[0].toFixed(1)} yrs</span><br>`+
+    `Red area: distribution of deaths by age (×3 for visibility). A "rectangular" l(x) means deaths concentrated in old age. `+
+    `Shape of d(x): ${w2regime==='modern'?'bell-shaped, concentrated 70–90':'spread across ages with high infant peak'}.`;
+}
+upW2();
+
+// ─── Widget 3: Life Table Calculator ────────────────────────
+let w3regime='modern';
+function setLT(r){ w3regime=r; buildTableDisplay(); event.target.parentElement.querySelectorAll('.tb').forEach(b=>b.classList.remove('active')); event.target.classList.add('active'); }
+function buildTableDisplay(){
+  const lt=buildLT(w3regime);
+  const tbl=document.getElementById('ltTable');
+  // keep header row, remove data rows
+  while(tbl.rows.length>1) tbl.deleteRow(1);
+  AGES.forEach((age,i)=>{
+    const tr=tbl.insertRow();
+    const n=WIDTHS[i]; const nb=i<AGES.length-1?`${n}`:'+';
+    [
+      `${age}${nb==='+'?'+':('–'+(age+n-1))}`,
+      lt.lx[i].toFixed(4),
+      lt.ndx[i].toFixed(4),
+      lt.nqx[i].toFixed(4),
+      lt.npx[i].toFixed(4),
+      lt.nLx[i].toFixed(2),
+      (lt.nMx[i]*1000).toFixed(3),
+      lt.Tx[i].toFixed(2),
+      lt.ex[i].toFixed(1)
+    ].forEach((v,j)=>{
+      const td=tr.insertCell();
+      td.textContent=v;
+      if(j===8) td.style.fontWeight='600';
+    });
+  });
+  document.getElementById('w3o').innerHTML=
+    `<strong>${REGIMES[w3regime].label}</strong> — `+
+    `\u202fe\u2080 = <span class="big">${lt.ex[0].toFixed(1)} yrs</span> &nbsp;|&nbsp; `+
+    `Infant mortality (q\u2080): ${(lt.nqx[0]*1000).toFixed(1)} per 1,000. `+
+    `Scroll right to see all columns. M\u2093 column is per 1,000.`;
+}
+buildTableDisplay();
+
+// ─── Widget 4: nqx vs nMx ───────────────────────────────────
+let ch4=null, w4regime='modern';
+function setW4regime(r){ w4regime=r; upW4(); event.target.parentElement.querySelectorAll('.tb').forEach(b=>b.classList.remove('active')); event.target.classList.add('active'); }
+function upW4(){
+  const n=+document.getElementById('w4n').value;
+  document.getElementById('w4nv').textContent=n;
+  const lt=buildLT(w4regime);
+  // nMx actual vs approximate conversion
+  const exact_nqx=lt.nqx;
+  const from_nMx_approx=lt.nMx.map(m=>{ const nM=m; return (n*nM)/(1+n/2*nM); }); // UDD formula
+  const nMx_1000=lt.nMx.map(m=>m*1000);
+  if(ch4) ch4.destroy();
+  ch4=new Chart(document.getElementById('c4'),{
+    type:'line',
+    data:{labels:AGES,datasets:[
+      {label:'nqx (exact, from life table)',data:exact_nqx,borderColor:'#1e3a8a',borderWidth:2,pointRadius:3},
+      {label:'nqx from nMx (UDD approx)',data:from_nMx_approx,borderColor:'#ef4444',borderDash:[6,3],borderWidth:2,pointRadius:0},
+      {label:'nMx (×1000)',data:nMx_1000,borderColor:'#16a34a',borderWidth:1.5,pointRadius:0}
+    ]},
+    options:{responsive:true,maintainAspectRatio:false,animation:{duration:200},
+      plugins:{legend:{position:'top'}},
+      scales:{
+        x:{title:{display:true,text:'Age x'}},
+        y:{title:{display:true,text:'Value'},type:'logarithmic'}
+      }
+    }
+  });
+  document.getElementById('w4o').innerHTML=
+    `Log scale reveals the near-exponential rise in mortality with age (Gompertz pattern). `+
+    `Blue = q (probability), Red dashed = q estimated from M via UDD, Green = M×1000 (rate). `+
+    `The UDD approximation breaks down mainly at age 0 (very non-uniform infant mortality) and the open-ended oldest group.`;
+}
+upW4();
+
+// ─── Widget 5: Hazard → Survival ─────────────────────────────
+let ch5=null, w5hazard='gompertz';
+function setHazard(h){ w5hazard=h; upW5(); event.target.parentElement.querySelectorAll('.tb').forEach(b=>b.classList.remove('active')); event.target.classList.add('active'); }
+function upW5(){
+  const scale=+document.getElementById('w5s').value/30;
+  document.getElementById('w5sv').textContent=`×${scale.toFixed(1)}`;
+  const ages=[];
+  for(let a=0;a<=110;a++) ages.push(a);
+
+  let mu, label, params;
+  if(w5hazard==='constant'){
+    const c=0.015*scale;
+    mu=ages.map(()=>c);
+    label=`Constant: μ(x)=${c.toFixed(4)}`;
+  } else if(w5hazard==='gompertz'){
+    const a=0.0002*scale, b=0.09;
+    mu=ages.map(x=>a*Math.exp(b*x));
+    label=`Gompertz: μ(x)=${(0.0002*scale).toExponential(1)}×e^{0.09x}`;
+  } else if(w5hazard==='makeham'){
+    const a=0.0001*scale, b=0.09, c=0.003*scale;
+    mu=ages.map(x=>a*Math.exp(b*x)+c);
+    label=`Makeham: μ(x) = Gompertz + ${(0.003*scale).toFixed(4)}`;
+  } else { // bathtub
+    const infant=0.06*scale, adult=0.005, old_a=0.0001*scale, old_b=0.10;
+    mu=ages.map(x=>infant*Math.exp(-0.6*x)+adult+old_a*Math.exp(old_b*x));
+    label=`Bathtub: high infant + adult background + Gompertz old age`;
+  }
+
+  // Compute l(x) numerically (cumulative hazard)
+  const lx=[1.0];
+  for(let i=1;i<ages.length;i++){
+    const cumH=lx[i-1]*Math.exp(-mu[i-1]);
+    lx.push(Math.max(0,cumH));
+  }
+  const e0=lx.reduce((s,v)=>s+v,0); // approx T0 by summing (1-year widths)
+  if(ch5) ch5.destroy();
+  ch5=new Chart(document.getElementById('c5'),{
+    type:'line',
+    data:{labels:ages,datasets:[
+      {label:'μ(x) — force of mortality',data:mu,borderColor:'#ef4444',borderWidth:2,
+       yAxisID:'y2',pointRadius:0,fill:false},
+      {label:'l(x) — survival',data:lx,borderColor:'#1e3a8a',backgroundColor:'rgba(30,58,138,.1)',
+       borderWidth:2,yAxisID:'y1',pointRadius:0,fill:true}
+    ]},
+    options:{responsive:true,maintainAspectRatio:false,animation:{duration:200},
+      plugins:{legend:{position:'top'}},
+      scales:{
+        x:{title:{display:true,text:'Age'}},
+        y1:{type:'linear',position:'left',title:{display:true,text:'l(x)'},min:0,max:1.05},
+        y2:{type:'linear',position:'right',title:{display:true,text:'μ(x)'},grid:{drawOnChartArea:false}}
+      }
+    }
+  });
+  document.getElementById('w5o').innerHTML=
+    `Model: <strong>${label}</strong><br>`+
+    `Approximate life expectancy e\u2080 \u2248 <span class="big">${e0.toFixed(1)} yrs</span><br>`+
+    `<em>l(x) is computed as e^{−∫μ(y)dy} — the exponential of the negative cumulative hazard. `+
+    `The Gompertz model's exponentially rising hazard is the most widely used parametric mortality model in actuarial science.</em>`;
+}
+upW5();
+
+// ─── Widget 6: Area under l(x) — nLx and Tx ─────────────────
+let ch6=null, w6regime='modern';
+function setW6regime(r){ w6regime=r; upW6(); event.target.parentElement.querySelectorAll('.tb').forEach(b=>b.classList.remove('active')); event.target.classList.add('active'); }
+function upW6(){
+  const ageIdx=parseInt(document.getElementById('w6age').value);
+  const lo=AGES[ageIdx];
+  const hi=ageIdx<AGES.length-1 ? AGES[ageIdx+1] : 110;
+  const n=hi-lo;
+  document.getElementById('w6agev').textContent=lo+'–'+(ageIdx<AGES.length-1?hi:'+');
+  const lt=buildLT(w6regime);
+  const ages=[...AGES,110];
+  const lxAll=[...lt.lx,0];
+
+  // Dataset: Tx region (from lo onwards, filled to x-axis)
+  const TxData=ages.map((a,i)=>a>=lo?lxAll[i]:null);
+
+  // Dataset: nLx band (only within [lo, hi], filled to x-axis)
+  const nLxBand=ages.map((a,i)=>(a>=lo&&a<=hi)?lxAll[i]:null);
+
+  // Dataset: main l(x) curve
+  // Trapezoid: just lo and hi endpoints connected — shows the straight-line approx
+  const trapX=[lo,hi];
+  const trapY=[lt.lx[ageIdx], ageIdx<AGES.length-1?lt.lx[ageIdx+1]:0];
+  const trapData=ages.map(a=>{
+    if(a===lo) return trapY[0];
+    if(a===hi) return trapY[1];
+    return null;
+  });
+
+  if(ch6) ch6.destroy();
+  ch6=new Chart(document.getElementById('c6'),{
+    type:'line',
+    data:{labels:ages,datasets:[
+      // Tx region (light blue fill)
+      {label:'Tₓ (total from age x)',data:TxData,
+       borderColor:'rgba(37,99,235,0)',backgroundColor:'rgba(219,234,254,0.55)',
+       borderWidth:0,pointRadius:0,fill:'origin',tension:0.3,spanGaps:false},
+      // nLx green band
+      {label:'ₙLₓ (person-years this interval)',data:nLxBand,
+       borderColor:'rgba(22,163,74,0)',backgroundColor:'rgba(134,239,172,0.75)',
+       borderWidth:0,pointRadius:0,fill:'origin',tension:0.3,spanGaps:false},
+      // Main l(x) curve
+      {label:'l(x) survival function',data:lxAll,
+       borderColor:'#1e3a8a',backgroundColor:'transparent',
+       borderWidth:2.5,pointRadius:0,fill:false,tension:0.3},
+      // Trapezoid approximation (dashed orange, two end-points connected)
+      {label:'Trapezoid approx (straight line)',data:trapData,
+       borderColor:'#ea580c',backgroundColor:'rgba(251,146,60,0.12)',
+       borderWidth:2,pointRadius:5,borderDash:[6,3],fill:'origin',
+       tension:0,spanGaps:true}
+    ]},
+    options:{responsive:true,maintainAspectRatio:false,animation:{duration:200},
+      plugins:{legend:{position:'top',labels:{boxWidth:14,font:{size:11}}}},
+      scales:{
+        x:{title:{display:true,text:'Age x'}},
+        y:{title:{display:true,text:'l(x)'},min:0,max:1.05}
+      }
+    }
+  });
+
+  // Output text
+  const nLx_val=lt.nLx[ageIdx];
+  const nLx_trap=(n/2)*(trapY[0]+trapY[1]);
+  const Tx_val=lt.Tx[ageIdx];
+  const ex_val=lt.ex[ageIdx];
+  const trapErr=Math.abs(nLx_trap-nLx_val)/nLx_val*100;
+  document.getElementById('w6o').innerHTML=
+    `<strong>Age group ${lo}–${ageIdx<AGES.length-1?hi:'+'}</strong> &nbsp;|&nbsp; `+
+    `<span style="color:#16a34a"><strong>${n>5?'<sub>'+n+'</sub>':''}<sub>n</sub>L<sub>x</sub> = ${nLx_val.toFixed(4)}</strong></span> &nbsp;`+
+    `(trapezoid = ${nLx_trap.toFixed(4)}, error = ${trapErr.toFixed(2)}%) &nbsp;|&nbsp; `+
+    `<span style="color:#2563eb"><strong>T<sub>${lo}</sub> = ${Tx_val.toFixed(3)}</strong></span> &nbsp;|&nbsp; `+
+    `e<sub>${lo}</sub> = <span class="big">${ex_val.toFixed(1)}</span> yrs &nbsp;|&nbsp; `+
+    `T<sub>${lo}</sub>/l<sub>${lo}</sub> = ${Tx_val.toFixed(3)}/${lt.lx[ageIdx].toFixed(4)} = ${ex_val.toFixed(1)} ✓`;
+}
+upW6();
+</script>
+</body>
+</html>

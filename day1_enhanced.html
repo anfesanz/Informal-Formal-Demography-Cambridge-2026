@@ -1,0 +1,1551 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Formal Demography — Day 1</title>
+
+<script>
+window.MathJax = {
+  tex: {
+    inlineMath: [['\\(','\\)']],
+    displayMath: [['\\[','\\]']]
+  },
+  options: { skipHtmlTags: ['script','noscript','style','textarea','pre'] }
+};
+</script>
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js" async></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+
+<style>
+/* =============================================
+   RESET & CUSTOM PROPERTIES
+   ============================================= */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg:          #f9f7f3;
+  --surface:     #ffffff;
+  --text:        #1c1c2e;
+  --muted:       #64748b;
+  --rule:        #e2e8f0;
+  --accent:      #1e3a8a;
+  --accent-mid:  #2563eb;
+  --accent-lt:   #dbeafe;
+
+  /* callout colours */
+  --def-bg:  #f0fdf4; --def-br:  #16a34a;
+  --int-bg:  #fefce8; --int-br:  #ca8a04;
+  --his-bg:  #faf5ff; --his-br:  #9333ea;
+  --dem-bg:  #fff1f2; --dem-br:  #e11d48;
+  --nte-bg:  #f0f9ff; --nte-br:  #0284c7;
+
+  --serif: Georgia, 'Times New Roman', serif;
+  --sans:  -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --mono:  'Courier New', Courier, monospace;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--serif);
+  font-size: 17px;
+  line-height: 1.85;
+  max-width: 880px;
+  margin: 0 auto;
+  padding: 2.5rem 1.5rem 8rem;
+}
+
+/* =============================================
+   TYPOGRAPHY
+   ============================================= */
+h1 { font-size: 2.3rem; line-height: 1.2; color: var(--accent); margin-bottom: .4rem; }
+h2 { font-size: 1.55rem; color: var(--accent); border-bottom: 2px solid var(--accent-mid);
+     padding-bottom: .3rem; margin: 3.5rem 0 1.2rem; }
+h3 { font-size: 1.1rem; margin: 2rem 0 .6rem; color: #1e3a5f; }
+p  { margin-bottom: 1.1rem; }
+ul, ol { padding-left: 1.8rem; margin-bottom: 1.1rem; }
+li { margin-bottom: .4rem; }
+
+.subtitle    { color: var(--muted); font-style: italic; margin-bottom: .4rem; font-size: .95rem; }
+.course-meta { background: var(--accent-lt); border-left: 4px solid var(--accent-mid);
+               padding: .9rem 1.3rem; border-radius: 0 8px 8px 0; margin: 1.5rem 0 2.5rem;
+               font-size: .92rem; font-family: var(--sans); line-height: 1.7; }
+.section-num { display: inline-flex; align-items: center; justify-content: center;
+               background: var(--accent-mid); color: #fff; border-radius: 50%;
+               width: 1.75rem; height: 1.75rem; font-family: var(--sans); font-size: .82rem;
+               font-weight: 700; margin-right: .5rem; vertical-align: middle; flex-shrink: 0; }
+
+/* =============================================
+   TABLE OF CONTENTS
+   ============================================= */
+.toc { background: var(--surface); border: 1px solid var(--rule); border-radius: 10px;
+       padding: 1.2rem 1.6rem; margin: 0 0 3rem; font-size: .88rem; }
+.toc-heading { font-family: var(--sans); font-weight: 700; font-size: .76rem;
+               text-transform: uppercase; letter-spacing: .12em; color: var(--muted);
+               margin-bottom: .7rem; }
+.toc ol { padding-left: 1.4rem; }
+.toc li { margin-bottom: .25rem; }
+.toc a { color: var(--accent-mid); text-decoration: none; }
+.toc a:hover { text-decoration: underline; }
+
+/* =============================================
+   CALLOUT BOXES
+   ============================================= */
+.callout {
+  border-left: 4px solid;
+  border-radius: 0 8px 8px 0;
+  padding: .95rem 1.3rem;
+  margin: 1.6rem 0;
+  font-size: .92rem;
+  line-height: 1.7;
+}
+.callout-title {
+  font-family: var(--sans);
+  font-weight: 700;
+  font-size: .79rem;
+  text-transform: uppercase;
+  letter-spacing: .07em;
+  margin-bottom: .45rem;
+}
+.callout p { margin-bottom: .5rem; }
+.callout p:last-child { margin-bottom: 0; }
+
+.callout.definition { background: var(--def-bg); border-color: var(--def-br); }
+.callout.definition .callout-title { color: var(--def-br); }
+.callout.intuition  { background: var(--int-bg); border-color: var(--int-br); }
+.callout.intuition  .callout-title { color: var(--int-br); }
+.callout.history    { background: var(--his-bg); border-color: var(--his-br); }
+.callout.history    .callout-title { color: var(--his-br); }
+.callout.demography { background: var(--dem-bg); border-color: var(--dem-br); }
+.callout.demography .callout-title { color: var(--dem-br); }
+.callout.note       { background: var(--nte-bg); border-color: var(--nte-br); }
+.callout.note       .callout-title { color: var(--nte-br); }
+
+/* =============================================
+   FORMULA BLOCKS
+   ============================================= */
+.formula-block {
+  background: #0f172a;
+  color: #e2e8f0;
+  border-radius: 10px;
+  padding: 1.2rem 1.8rem;
+  margin: 1.5rem 0;
+  overflow-x: auto;
+  text-align: center;
+  font-size: 1.05rem;
+}
+.formula-block .flabel {
+  text-align: left;
+  font-family: var(--sans);
+  font-size: .74rem;
+  color: #94a3b8;
+  text-transform: uppercase;
+  letter-spacing: .09em;
+  margin-bottom: .5rem;
+}
+
+/* =============================================
+   TABLES
+   ============================================= */
+.data-table { width: 100%; border-collapse: collapse; margin: 1.4rem 0;
+              font-size: .88rem; font-family: var(--sans); }
+.data-table th { background: #334155; color: #fff; padding: .5rem .8rem; text-align: center; }
+.data-table td { padding: .42rem .8rem; border-bottom: 1px solid var(--rule); text-align: center; }
+.data-table tr:nth-child(even) td { background: #f8fafc; }
+
+.eq-table { width: 100%; border-collapse: collapse; margin: 1.4rem 0; font-size: .91rem; }
+.eq-table th { background: var(--accent); color: #fff; padding: .5rem .9rem;
+               text-align: left; font-family: var(--sans); font-weight: 600; }
+.eq-table td { padding: .5rem .9rem; border-bottom: 1px solid var(--rule); vertical-align: middle; }
+.eq-table tr:nth-child(even) td { background: #f8fafc; }
+
+/* =============================================
+   THREE-FORMS GRID
+   ============================================= */
+.three-forms { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px,1fr));
+               gap: 1rem; margin: 1.5rem 0; }
+.form-card { background: #0f172a; color: #e2e8f0; border-radius: 10px;
+             padding: 1.1rem 1.2rem; text-align: center; }
+.form-card .fn { font-family: var(--sans); font-size: .73rem; color: #64748b;
+                 text-transform: uppercase; letter-spacing: .1em; margin-bottom: .4rem; }
+.form-card .fl { font-family: var(--sans); font-size: .79rem; color: #94a3b8; margin-top: .5rem; }
+
+/* =============================================
+   WIDGETS
+   ============================================= */
+.widget {
+  background: var(--surface);
+  border: 1.5px solid #cbd5e1;
+  border-radius: 12px;
+  padding: 1.5rem 1.6rem;
+  margin: 2.2rem 0;
+  box-shadow: 0 2px 12px rgba(0,0,0,.07);
+}
+.widget-title {
+  font-family: var(--sans);
+  font-size: .97rem;
+  font-weight: 700;
+  color: var(--accent-mid);
+  margin-bottom: .25rem;
+  display: flex;
+  align-items: center;
+  gap: .5rem;
+}
+.widget-title::before { content: '⚙'; font-size: 1rem; }
+.widget-subtitle { font-family: var(--sans); font-size: .85rem; color: var(--muted);
+                   margin-bottom: 1.2rem; }
+
+.sr { display: flex; align-items: center; gap: .8rem; margin-bottom: .75rem; flex-wrap: wrap; }
+.sr label { font-family: var(--sans); font-size: .86rem; color: var(--muted); min-width: 220px; }
+.sr input[type=range] { flex: 1; min-width: 120px; accent-color: var(--accent-mid); }
+.sv { font-family: var(--mono); font-size: .88rem; font-weight: 700;
+      color: var(--accent-mid); min-width: 60px; text-align: right; }
+
+.chart-box { position: relative; height: 270px; margin: 1rem 0; }
+.chart-box-sm { position: relative; height: 230px; margin: 1rem 0; }
+
+.wo { background: #f1f5f9; border-radius: 8px; padding: .85rem 1.1rem;
+      font-family: var(--sans); font-size: .86rem; margin-top: .8rem; line-height: 1.75; }
+.wo .big { font-size: 1.4rem; font-weight: 700; color: var(--accent-mid); }
+
+.btn-group { display: flex; gap: .5rem; margin-bottom: .8rem; flex-wrap: wrap; }
+.tbtn { font-family: var(--sans); font-size: .81rem; padding: .3rem .9rem;
+        border: 1.5px solid var(--accent-mid); border-radius: 20px;
+        background: #fff; color: var(--accent-mid); cursor: pointer; transition: all .15s; }
+.tbtn.active, .tbtn:hover { background: var(--accent-mid); color: #fff; }
+
+hr { border: none; border-top: 1px solid var(--rule); margin: 3rem 0; }
+
+/* =============================================
+   RESPONSIVE
+   ============================================= */
+@media (max-width: 620px) {
+  body { font-size: 15px; padding: 1rem 1rem 5rem; }
+  h1 { font-size: 1.7rem; }
+  h2 { font-size: 1.3rem; }
+  .three-forms { grid-template-columns: 1fr; }
+  .sr label { min-width: 160px; }
+}
+</style>
+</head>
+
+<body>
+
+<!-- ==================== HEADER ==================== -->
+<p class="subtitle">Robert Chung's Informal Introduction to Formal Demography · Cambridge, 23 March 2026</p>
+<h1>Day 1: The Foundations of Population Change</h1>
+
+<div class="course-meta">
+  <strong>About this course:</strong> Robert Chung (recently retired from UC Berkeley's Department of Demography, 2024 ASA Pedagogy Award) covers ~40% of a full semester in five days.
+  The philosophy: formal demography as a tool for <em>building intuition</em>. Expect multiple ways of saying the same thing, rules of thumb, and derivations you can do on a napkin.
+  Four hours of lectures per day (11am–4pm). Post-workshop: each participant gives a short 5–10 minute presentation on their own illustration or derivation.
+</div>
+
+<!-- ==================== COURSE PHILOSOPHY ==================== -->
+<div class="callout note">
+  <div class="callout-title">📐 What This Course Is Trying To Do</div>
+  <p>Chung's stated aim: <em>"lots of ways to show the same presentations."</em> The philosophy of the course is that the same demographic object — a growth rate, a life expectancy, a population projection — can almost always be written down in several different ways, each of which illuminates a different aspect of what is going on. A formula you can derive is far more useful than one you have memorised, because you understand when it applies and when it breaks down.</p>
+  <p>Day 1 is deliberately narrow in scope. We are not trying to cover all of demography. We are trying to understand <em>one thing</em> very deeply: the relationship between a population's size at two points in time, and the growth rate that connects them. By the end of today, that single relationship will have been expressed as an arithmetic identity, a geometric product, a continuous exponential, a differential equation, a log-slope, and a pair of integral formulas. Each is the same thing wearing a different shirt.</p>
+  <p><strong>The thread running through everything:</strong> we start with a simple counting identity (the balancing equation), divide to get rates, multiply to get compound growth, take a limit to get continuous growth, take a log to get linearity, differentiate to get the ODE, and integrate to count births. Every step is forced — there is no arbitrariness.</p>
+</div>
+
+<!-- ==================== TABLE OF CONTENTS ==================== -->
+<nav class="toc">
+  <div class="toc-heading">Contents — Day 1</div>
+  <ol>
+    <li><a href="#s1">The Most Important Equation in Demography</a></li>
+    <li><a href="#s2">Stocks and Flows — How We Measure Populations</a></li>
+    <li><a href="#s3">From Additive to Multiplicative: Crude Rates</a></li>
+    <li><a href="#s4">Geometric Growth and Averaging Rates</a></li>
+    <li><a href="#s5">The Number <em>e</em> and Exponential Growth &nbsp;⚙ Widget 1</a></li>
+    <li><a href="#s6">Log-Linear Diagnostics &nbsp;⚙ Widget 2</a></li>
+    <li><a href="#s7">Doubling Times, Half-Lives, Rule of 70 &nbsp;⚙ Widget 3</a></li>
+    <li><a href="#s8">Deep History: Why <em>r</em> Was Nearly Zero</a></li>
+    <li><a href="#s9">Little's Law and the Stationary Population Identity &nbsp;⚙ Widget 4</a></li>
+    <li><a href="#s10">What Fraction of All People Ever Born Are Alive Today? &nbsp;⚙ Widget 5</a></li>
+    <li><a href="#s11">Taylor Series and Rules of Thumb</a></li>
+    <li><a href="#s12">Three Equivalent Forms of Exponential Growth</a></li>
+    <li><a href="#s13">Logistic Growth and Carrying Capacity &nbsp;⚙ Widget 6</a></li>
+    <li><a href="#s14">Person-Years and the Mid-Period Population</a></li>
+  </ol>
+</nav>
+
+
+<!-- ==================== SECTION 1 ==================== -->
+<h2 id="s1"><span class="section-num">1</span> The Most Important Equation in Demography</h2>
+
+<p>Chung opened by writing what he called "the most important equation in all of demography." It is not impressive-looking. But everything we do this week flows from it.</p>
+
+<p>The <em>full</em> version, as written on the board, includes the adjustment and error terms that connect formal demography to real data:</p>
+
+<div class="formula-block">
+  <div class="flabel">The Balancing Equation — Complete Form</div>
+  \[
+    \text{Pop}_{\text{today}} \;=\; \text{Pop}_{\text{yesterday}}
+    \;+\; \underbrace{\text{Births}_{y}}_{\text{fertility}}
+    \;-\; \underbrace{\text{Deaths}_{y}}_{\text{mortality}}
+    \;+\; \underbrace{\text{In-migrants}_{y} - \text{Out-migrants}_{y}}_{\text{migration}}
+    \;+\; \text{Adj}_{y} \;+\; \text{Errors}_{y}
+  \]
+</div>
+
+<p>The adjustment and error terms belong to <strong>statistical demography</strong> — dealing with undercount, misclassification, and the fact that no data source is perfect. Once those are stripped away for a closed (no migration) population, we get the clean form we will use throughout:</p>
+
+<div class="formula-block">
+  <div class="flabel">The Balancing Equation — Applied (Closed Population)</div>
+  \[
+    \text{Pop}_{\text{now}} \;=\; \text{Pop}_{\text{before}}
+    \;+\; \underbrace{\text{Births} \;-\; \text{Deaths}}_{\text{natural change}}
+  \]
+</div>
+
+<p>What makes this so powerful is its completeness. There are precisely four "doors" through which a population can change — birth, death, immigration, emigration. That's it. Every model, projection, estimate, or policy analysis in demography is ultimately an attempt to measure or predict one or more of these four quantities.</p>
+
+<div class="callout definition">
+  <div class="callout-title">📖 Definition — What is Demography?</div>
+  <p>The definition Chung uses: <em>"Demography is the study of populations, their characteristics, and how they change."</em> Many characteristics are static (e.g., sex, birth cohort); many can change (e.g., health status, marital status). Formal demography focuses on the mathematical relationships between demographic quantities — relationships that hold regardless of country, time period, or culture.</p>
+  <p>Chung distinguishes this from <strong>applied demography</strong>, which uses these tools to answer real questions about specific populations (fertility trends, population projections, policy impacts). Think of formal demography as the grammar, applied demography as the writing.</p>
+</div>
+
+<div class="callout history">
+  <div class="callout-title">🏛️ Historical Note — The First Demographer</div>
+  <p><strong>John Graunt</strong> (1620–1674), a London haberdasher with no formal scientific training, is often credited as the founder of demography. In 1662 he published <em>Natural and Political Observations Made upon the Bills of Mortality</em> — an analysis of London's weekly death records. He noticed remarkably stable patterns in the ratio of male to female births, the seasonality of deaths, and the age distribution of mortality. He invented the concept of the life table almost by accident. His contemporary <strong>William Petty</strong> coined the phrase "political arithmetic" for this kind of work. King Charles II was so impressed he proposed Graunt for the Royal Society.</p>
+</div>
+
+
+<!-- ==================== SECTION 2 ==================== -->
+<h2 id="s2"><span class="section-num">2</span> Stocks and Flows — How We Measure Populations</h2>
+
+<p>Before we can do anything with the balancing equation, we need to be precise about what kind of thing each term actually is. The equation mixes two fundamentally different kinds of quantity — and confusing them is one of the most common errors in demographic calculation.</p>
+
+<div class="callout definition">
+  <div class="callout-title">📖 Definition — Stocks vs Flows</div>
+  <p>A <strong>stock</strong> is a quantity measured at a single <em>point</em> in time — a snapshot. Population size is a stock: "there were 68.3 million people in the UK on 1 January 2024."</p>
+  <p>A <strong>flow</strong> is a quantity measured <em>over an interval</em> of time — a rate of change. Births and deaths are flows: "600,000 babies were born in the UK during 2024."</p>
+  <p>You cannot add a stock (measured in people) to a flow (measured in people <em>per year</em>) without specifying the time interval. This sounds obvious but is a surprisingly frequent source of error in demographic calculations.</p>
+</div>
+
+<p>In practice, we use different data sources for each:</p>
+<ul>
+  <li><strong>Stocks</strong> are measured by <em>censuses</em> (a full count of the population at a point in time) or <em>large surveys</em>.</li>
+  <li><strong>Flows</strong> are measured by <em>vital registration systems</em> — the continuous recording of births, deaths, marriages, and so on as they happen.</li>
+</ul>
+
+<div class="callout demography">
+  <div class="callout-title">📊 Why This Matters for Demography</div>
+  <p>Many countries, particularly lower-income ones, do not have reliable vital registration systems. In those settings, demographers must estimate flows (birth rates, death rates) from surveys rather than registrations — with considerably more uncertainty. Understanding which quantities are stocks and which are flows is the starting point for assessing data quality and making valid comparisons across countries. Later in the course this will become critical when constructing life tables and computing age-specific rates.</p>
+</div>
+
+
+<!-- ==================== SECTION 3 ==================== -->
+<h2 id="s3"><span class="section-num">3</span> From Additive to Multiplicative: Crude Rates</h2>
+
+<p>We have the balancing equation. We know births and deaths are flows, and population is a stock. The problem is that the equation in its additive form — \(\text{Pop}_{\text{now}} = \text{Pop}_{\text{before}} + \text{Births} - \text{Deaths}\) — is not very useful for comparison across populations of different sizes. Ten thousand births in Finland is demographically very different from ten thousand births in Nigeria. We need a way to scale. The natural move is to divide everything by the size of the population, converting absolute numbers into <em>rates</em>.</p>
+
+<p>Define the <strong>crude birth rate</strong> \(b\), <strong>crude death rate</strong> \(d\), and <strong>crude rate of natural increase</strong> \(r\):</p>
+
+<div class="formula-block">
+  <div class="flabel">Crude Rates</div>
+  \[
+    b = \frac{\text{Births}}{\text{Population}}, \qquad
+    d = \frac{\text{Deaths}}{\text{Population}}, \qquad
+    r = b - d
+  \]
+</div>
+
+<div class="callout definition">
+  <div class="callout-title">📖 Definition — Why "Crude"?</div>
+  <p>These rates are called "crude" because they treat every person in the population as equally exposed to the risk of the event — a newborn and a 90-year-old both count equally in the denominator for the birth rate. In reality, only women of reproductive age can give birth, and death rates vary enormously by age. "Refined" or "age-specific" rates, which we will meet later in the week, correct for this. The crude rates are a useful first approximation, easy to compute, and good for capturing overall trends.</p>
+  <p><strong>Notation convention (from the slides):</strong> Chung uses <em>uppercase</em> letters for absolute numbers of persons (\(K_{2025}\), \(K_{2026}\)) and <em>lowercase</em> for rates, ratios, and per-person quantities (\(b\), \(d\), \(r\)). The convention is worth keeping in mind throughout the course.</p>
+</div>
+
+<h3>Step-by-Step: From Additive to Multiplicative</h3>
+
+<p>Start from the additive balancing equation for a one-year step, 1 Jan 2025 to 1 Jan 2026:</p>
+
+\[
+  K_{2026} = K_{2025} + \text{Births}_{2025} - \text{Deaths}_{2025}
+\]
+
+<p>Now use the definitions of \(b\) and \(d\) to substitute: \(\text{Births}_{2025} = b_{2025} \cdot K_{2025}\) and \(\text{Deaths}_{2025} = d_{2025} \cdot K_{2025}\):</p>
+
+\[
+  K_{2026} = K_{2025} + b_{2025} \cdot K_{2025} - d_{2025} \cdot K_{2025}
+\]
+
+<p>Factor out \(K_{2025}\):</p>
+
+<div class="formula-block">
+  <div class="flabel">The Multiplicative One-Step Model</div>
+  \[
+    K_{2026} \;=\; K_{2025}\!\left(1 + \underbrace{b_{2025}}_{\substack{\text{crude birth}\\\text{rate}_{2025}}} - \underbrace{d_{2025}}_{\substack{\text{crude death}\\\text{rate}_{2025}}}\right)
+    \;=\; K_{2025}(1 + r_{2025})
+  \]
+</div>
+
+<p>This is an exact transformation — no approximation involved. We have simply rewritten the same identity in a form that scales correctly with population size. Chung calls this "turning the additive model into a multiplicative model."</p>
+
+<div class="callout intuition">
+  <div class="callout-title">💡 Intuition — Why Multiply, Not Add?</div>
+  <p>Think about bacteria doubling in a dish. After one hour there are twice as many. After two hours, four times as many — not three times (which adding 100% twice would give). Growth is <em>compounded</em>: each generation grows from a larger base. Human populations work the same way. A 1% birth rate in a country of 1 billion produces 10 million births; in a country of 100 million, the same 1% rate produces only 1 million births. The absolute number of births scales with population size. Multiplication captures this; addition does not.</p>
+</div>
+
+
+<!-- ==================== SECTION 4 ==================== -->
+<h2 id="s4"><span class="section-num">4</span> Geometric Growth and Averaging Rates</h2>
+
+<p>We now have a one-step rule: \(K_{2026} = K_{2025}(1+r_{2025})\). The natural question is: what if we want to project not one year ahead, but 26 years ahead — say from 2000 to 2026? We chain the one-step rule repeatedly, by straightforward substitution.</p>
+
+<div class="callout note">
+  <div class="callout-title">📝 Calculus Refresher — Powers and Products</div>
+  <p>No calculus needed here — just the rule for powers. When you multiply \((1+r)\) by itself \(t\) times, you get \((1+r)^t\). The key property is \((1+r)^a \cdot (1+r)^b = (1+r)^{a+b}\) — adding exponents corresponds to chaining time periods, which is exactly what projection does.</p>
+  <p>The inverse — taking the \(t\)-th root — undoes the power: \(\bigl((1+r)^t\bigr)^{1/t} = 1+r\). This is how we solve for the average growth rate. If this feels unfamiliar, it helps to think of a simple case: \((1+r)^2 = (1+r)(1+r)\), so the square root undoes squaring. The \(t\)-th root does the same for \(t\) periods.</p>
+</div>
+
+\[
+  K_{2026} = K_{2025}(1+r_{2025})
+\]
+\[
+  K_{2025} = K_{2024}(1+r_{2024})
+\]
+
+<p>Substitute the second into the first:</p>
+
+\[
+  K_{2026} = K_{2024}(1+r_{2024})(1+r_{2025})
+\]
+
+<p>Keep going back to 2000:</p>
+
+\[
+  K_{2026} = K_{2000}(1+r_{2000})(1+r_{2001})\cdots(1+r_{2025})
+  \qquad\text{(26 terms)}
+\]
+
+<p>This is <em>by substitution</em>. In compact notation:</p>
+
+<div class="formula-block">
+  <div class="flabel">Chaining — Exact Forward Projection</div>
+  \[
+    K_t = K_0 \prod_{i=0}^{t-1}(1 + r_i)
+  \]
+</div>
+
+<div class="callout definition">
+  <div class="callout-title">📖 Definition — The ∏ Symbol</div>
+  <p>\(\prod\) (capital pi) means "take the product of all terms." It's the multiplication equivalent of \(\sum\) (sigma, which adds). So \(\prod_{i=0}^{t-1}(1+r_i)\) means multiply together \((1+r_0)(1+r_1)(1+r_2)\cdots(1+r_{t-1})\). This formula is exact: it handles a different growth rate every year. If you know every annual \(r\), you can project the population precisely.</p>
+  <p>Equivalently, rearranging this formula gives the <strong>backward projection</strong>:
+  \[K_0 = \frac{K_t}{\prod_{i=0}^{t-1}(1+r_i)}\]
+  Demographers use backward projection — sometimes called "reverse survival" — to estimate historical populations from more recent, reliable data.</p>
+</div>
+
+<h3>Finding the Average Growth Rate</h3>
+
+<p>In practice we often want a single "average" rate summarising a period. Suppose \(r\) is the same every year. Then all 26 factors are equal and the product simplifies:</p>
+
+\[
+  K_{2026} = K_{2000}(1+r)^{26}
+\]
+
+<p>More generally: \(K_t = K_0(1+\bar{r})^t\). Solve for \(\bar{r}\) by taking the \(t\)-th root of both sides:</p>
+
+\[
+  \frac{K_t}{K_0} = (1+\bar{r})^t
+  \;\implies\;
+  \left(\frac{K_t}{K_0}\right)^{1/t} = 1 + \bar{r}
+  \;\implies\;
+\]
+
+<div class="formula-block">
+  <div class="flabel">Geometric Growth Model &amp; Solving for r̄</div>
+  \[
+    K_t = K_0\,(1+\bar r)^t
+    \qquad\Longrightarrow\qquad
+    \bar r = \left(\frac{K_t}{K_0}\right)^{\!1/t} - 1
+  \]
+</div>
+
+<p>All we need is a starting population, an ending population, and the time elapsed. This can be computed on a napkin.</p>
+
+<div class="callout intuition">
+  <div class="callout-title">💡 Intuition — Why Not Just Average the Annual Rates?</div>
+  <p>Suppose a population grows 50% in year 1 then falls 50% in year 2. The arithmetic average of +50% and −50% is zero — suggesting no net change. But: \(1.5 \times 0.5 = 0.75\). The population has actually <em>shrunk</em> by 25%! The correct "average" for compounding processes is the <strong>geometric mean</strong> — which is exactly what \((K_t/K_0)^{1/t} - 1\) computes. This is why financial advisors use compound annual growth rates (CAGR) rather than arithmetic averages. Same principle, same formula.</p>
+</div>
+
+<h3>Compounding More Frequently</h3>
+
+<p>Nothing forces us to compound once a year. If births and deaths happen continuously — which they do — what is the right model? Suppose we compound \(n\) times per year at annual rate \(r\):</p>
+
+<div class="formula-block">
+  \[
+    K_t = K_0\left(1 + \frac{r}{n}\right)^{nt}
+  \]
+</div>
+
+<p>As \(n\) increases (more frequent compounding), the result grows slightly. What is the limit as \(n \to \infty\)? This is the question that leads us from the discrete geometric model to the continuous exponential one — and to the number \(e\).</p>
+
+<!-- ==================== SECTION 5 ==================== -->
+<h2 id="s5"><span class="section-num">5</span> The Number <em>e</em> and Exponential Growth</h2>
+
+<div class="formula-block">
+  <div class="flabel">The Key Limit</div>
+  \[
+    \lim_{n \to \infty} \left(1 + \frac{r}{n}\right)^{n} = e^r
+    \qquad\text{where}\qquad
+    e = \lim_{n\to\infty}\!\left(1+\tfrac{1}{n}\right)^n = 2.71828\ldots
+  \]
+</div>
+
+<p>So continuous compounding at rate \(r\) over \(t\) years gives:</p>
+
+<div class="formula-block">
+  <div class="flabel">Exponential Growth</div>
+  \[
+    K_t = K_0\,e^{rt}
+  \]
+</div>
+
+<p>To see the limit converging, here is the sequence Chung wrote on the board for \(r=1\):</p>
+
+<table class="data-table" style="max-width:340px; margin:1.2rem 0;">
+  <tr><th>\(n\)</th><th>\(\bigl(1+\tfrac{1}{n}\bigr)^n\)</th></tr>
+  <tr><td>1</td><td>2</td></tr>
+  <tr><td>2</td><td>2.25</td></tr>
+  <tr><td>10</td><td>2.5937…</td></tr>
+  <tr><td>100</td><td>2.7048…</td></tr>
+  <tr><td>\(\infty\)</td><td>\(e \approx 2.71828\)</td></tr>
+</table>
+
+<div class="callout history">
+  <div class="callout-title">🏛️ Historical Note — Where Does <em>e</em> Come From?</div>
+  <p>The number \(e\) was first investigated by <strong>Jacob Bernoulli</strong> (1655–1705), who asked: if you invest £1 at 100% annual interest, and you compound it infinitely often, how much do you end up with? The answer: £\(e \approx\) £2.718. The notation "\(e\)" was introduced by <strong>Leonhard Euler</strong> (1707–1783) — some say "e" for "exponential," others say it was simply the next unused letter. Euler proved it was irrational; it is now known to be transcendental (cannot be the root of any polynomial with rational coefficients — an even stronger property than being irrational). Its decimal expansion: 2.71828182845904523536…, never repeating, never ending.</p>
+</div>
+
+<div class="callout definition">
+  <div class="callout-title">📖 Definition — The Natural Logarithm</div>
+  <p>The <strong>natural logarithm</strong> \(\ln(x)\) (sometimes written \(\log_e(x)\) or just \(\log\) in demography) is the inverse of \(e^x\): if \(e^y = x\), then \(\ln(x) = y\). Key properties you'll need throughout this course:</p>
+  <ul>
+    <li>\(\ln(e^x) = x\) &nbsp;—&nbsp; they undo each other</li>
+    <li>\(\ln(ab) = \ln a + \ln b\) &nbsp;—&nbsp; log turns multiplication into addition</li>
+    <li>\(\ln(a/b) = \ln a - \ln b\) &nbsp;—&nbsp; log turns division into subtraction</li>
+    <li>\(\ln(a^t) = t\ln(a)\) &nbsp;—&nbsp; log turns exponentiation into multiplication</li>
+  </ul>
+  <p>These properties are what make logarithms so useful for demography — they let us work with ratios and growth rates using addition and subtraction instead of multiplication and powers.</p>
+</div>
+
+<div class="callout note">
+  <div class="callout-title">📝 Calculus Refresher — Why Logs Are Everywhere in Demography</div>
+  <p>The natural log is the inverse of the exponential, which is why it appears whenever we want to "undo" exponential growth. If populations grow exponentially, then the log of population grows <em>linearly</em> — and linear things are much easier to work with. Plotting \(\ln K\) against \(t\) turns a curve into a straight line, whose slope you can read off directly as \(r\).</p>
+  <p>The log also turns multiplication into addition: \(\ln(K_t / K_0) = \ln K_t - \ln K_0\). This matters because demographic growth is multiplicative (we multiply each year's population by a factor), and the log converts that multiplication into something additive that we can average, subtract, and compare. Any time you see \(\ln\) in a demographic formula, it is almost always doing one of these two jobs: linearising an exponential, or converting a ratio into a difference.</p>
+  <p><strong>Quick check:</strong> \(\ln(e^x) = x\). So if \(K_t = K_0 e^{rt}\), then \(\ln K_t = \ln K_0 + rt\). Rearranging: \(r = (\ln K_t - \ln K_0) / t\). This is the formula for \(r\) — it drops straight out of the log of the exponential model.</p>
+</div>
+
+<p>We now have two very similar models. Chung's point: <strong>by construction they are very closely related</strong> — so closely that in formal demography we can use them interchangeably, choosing whichever is easier for the calculation at hand. What matters is the product \(r \cdot t\): when that is small, the two are virtually indistinguishable; for large \(r\) or long \(t\) they diverge.</p>
+
+<table class="eq-table">
+  <tr><th>Model</th><th>Formula</th><th>When to use</th></tr>
+  <tr><td>Geometric (discrete)</td><td>\(K_t = K_0(1+r)^t\)</td><td>Annual data, discrete time steps</td></tr>
+  <tr><td>Exponential (continuous)</td><td>\(K_t = K_0\,e^{rt}\)</td><td>Continuous processes, clean maths</td></tr>
+</table>
+
+<p>Both can be written \(K_t = K_0 A^t\) with \(A = 1+r\) or \(A = e^r\) respectively. For typical demographic growth rates (under ~5% per year), the difference is less than 0.1% — genuinely interchangeable in practice. The exponential form is usually preferred because calculus works cleanly with it.</p>
+
+<div class="callout note">
+  <div class="callout-title">📝 Solving for r — Log-linearisation</div>
+  <p>Given start and end populations, the continuous growth rate is:</p>
+  \[r = \frac{\ln K_t - \ln K_0}{t}\]
+  <p>This is the <strong>slope of log-population plotted against time</strong>. A straight line on a log-population graph means constant exponential growth. The slope of that line is \(r\). This is one of the most useful diagnostic tools in demography.</p>
+</div>
+
+<!-- WIDGET 1 -->
+<div class="widget">
+  <div class="widget-title">Widget 1 — Compounding Frequency Explorer</div>
+  <div class="widget-subtitle">How much does compounding frequency matter? Drag the sliders and see annual vs continuous compounding converge.</div>
+
+  <div class="sr">
+    <label>Annual rate <em>r</em></label>
+    <input type="range" id="w1r" min="1" max="30" value="10" oninput="upW1()">
+    <span class="sv" id="w1rv">10%</span>
+  </div>
+  <div class="sr">
+    <label>Time horizon <em>t</em> (years)</label>
+    <input type="range" id="w1t" min="1" max="50" value="10" oninput="upW1()">
+    <span class="sv" id="w1tv">10</span>
+  </div>
+  <div class="chart-box-sm"><canvas id="c1"></canvas></div>
+  <div class="wo" id="w1o"></div>
+</div>
+
+
+<!-- ==================== SECTION 6 ==================== -->
+<h2 id="s6"><span class="section-num">6</span> Log-Linear Diagnostics: Is Growth Exponential?</h2>
+
+<p>We just derived that \(r = (\ln K_t - \ln K_0)/t\). This has an immediate visual implication. If we plot \(\ln K\) against \(t\), that formula is telling us the slope of a straight line between any two points. So: <em>if exponential growth holds, the log-population plot must be a straight line</em>. Chung's phrase from the slides: "the diagnostic is to plot \(\log K_t\) against \(t\) — if this looks straight (linear), then growth is exponential." This turns an abstract model assumption into something you can simply look at.</p>
+
+<ul>
+  <li><strong>Straight line</strong> on log scale → constant exponential growth</li>
+  <li><strong>Curves upward</strong> → growth rate is accelerating</li>
+  <li><strong>Curves downward</strong> → growth rate decelerating (fertility transition, approaching a limit)</li>
+  <li><strong>Flattens</strong> → population stabilising</li>
+</ul>
+
+<div class="callout demography">
+  <div class="callout-title">📊 Why This Matters for Demography</div>
+  <p>World population on a log scale shows a striking story: broadly linear (constant exponential growth) from the Neolithic to about 1800, then a sharp upward curve as death rates fell faster than birth rates during the Industrial Revolution and public health improvements, then a deceleration from around 1970 as the <strong>fertility transition</strong> spread globally. Each kink in the log-plot corresponds to a major demographic event. The log scale also has a practical advantage: a doubling from 1 billion to 2 billion looks the same size on the y-axis as a doubling from 4 billion to 8 billion — because both represent the same proportionate change. Proportionate changes are what matter in demography.</p>
+</div>
+
+<!-- WIDGET 2 -->
+<div class="widget">
+  <div class="widget-title">Widget 2 — Population Projection &amp; Log-Scale Diagnostic</div>
+  <div class="widget-subtitle">Project a population forward under exponential growth. Toggle between linear and log scale. On the log scale, exponential growth is a straight line — check it!</div>
+
+  <div class="sr">
+    <label>Starting population \(K_0\) (millions)</label>
+    <input type="range" id="w2k" min="10" max="1000" value="100" oninput="upW2()">
+    <span class="sv" id="w2kv">100M</span>
+  </div>
+  <div class="sr">
+    <label>Growth rate \(r\) (% per year, ×0.1)</label>
+    <input type="range" id="w2r" min="-30" max="50" value="12" oninput="upW2()">
+    <span class="sv" id="w2rv">1.2%</span>
+  </div>
+  <div class="sr">
+    <label>Years to project</label>
+    <input type="range" id="w2t" min="20" max="200" value="100" oninput="upW2()">
+    <span class="sv" id="w2tv">100</span>
+  </div>
+  <div class="btn-group">
+    <button class="tbtn active" id="btnLin" onclick="setScale('linear')">Linear scale</button>
+    <button class="tbtn"        id="btnLog" onclick="setScale('log')">Log scale</button>
+  </div>
+  <div class="chart-box"><canvas id="c2"></canvas></div>
+  <div class="wo" id="w2o"></div>
+</div>
+
+
+<!-- ==================== SECTION 7 ==================== -->
+<h2 id="s7"><span class="section-num">7</span> Doubling Times, Half-Lives, and the Rule of 70</h2>
+
+<p>Having established the exponential model and how to estimate \(r\) from data, we can now use it to ask a simple but powerful question: given a growth rate, how long until the population doubles? This is a direct application of the model — set the end population to twice the start, and solve for time using the log. The calculation is a one-liner, but the result is one of the most useful rules of thumb in all of demography.</p>
+
+<div class="formula-block">
+  <div class="flabel">Doubling Time — Derivation</div>
+  \[
+    K_t = 2K_0 \;=\; K_0 e^{rt}
+    \;\implies\; 2 = e^{rt}
+    \;\implies\; \ln 2 = rt
+    \;\implies\; t_{\text{double}} = \frac{\ln 2}{r} \approx \frac{0.693}{r}
+  \]
+</div>
+
+<h3>The Rule of 70</h3>
+
+<p>Since \(\ln 2 \approx 0.693 \approx 0.70\), and if \(r\) is expressed as a percentage:</p>
+
+<div class="formula-block">
+  <div class="flabel">Rule of 70 — Mental Arithmetic Shortcut</div>
+  \[
+    t_{\text{double}} \approx \frac{70}{r_\%}
+    \qquad\text{where }r_\%\text{ is the rate in percent (e.g. 2\% → use 2)}
+  \]
+</div>
+
+<p>A population growing at 2%/year doubles in roughly 35 years. At 3.5%, it doubles in 20 years. At 1%, about 70 years. This requires no calculator — hence "mental arithmetic."</p>
+
+<div class="callout intuition">
+  <div class="callout-title">💡 Intuition — Why 70 and not 69.3?</div>
+  <p>\(\ln 2 \times 100 = 69.31\ldots\) so strictly it should be the "rule of 69.3." We use 70 because it has many useful factors (2, 5, 7, 10, 14, 35) making mental division easier. Some books use 72, which works better for interest rates around 6–10% (ask a banker). For demographic growth rates, which are typically under 3%, the rule of 70 is more accurate than the rule of 72.</p>
+</div>
+
+<h3>Halving Times and Half-Lives</h3>
+
+<p>For a <em>declining</em> population (or any exponentially decaying quantity), the same logic gives the halving time. Set \(K_t = \tfrac{1}{2}K_0\):</p>
+
+<div class="formula-block">
+  <div class="flabel">Halving Time — Derivation</div>
+  \[
+    \tfrac{1}{2}K_0 = K_0 e^{rt}
+    \;\implies\; \tfrac{1}{2} = e^{rt}
+    \;\implies\; \ln\!\left(\tfrac{1}{2}\right) = rt
+    \;\implies\; t_{\text{half}} = \frac{-\ln 2}{r} \approx \frac{-0.693}{r}
+  \]
+  For a declining population, \(r < 0\), so this is positive. Note also: \(\ln(\tfrac{1}{2}) = \ln 1 - \ln 2 = 0 - \ln 2 = -\ln 2 \approx -0.693\).
+</div>
+
+<p>Both the doubling and halving time are special cases of a single general formula. For any multiplicative factor \(M\):</p>
+
+<div class="formula-block">
+  <div class="flabel">General Form — Time to Reach Factor \(M\)</div>
+  \[
+    t = \frac{\ln M}{r}
+    \qquad\Longleftrightarrow\qquad
+    r = \frac{\ln M}{t}
+  \]
+  <p style="color:#94a3b8; font-size:.88rem; margin-top:.5rem;">Set \(M=2\) for doubling time; \(M=\frac{1}{2}\) for halving time. Works for any growth or decay process.</p>
+</div>
+
+<div class="callout history">
+  <div class="callout-title">🏛️ Historical Note — Half-Lives and Radioactive Decay</div>
+  <p>The concept of exponential decay and the half-life was first precisely described by <strong>Ernest Rutherford</strong> and <strong>Frederick Soddy</strong> around 1900–1902, studying radioactive transmutation. The same differential equation \(dN/dt = rN\) (with \(r < 0\)) governs both population decline and radioactive decay — because in both cases, each "unit" (person, atom) has a fixed independent probability of "leaving" per unit time.</p>
+  <p>Two examples from the notes: <strong>Carbon-14</strong> half-life: 5,730 years — the basis of radiocarbon dating (devised by Willard Libby, 1949 Nobel Prize). <strong>Iodine-131</strong> half-life: just 8 days — it concentrates in the thyroid and is the primary short-term radiation hazard in nuclear accidents like Chernobyl and Fukushima.</p>
+  <p>Connecting these two domains — demographic and physical decay — is a good example of what formal demography is about: recognising the same mathematical structure in different real-world phenomena.</p>
+</div>
+
+<!-- WIDGET 3 -->
+<div class="widget">
+  <div class="widget-title">Widget 3 — Doubling Time Calculator &amp; Rule of 70</div>
+  <div class="widget-subtitle">Compare the exact formula to the Rule of 70 approximation across all growth rates.</div>
+
+  <div class="sr">
+    <label>Growth rate \(r\) (% per year, ×0.1)</label>
+    <input type="range" id="w3r" min="2" max="150" value="20" oninput="upW3()">
+    <span class="sv" id="w3rv">2.0%</span>
+  </div>
+  <div class="chart-box-sm"><canvas id="c3"></canvas></div>
+  <div class="wo" id="w3o"></div>
+</div>
+
+
+<!-- ==================== SECTION 8 ==================== -->
+<h2 id="s8"><span class="section-num">8</span> Deep History: Why <em>r</em> Was Nearly Zero</h2>
+
+<p>We know how to compute \(r\) from any two population figures. Let us now actually do that for the sweep of human history. The numbers are striking enough that Chung dwells on them before moving to the stationary population identity. The implication — that \(r \approx 0\) for almost all of human existence — is not just a historical curiosity. It turns out to be the key to understanding the relationship between birth rates and life expectancy. If a population was near-stationary for long periods, then \(b\) and \(d\) must have been almost equal. That near-equality has a beautiful mathematical consequence.</p>
+
+<table class="data-table">
+  <tr><th>Period</th><th>Approx. World Population</th><th>Implied avg. <em>r</em> per year</th></tr>
+  <tr><td>200,000 BC</td><td>~2,000</td><td>—</td></tr>
+  <tr><td>80,000 BC</td><td>~5 million</td><td>~0.009% (1 in 11,000/yr)</td></tr>
+  <tr><td>1 AD</td><td>~200 million</td><td>~0.06%</td></tr>
+  <tr><td>1750</td><td>~750 million</td><td>~0.06%</td></tr>
+  <tr><td>1950</td><td>~2.5 billion</td><td>~0.5%</td></tr>
+  <tr><td>2000</td><td>~6 billion</td><td>~1.8%</td></tr>
+  <tr><td>2025</td><td>~8 billion</td><td>~1.0%</td></tr>
+</table>
+
+<p>For most of human history, \(r \approx 0\). This means \(b \approx d\): births roughly equalled deaths every year. The doubling time was on the order of ten thousand years. The population explosion of the past two centuries is, on the timescale of human existence, an extraordinary aberration.</p>
+
+<p>But there is a deeper implication. If \(r \approx 0\) then \(b \approx d\). We know what \(b\) is — births per person per year. What, precisely, is \(d\)? Chung now makes a move that looks like a detour but is actually the heart of the argument.</p>
+
+<div class="callout intuition">
+  <div class="callout-title">💡 Intuition — What is the Death Rate, Really?</div>
+  <p>Think of deaths as repeating events that happen at a <em>frequency</em>. If deaths occur at a rate of \(d\) per person per year, then each person contributes \(1/d\) years before dying. That is: frequency and duration are reciprocals of each other — exactly as in wave physics.</p>
+  <p>Chung draws a wave on the board. If a wave completes \(d\) cycles per year, then each cycle takes \(1/d\) years. In the same way: deaths happen at frequency \(d\), so the average duration between birth and death is \(1/d\). And what do we call the average duration of a person's life? <strong>Life expectancy at birth, \(e_0\)</strong>.</p>
+  <p>Therefore: \(d = 1/e_0\), or equivalently, \(e_0 = 1/d\). The death rate is the reciprocal of life expectancy. This isn't an approximation — it's a definition, once you think about it carefully. It's a version of Little's Law, which we meet next.</p>
+</div>
+
+<p>From this and \(r = b - d \approx 0\), we get \(b \approx d = 1/e_0\), which rearranges to:</p>
+
+\[b \cdot e_0 \approx 1\]
+
+<p>This is the stationary population identity — derived from first principles, not assumed. Section 9 formalises it, names it, and explores what happens when we relax the stationarity assumption.</p>
+
+
+<!-- ==================== SECTION 9 ==================== -->
+<h2 id="s9"><span class="section-num">9</span> Little's Law and the Stationary Population Identity</h2>
+
+<p>We derived \(b \cdot e_0 \approx 1\) informally in the previous section. Here Chung puts it on a firm footing, connects it to a classical result from operations research, and generalises it to populations that are not stationary. The result is simple enough to be a cocktail party fact, but deep enough to underpin the whole of stable population theory.</p>
+
+<p>In a stationary population (\(r = 0\) for a long time), \(b \approx d = 1/e_0\). Rearranging:</p>
+
+<div class="formula-block">
+  <div class="flabel">The Stationary Population Identity</div>
+  \[
+    b \cdot e_0 = 1
+  \]
+</div>
+
+<p>This is an elegant, almost shocking result: the birth rate times life expectancy equals one. Let's verify with real data. The US, just before COVID (2018–2019):</p>
+<ul>
+  <li>Life expectancy: \(e_0 \approx 79\) years</li>
+  <li>Crude birth rate: \(b \approx 12.4\) per 1,000 = 0.0124 per person per year</li>
+  <li>Product: \(0.0124 \times 79 = 0.98 \approx 1\) ✓</li>
+</ul>
+
+<p>Chung calls this a "cocktail party fact." It sounds mysterious, but by now we can see exactly why it must be true for a stationary population.</p>
+
+<div class="callout history">
+  <div class="callout-title">🏛️ Historical Note — Little's Law</div>
+  <p>The formal result \(L = \lambda W\) — "the long-run average number of items in a queuing system equals the average arrival rate times the average time an item spends in the system" — was proved rigorously by the American mathematician <strong>John Little</strong> in 1961, originally in the context of operations research and queuing theory (the mathematics of waiting lines). In demography, the "queue" is the population, the "arrival rate" is \(b\), and the "time in system" is \(e_0\). Little's proof is remarkable because it requires almost no assumptions about the distribution of arrival times or lifespans — it holds for virtually any stationary system. The same identity governs hospital wards, manufacturing plants, internet routers, and human populations.</p>
+</div>
+
+<h3>What Happens When \(r \neq 0\)?</h3>
+
+<p>Since \(r = b - d\) and \(d = 1/e_0\), we have \(b = r + 1/e_0\). Multiply both sides by \(e_0\):</p>
+
+\[
+  b \cdot e_0 = r \cdot e_0 + 1
+\]
+
+<p>This gives us the general case. For a stationary population \(r=0\), so \(b \cdot e_0 = 1\) exactly. Otherwise:</p>
+<ul>
+  <li>If \(r > 0\): \(b \cdot e_0 = 1 + r\,e_0 > 1\) — births exceed deaths, population grows.</li>
+  <li>If \(r < 0\): \(b \cdot e_0 = 1 + r\,e_0 < 1\) — deaths exceed births, population declines.</li>
+</ul>
+
+<p>The full <strong>stable population theory</strong> — which we will see later in the week — makes this relationship precise for any value of \(r\).</p>
+
+<!-- WIDGET 4 -->
+<div class="widget">
+  <div class="widget-title">Widget 4 — The Stationary Population Identity: \(b \cdot e_0 = 1\)</div>
+  <div class="widget-subtitle">Explore the relationship between birth rate and life expectancy. The dashed curve is the hyperbola b·e₀ = 1. Real historical populations are plotted — how close are they?</div>
+
+  <div class="sr">
+    <label>Crude birth rate \(b\) (per 1,000/yr)</label>
+    <input type="range" id="w4b" min="5" max="58" value="12" oninput="upW4()">
+    <span class="sv" id="w4bv">12‰</span>
+  </div>
+  <div class="sr">
+    <label>Life expectancy \(e_0\) (years)</label>
+    <input type="range" id="w4e" min="20" max="90" value="79" oninput="upW4()">
+    <span class="sv" id="w4ev">79</span>
+  </div>
+  <div class="chart-box" style="height:300px"><canvas id="c4"></canvas></div>
+  <div class="wo" id="w4o"></div>
+</div>
+
+
+<!-- ==================== SECTION 10 ==================== -->
+<h2 id="s10"><span class="section-num">10</span> What Fraction of All People Ever Born Are Alive Today?</h2>
+
+<p>We now have all the machinery we need for one of the most elegant calculations in demography: estimating the total number of people who have ever lived. This is Chung's favourite demonstration that the exponential model, combined with the stationary population identity, can answer questions that seem completely intractable. It also requires us to actually <em>integrate</em> for the first time — so this is the moment to get comfortable with what an integral means.</p>
+
+<div class="callout note">
+  <div class="callout-title">📝 Calculus Refresher — What an Integral Actually Is</div>
+  <p>An integral \(\int_a^b f(x)\,dx\) is just the area under the curve \(f(x)\) between \(x=a\) and \(x=b\). Think of it as adding up infinitely many thin rectangles, each of width \(dx\) and height \(f(x)\). For a population \(K(t)\), the integral \(\int_{t_1}^{t_2} K(t)\,dt\) is the total area under the population-vs-time curve: that area equals the total number of person-years lived in the interval.</p>
+  <p>You only need one integration rule here: \(\int e^{rx}\,dx = \frac{1}{r}e^{rx} + C\). The exponential integrates to itself, divided by the coefficient in the exponent. (The constant \(C\) disappears when you apply limits.) This rule holds because differentiation and integration are inverse operations, and \(\frac{d}{dx}e^{rx} = r\,e^{rx}\), so the anti-derivative must be \(\frac{1}{r}e^{rx}\).</p>
+  <p><strong>Sanity check:</strong> differentiate \(\frac{1}{r}e^{rx}\) and you should get back \(e^{rx}\). Yes: \(\frac{d}{dx}\frac{1}{r}e^{rx} = \frac{1}{r} \cdot r \cdot e^{rx} = e^{rx}\). ✓</p>
+</div>
+
+<div class="callout history">
+  <div class="callout-title">🏛️ Historical Note — Nathan Keyfitz (1913–2010)</div>
+  <p>Keyfitz was born in Montreal, and spent much of his career at Harvard and Ohio State. Chung describes him as "probably the most influential mathematical demographer of his generation." His central contribution was finding elegant approximations and rules of thumb that made demographic computation tractable before computers — and that gave insight into <em>why</em> the results came out as they did, rather than just <em>what</em> the answer was. This philosophy is the spirit of the entire course. A related, more widely-read version of the "total births ever" calculation was published by <strong>Carl Haub</strong> (Population Reference Bureau, 2011).</p>
+</div>
+
+<h3>Setting Up the Integral</h3>
+
+<p>If population grows at constant rate \(r\), and birth rate \(b\) is constant, births at time \(t\) are:</p>
+
+<div class="formula-block">
+  \[ B(t) = b \cdot K(t) = b \cdot K_0\,e^{rt} = B(0)\,e^{rt} \]
+</div>
+
+<p>Births themselves grow exponentially at the same rate \(r\). Total births from time \(a\) to \(b\) (using \(b\) as the upper limit here, not the birth rate) is the area under the exponential birth curve:</p>
+
+<div class="formula-block">
+  <div class="flabel">Total Births Over a Period — Full Derivation</div>
+  \[
+    \int_a^b B(x)\,dx
+    = \int_a^b B(0)\,e^{rx}\,dx
+    = B(0)\int_a^b e^{rx}\,dx
+    = B(0)\cdot\frac{1}{r}\,e^{rx}\Big|_a^b
+  \]
+  \[
+    = \frac{B(0)}{r}\left[e^{rb} - e^{ra}\right]
+    = \frac{B(0)e^{rb} - B(0)e^{ra}}{r}
+    = \frac{B(b) - B(a)}{r}
+  \]
+</div>
+
+<p>The last step uses \(B(b) = B(0)e^{rb}\) and \(B(a) = B(0)e^{ra}\). So the integral collapses to just the difference of two birth-function values divided by \(r\) — no need to know \(B(0)\) at all.</p>
+
+<div class="callout intuition">
+  <div class="callout-title">💡 Intuition — Integrating an Exponential</div>
+  <p>The key fact: \(\int e^{rx}\,dx = \frac{1}{r}e^{rx} + C\). The exponential integrates to itself, divided by the coefficient in the exponent. So the total births formula reduces to (end births minus start births) divided by \(r\). Simple, elegant, and surprising — the integral of the whole history collapses to something you can compute from just two numbers and the growth rate.</p>
+</div>
+
+<h3>Rewriting in Terms of Observable Quantities</h3>
+
+<p>We know \(r\) from the births themselves: since \(B(t) = B(0)e^{rt}\), we have \(r = \log B(t) - \log B(0)\) divided by \(t\). Substituting this expression for \(r\) back into \(\frac{B(b)-B(a)}{r}\) and taking the interval length as \(t = b - a\):</p>
+
+\[
+  r = \frac{\log B(b) - \log B(a)}{b - a}
+\]
+
+\[
+  \int_a^b B(x)\,dx = \frac{B(b) - B(a)}{r} = \frac{B(b)-B(a)}{\dfrac{\log B(b) - \log B(a)}{b-a}}
+\]
+
+<div class="formula-block">
+  <div class="flabel">Total Births — Final Usable Form</div>
+  \[
+    \int_{t_1}^{t_2} B(x)\,dx
+    = \frac{B(t_2) - B(t_1)}{\log B(t_2) - \log B(t_1)} \cdot (t_2 - t_1)
+    = \frac{\text{ending pop} - \text{starting pop}}{\log(\text{ending}) - \log(\text{starting})} \cdot \Delta t
+  \]
+</div>
+
+<p>This is the form Keyfitz actually computed. For the period −200,000 BC to −8,000 BC, plugging in \(K_1 \approx 2{,}000\) and \(K_2 \approx 5{,}000{,}000\) with \(b \approx 0.055\), \(\Delta t = 192{,}000\) years gives approximately 24 billion total births for that era alone. Summing across all historical periods gives <strong>~80 billion total births</strong>.</p>
+
+<div class="callout intuition">
+  <div class="callout-title">💡 Intuition — Why Is the Fraction So High?</div>
+  <p>10% sounds shocking — surely most people who ever lived died long ago? But consider: exponential growth means recent history is disproportionately large. The 20th century alone saw more people born than all preceding centuries combined (because the population base was so much larger). The cumulative total of births is dominated by the recent past, where populations were huge. So while most people who ever <em>died</em> did so in the distant past, most people who were ever <em>born</em> were born relatively recently. The fraction alive today is surprisingly high precisely because we are living in an unprecedented era of population size.</p>
+</div>
+
+<!-- WIDGET 5 -->
+<div class="widget">
+  <div class="widget-title">Widget 5 — The Keyfitz Calculation: Total Births Ever</div>
+  <div class="widget-subtitle">Births per historical era, estimated from the integral formula. Rough assumptions, but illustrates the method.</div>
+  <div class="chart-box"><canvas id="c5"></canvas></div>
+  <div class="wo" id="w5o"></div>
+</div>
+
+
+<!-- ==================== SECTION 11 ==================== -->
+<h2 id="s11"><span class="section-num">11</span> Taylor Series and Rules of Thumb</h2>
+
+<p>The Keyfitz calculation used two things from the exponential model: the integral of \(e^{rt}\), and the formula \(r = \ln(K_t/K_0)/t\). Both required taking the model on faith. Now Chung steps back and asks a deeper question: <em>why</em> is \(\ln(1+r) \approx r\) for small \(r\)? Why does \((1+r)^t \approx e^{rt}\)? The answer is Taylor series — the mechanism behind almost every approximation and rule of thumb in formal demography. Once you understand it, you can derive shortcuts yourself rather than just using ones handed to you.</p>
+
+<div class="callout note">
+  <div class="callout-title">📝 Calculus Refresher — Derivatives, Briefly</div>
+  <p>The Taylor series requires derivatives. A derivative \(f'(x)\) measures the rate of change of \(f\) at the point \(x\) — the slope of the tangent line. A few rules you need:</p>
+  <ul>
+    <li>The derivative of a constant is zero: \(\frac{d}{dx} c = 0\)</li>
+    <li>The power rule: \(\frac{d}{dx} x^n = n x^{n-1}\) — e.g., \(\frac{d}{dx} x^3 = 3x^2\)</li>
+    <li>The exponential rule: \(\frac{d}{dx} e^{rx} = r e^{rx}\) — the exponential is its own derivative, scaled</li>
+    <li>The log rule: \(\frac{d}{dx} \ln x = 1/x\)</li>
+  </ul>
+  <p>The higher-order derivatives \(f''(x)\), \(f'''(x)\), and so on are just derivatives of derivatives: differentiate once, then differentiate the result. In the Taylor series derivation below, we need to differentiate a polynomial three times — it is purely mechanical application of the power rule.</p>
+</div>
+
+<h3>Deriving the Coefficients</h3>
+
+<p>Start by assuming any smooth function can be written as a polynomial:</p>
+\[f(x) = a_0 + a_1 x + a_2 x^2 + a_3 x^3 + \cdots\]
+
+<p>Now evaluate at \(x=0\): \(f(0) = a_0\). Differentiate and evaluate at 0:</p>
+\[
+  f'(x) = a_1 + 2a_2 x + 3a_3 x^2 + \cdots \implies f'(0) = a_1
+\]
+\[
+  f''(x) = 2a_2 + 2\cdot 3\,a_3 x + \cdots \implies f''(0) = 2a_2
+\]
+\[
+  f'''(x) = 2\cdot 3\,a_3 + 2\cdot 3\cdot 4\,a_4 x + \cdots \implies f'''(0) = 2\cdot 3\cdot a_3
+\]
+
+<p>Solving for each coefficient: \(a_0 = f(0)\), \(a_1 = f'(0)\), \(a_2 = f''(0)/2\), \(a_3 = f'''(0)/(2\cdot 3)\), and so on. Substituting back gives the <strong>Maclaurin (Taylor at 0) series</strong>:</p>
+
+<div class="formula-block">
+  <div class="flabel">Taylor Series — Derivation</div>
+  \[
+    f(x) = f(0) + f'(0)\,x + \frac{f''(0)}{2!}\,x^2 + \frac{f'''(0)}{3!}\,x^3
+           + \frac{f^{(4)}(0)}{4!}\,x^4 + \cdots
+    = \sum_{n=0}^{\infty} \frac{f^{(n)}(0)}{n!}\,x^n
+  \]
+</div>
+
+<p>Chung's remark: "here's a stupid complicated way to write \(f(x)\)" — but the point is that the first handful of terms usually give an excellent approximation. We don't need the infinite series; just enough to capture the behaviour we care about.</p>
+
+<div class="callout definition">
+  <div class="callout-title">📖 Definition — Taylor Series</div>
+  <p>Any smooth function (one whose derivatives all exist and are continuous) can be written as an infinite polynomial, expanded around a point. The notation \(f^{(n)}(0)\) means the \(n\)-th derivative evaluated at \(x=0\). And \(n!\) (n factorial) means \(1 \times 2 \times 3 \times \cdots \times n\) (so \(3! = 6\), \(4! = 24\)).</p>
+  <p><strong>The key insight:</strong> for small \(x\), the first two or three terms give an excellent approximation. We don't need the infinite series — just enough terms to capture the behaviour we care about.</p>
+</div>
+
+<div class="callout intuition">
+  <div class="callout-title">💡 Intuition — Why Polynomials?</div>
+  <p>A polynomial is the simplest kind of function — you just need addition and multiplication to evaluate it. The Taylor series says: any smooth function can be <em>locally approximated</em> by polynomials, to whatever precision you need. It's like building a complex curve out of straight-line segments: the more segments you use, the better the approximation. In demography, this gives us "good-enough" formulas that can be computed by hand, making the underlying logic transparent.</p>
+</div>
+
+<h3>The Key Comparison: \((1+r)^t\) versus \(e^{rt}\)</h3>
+
+<p>Expanding both models using Taylor series (for small \(r\)):</p>
+
+<div class="formula-block">
+  \[
+    e^{rt} = 1 + rt + \frac{(rt)^2}{2!} + \frac{(rt)^3}{3!} + \cdots
+  \]
+  \[
+    (1+r)^t \approx 1 + rt + \frac{t(t-1)}{2}\,r^2 + \cdots \approx 1 + rt + \frac{(rt)^2}{2} \quad\text{for small }r
+  \]
+</div>
+
+<p>The first two terms — \(1 + rt\) — are identical. This is why the two models are so similar for small rates: they agree on everything up to the first-order approximation. Only the higher-order terms differ.</p>
+
+<p>Other expansions that appear throughout the course:</p>
+
+<table class="eq-table">
+  <tr><th>Function</th><th>Taylor Expansion</th></tr>
+  <tr><td>\(e^x\)</td><td>\(1 + x + \dfrac{x^2}{2!} + \dfrac{x^3}{3!} + \dfrac{x^4}{4!} + \cdots\)</td></tr>
+  <tr><td>\(\ln(1+x)\)</td><td>\(x - \dfrac{x^2}{2} + \dfrac{x^3}{3} - \cdots\) &nbsp; (valid for \(|x|<1\))</td></tr>
+  <tr><td>\(\sin(x)\)</td><td>\(x - \dfrac{x^3}{3!} + \dfrac{x^5}{5!} - \cdots\)</td></tr>
+  <tr><td>\(\cos(x)\)</td><td>\(1 - \dfrac{x^2}{2!} + \dfrac{x^4}{4!} - \cdots\)</td></tr>
+</table>
+
+<div class="callout demography">
+  <div class="callout-title">📊 Why This Matters for Demography</div>
+  <p>Taylor series are the engine behind demographic rules of thumb. For example: \(\ln(1+r) \approx r\) for small \(r\) (from the \(\ln\) expansion above). This means the log of a growth factor is approximately equal to the growth rate — which is why the slope of the log-population graph equals \(r\). Keyfitz's great gift was knowing exactly which approximations were safe to make and which were not. Understanding Taylor series means you can judge for yourself when an approximation breaks down and whether you need more terms.</p>
+</div>
+
+
+<div class="callout note">
+  <div class="callout-title">📝 Another Angle — Why \((1+r)^t \approx e^{rt}\) for Small \(r\)</div>
+  <p>The Taylor expansion of \(e^x\) is \(1 + x + x^2/2 + \ldots\) Setting \(x = rt\): \(e^{rt} = 1 + rt + (rt)^2/2 + \ldots\). Now expand \((1+r)^t\) using the binomial theorem: \((1+r)^t = 1 + tr + \frac{t(t-1)}{2}r^2 + \ldots\). The first two terms are identical: \(1 + rt\). The second-order terms differ slightly — \((rt)^2/2\) vs \(\frac{t(t-1)}{2}r^2\) — but for small \(r\) both are tiny. This is precisely why the two models are interchangeable for small rates: they agree to first order. Chung's note: "I leave it to you to compare them" — but the key point is that both Taylor-expand to \(1 + rt + \ldots\), meaning the first-order behaviour is identical.</p>
+</div>
+
+
+<!-- ==================== SECTION 12 ==================== -->
+<h2 id="s12"><span class="section-num">12</span> Three Equivalent Ways to Write Exponential Growth</h2>
+
+<p>This section is the payoff for learning to differentiate. We have been using \(K(t) = K(0)e^{rt}\) as our model. But Chung now shows that exactly the same model can be written as a differential equation — a statement about <em>rates of change</em> rather than levels. And then as a statement about the slope of \(\log K\). These three forms are genuinely equivalent: any one implies the other two. Depending on what you are trying to do, one form will be more convenient than the others.</p>
+
+<div class="callout note">
+  <div class="callout-title">📝 Calculus Refresher — What a Differential Equation Says</div>
+  <p>A differential equation (ODE) is an equation that involves a function <em>and</em> its derivative. \(\frac{dK}{dt} = rK\) says: "the rate of change of \(K\) with respect to time equals \(r\) times \(K\) itself." This is a constraint on <em>how \(K\) must behave</em>, not just what its value is at one moment.</p>
+  <p>You do not need to know how to solve ODEs to follow this section. The point is just to recognise that \(K(t) = K(0)e^{rt}\) is the function that <em>satisfies</em> this equation — i.e., if you plug \(K(0)e^{rt}\) into the left-hand side and differentiate, you get \(r \cdot K(0)e^{rt}\), which is exactly \(r\) times the right-hand side. The ODE and the explicit formula are two ways of describing the same curve.</p>
+  <p><strong>Key identity used below:</strong> \(\frac{d}{dt}\ln f(t) = \frac{f'(t)}{f(t)}\). This follows from the chain rule: \(\frac{d}{dt}\ln f = \frac{1}{f} \cdot \frac{df}{dt}\). It says that the derivative of the log of a function equals its relative rate of change — which turns out to be exactly \(r\).</p>
+</div>
+
+<div class="three-forms">
+  <div class="form-card">
+    <div class="fn">Form 1 — Direct solution</div>
+    \[ K(t) = K(0)\,e^{rt} \]
+    <div class="fl">Population as explicit function of time. Best for projections and computing.</div>
+  </div>
+  <div class="form-card">
+    <div class="fn">Form 2 — Differential equation</div>
+    \[ \frac{dK}{dt} = r\,K(t) \]
+    <div class="fl">Rate of change proportional to size. Best for modelling and connecting to other systems.</div>
+  </div>
+  <div class="form-card">
+    <div class="fn">Form 3 — Log derivative</div>
+    \[ \frac{d}{dt}\ln K(t) = r \]
+    <div class="fl">Log-population grows linearly. Best for estimation from data and the log-linear plot.</div>
+  </div>
+</div>
+
+<h3>Deriving Form 2 from Form 1</h3>
+
+<p>Start from \(K(t) = K(0)\,e^{rt}\) and differentiate with respect to \(t\):</p>
+
+\[
+  \frac{d}{dt}K(t) = K(0)\cdot r\,e^{rt} = r\cdot\underbrace{K(0)\,e^{rt}}_{=\,K(t)} = r\cdot K(t)
+\]
+
+<p>So \(\dfrac{dK}{dt} = r\,K(t)\). The change in \(K(t)\) is proportional to \(K(t)\) itself, with proportionality constant \(r\). Chung calls this a <strong>differential equation (ODE)</strong> — it is just another way to express the same exponential model.</p>
+
+<h3>What Does \(r\) Mean?</h3>
+
+<p>Divide both sides of \(dK/dt = rK\) by \(K(t)\):</p>
+
+\[
+  r = \frac{\dfrac{d}{dt}K(t)}{K(t)} = \frac{\text{change in }K(t)}{K(t)} = \text{proportional change in }K(t)
+\]
+
+<p>So \(r\) is the <em>instantaneous proportional rate of change</em> of the population. This is what we've been computing all along from \(r = (\ln K_t - \ln K_0)/t\) — now we see it as the slope of \(\log K\) from the ODE perspective.</p>
+
+<h3>Deriving Form 3: The Log Identity</h3>
+
+<p>A standard calculus result: for any positive function \(f(t)\),</p>
+
+\[
+  \frac{d}{dt}\ln f(t) = \frac{f'(t)}{f(t)}
+\]
+
+<p>Apply this with \(f = K\): \(\dfrac{d}{dt}\ln K(t) = \dfrac{K'(t)}{K(t)} = r\). So Form 3 follows directly. This is what we established empirically two sections ago — the slope of \(\log K\) plotted against \(t\) is \(r\). Now we have the ODE proof of that fact.</p>
+
+<div class="callout note">
+  <div class="callout-title">📝 Notation Aside — Subscript vs Functional</div>
+  <p>Chung makes an explicit distinction on the board: \(K_{2026}\) (subscript) refers to a <em>discrete</em> count at a specific calendar year — the multiplicative/geometric model. \(K(2026)\) (functional notation) refers to the <em>continuous</em> exponential model evaluated at 2026. In practice the two are used interchangeably, but the notation signals which world you are in: discrete or continuous.</p>
+</div>
+
+<div class="callout intuition">
+  <div class="callout-title">💡 Intuition — Form 2 in Words</div>
+  <p>"The rate of change of the population is proportional to the size of the population — and the proportionality constant is \(r\)." This is the mathematical fingerprint of any self-reproducing system. More people → more births → faster absolute growth. The same equation governs compound interest, bacterial colonies, viral spread in the early stages of an epidemic, nuclear chain reactions, and the cooling of a hot object toward room temperature (with negative \(r\)). Recognising \(dK/dt = rK\) is like recognising a friend's face — once you see it, you see it everywhere.</p>
+</div>
+
+<div class="callout note">
+  <div class="callout-title">📝 Forward and Backward Projection in Continuous Time</div>
+  <p>From Form 1, we can project in both directions with equal ease:</p>
+  \[ K(t+n) = K(t)\,e^{rn} \quad\text{(forward by \(n\) time units)} \]
+  \[ K(t) = K(t+n)\,e^{-rn} \quad\text{(backward by \(n\) time units)} \]
+  <p>Example from the slides: \(K(2046) = K(2026)\,e^{20r}\). The backward projection is just as valid as the forward one. Demographers use backward projection when they want to estimate historical populations from more recent, reliable data — a technique called "reverse survival."</p>
+</div>
+
+
+<!-- ==================== SECTION 13 ==================== -->
+<h2 id="s13"><span class="section-num">13</span> Logistic Growth and Carrying Capacity</h2>
+
+<p>Now that we have the ODE form of exponential growth — \(dK/dt = rK\) — it is natural to ask: what if we modify it? The exponential ODE assumes the growth rate is constant regardless of population size. But in the real world, growth must eventually slow: land, food, and resources are finite. The logistic model is the simplest possible modification of the ODE that captures this: we multiply the right-hand side by a factor that starts near 1 (when the population is small) and shrinks to 0 (as the population approaches a ceiling). It is a one-line change to the equation, but it produces a qualitatively different and much richer kind of behaviour.</p>
+
+<h3>Building the Equation</h3>
+
+<p>Start from the exponential ODE: \(\dfrac{d}{dt}K(t) = r\,K(t)\). Now multiply the right-hand side by the factor \(\bigl[1 - K(t)/\kappa\bigr]\):</p>
+
+<div class="formula-block">
+  <div class="flabel">The Logistic Equation (Verhulst, 1838)</div>
+  \[
+    \frac{dK}{dt} = r\,K(t)\!\left[1 - \frac{K(t)}{\kappa}\right]
+    = r\,K(t) - \frac{r\,K(t)^2}{\kappa}
+    \qquad\text{(non-linear ODE)}
+  \]
+</div>
+
+<p>The second form — \(rK - rK^2/\kappa\) — makes the feedback structure transparent: a linear growth term minus a quadratic drag term. The system is self-limiting.</p>
+
+<h3>Limiting Behaviour</h3>
+
+<p>The bracket \([1 - K/\kappa]\) does all the work:</p>
+
+<ul>
+  <li><strong>When \(K(t) \ll \kappa\):</strong> \(K(t)/\kappa \approx 0\), so \([1 - K/\kappa] \approx 1\), and \(\dfrac{dK}{dt} \approx rK(t)\) — the usual exponential model. Early growth is indistinguishable from exponential.</li>
+  <li><strong>As \(K(t) \to \kappa\):</strong> \(K(t)/\kappa \to 1\), so \([1 - K/\kappa] \to 0\), and growth decelerates sharply.</li>
+  <li><strong>When \(K(t) = \kappa\):</strong> \([1 - K/\kappa] = 0\), so \(dK/dt = 0\) — the population stops growing exactly at the carrying capacity.</li>
+</ul>
+
+<p>Growth is fastest at \(K = \kappa/2\) — the inflection point of the S-curve — where the linear and quadratic terms are in balance.</p>
+
+<div class="callout definition">
+  <div class="callout-title">📖 Definition — Carrying Capacity</div>
+  <p>The <strong>carrying capacity</strong> \(\kappa\) is the maximum population that an environment can sustainably support. In ecology, it might represent limits on food or territory. In demography, it's a conceptual ceiling — perhaps determined by agricultural capacity, resource constraints, or public health infrastructure. The concept was central to the 1970s "limits to growth" debates and remains important in long-run demographic projections.</p>
+</div>
+
+<div class="callout history">
+  <div class="callout-title">🏛️ Historical Note — Verhulst and the Rediscovery</div>
+  <p><strong>Pierre-François Verhulst</strong> (1804–1849) was a Belgian mathematician working under Adolphe Quetelet — the statistician who coined the Body Mass Index and believed human affairs obeyed mathematical laws. Verhulst published the logistic equation in 1838, named it "logistique," and fitted it to Belgian census data. His work was largely forgotten after his early death at 44.</p>
+  <p>In 1920, American biostatisticians <strong>Raymond Pearl</strong> and <strong>Lowell Reed</strong> independently rediscovered the same equation while trying to model US population growth. They fitted it to census data from 1790 to 1910 and predicted a carrying capacity of 197 million for the US — the US reached 200 million in 1968, passing that ceiling comfortably, which illustrates the carrying capacity's status as a rough model rather than a hard ceiling.</p>
+</div>
+
+<!-- WIDGET 6 -->
+<div class="widget">
+  <div class="widget-title">Widget 6 — Logistic Growth Simulator</div>
+  <div class="widget-subtitle">Watch the S-curve emerge. The red dashed line shows what pure exponential growth would do without a carrying capacity — zooming off to infinity.</div>
+
+  <div class="sr">
+    <label>Intrinsic growth rate \(r\)</label>
+    <input type="range" id="w6r" min="2" max="60" value="15" oninput="upW6()">
+    <span class="sv" id="w6rv">0.15</span>
+  </div>
+  <div class="sr">
+    <label>Carrying capacity \(\kappa\)</label>
+    <input type="range" id="w6k" min="200" max="10000" step="100" value="1000" oninput="upW6()">
+    <span class="sv" id="w6kv">1,000</span>
+  </div>
+  <div class="sr">
+    <label>Initial population \(K_0\)</label>
+    <input type="range" id="w6k0" min="1" max="200" value="10" oninput="upW6()">
+    <span class="sv" id="w6k0v">10</span>
+  </div>
+  <div class="chart-box"><canvas id="c6"></canvas></div>
+  <div class="wo" id="w6o"></div>
+</div>
+
+
+<!-- ==================== SECTION 14 ==================== -->
+<h2 id="s14"><span class="section-num">14</span> Person-Years and the Mid-Period Population</h2>
+
+<p>We close Day 1 with a concept that will reappear constantly: <strong>person-years of exposure</strong>. It is worth pausing to see why this comes last. We began with the balancing equation, which tracked a population stock across time using flows (births and deaths). We converted those flows into rates by dividing by population size. But which population size? The population at the start of the year? The end? The middle? To answer that properly we need to think about how much time the population actually spent being exposed to the risk of the event — and that is exactly what person-years measure. It is the denominator that makes all the rates in demography coherent.</p>
+
+<div class="callout note">
+  <div class="callout-title">📝 Calculus Refresher — The Integral as Area</div>
+  <p>The integral \(\int_{t_1}^{t_2} K(t)\,dt\) is the area under the curve \(K(t)\) between \(t_1\) and \(t_2\). Imagine the population trajectory drawn on a graph: the area of the region between the curve and the horizontal axis is the total person-years lived. If the population is 1,000 for an entire year, the area is \(1000 \times 1 = 1000\) person-years. If it rises linearly from 1,000 to 1,100, the area is the trapezoid with average height 1,050, so \(1050 \times 1 = 1050\) person-years. No advanced calculus needed — just the area of a rectangle or trapezoid.</p>
+</div>
+
+<div class="callout definition">
+  <div class="callout-title">📖 Definition — Person-Years</div>
+  <p>One <strong>person-year</strong> is one person alive for one year. Equivalently: two people alive for half a year, or four people alive for three months. Person-years measure <em>total exposure time</em> — the sum of time lived by all individuals in a population over a period. Formally:</p>
+  \[
+    \text{Person-years between }t_1\text{ and }t_2 = \int_{t_1}^{t_2} K(t)\,dt
+  \]
+  <p>This is the area under the population trajectory between two time points.</p>
+</div>
+
+<p>Evaluating this integral exactly requires knowing \(K(t)\) at every moment — usually we don't. Instead, we use an approximation. The key observation is:</p>
+
+<h3>Deriving the Midpoint Approximation</h3>
+
+<p>If \(K(t)\) is approximately linear over \([t_1, t_2]\), then it can be written \(K(t) \approx K(t_1) + \text{slope} \cdot (t - t_1)\). Integrating a straight line from \(t_1\) to \(t_2\) gives the trapezoid formula:</p>
+
+\[
+  \int_{t_1}^{t_2} K(t)\,dt \;\approx\; (t_2 - t_1)\cdot\frac{K(t_1)+K(t_2)}{2}
+  \quad\text{(average of endpoints × width)}
+\]
+
+<p>But if \(K(t)\) is linear over the interval, the average of the two endpoints equals the midpoint value:</p>
+
+\[
+  \frac{K(t_1)+K(t_2)}{2} \approx K\!\left(\frac{t_1+t_2}{2}\right)
+\]
+
+<p>So both approximations are equivalent when \(K\) is close to linear, and we get:</p>
+
+<div class="formula-block">
+  <div class="flabel">Person-Years — Two Equivalent Approximations</div>
+  \[
+    \int_{t_1}^{t_2} K(t)\,dt
+    \;\approx\; (t_2-t_1)\cdot\frac{K(t_1)+K(t_2)}{2}
+    \;\approx\; (t_2 - t_1) \cdot K\!\left(\tfrac{t_1+t_2}{2}\right)
+  \]
+  <p style="margin-top:.6rem; font-size:.9rem; color:#94a3b8;">Person-years ≈ duration × average population ≈ duration × mid-period population</p>
+</div>
+
+<p>This is illustrated on the board: the shaded rectangle of width \((t_2 - t_1)\) and height \(\frac{K(t_1)+K(t_2)}{2}\) approximates the area under the population curve. The approximation is exact if \(K(t)\) is linear; good if \(K(t)\) is nearly linear over the interval.</p>
+
+<div class="callout demography">
+  <div class="callout-title">📊 Why This Matters for Demography — The Mid-Year Population</div>
+  <p>Almost every demographic rate is defined as: <em>number of events / person-years of exposure</em>. The crude death rate is deaths divided by person-years lived. The crude birth rate is births divided by person-years of population. Because we usually only have annual data (census or estimates), we approximate person-years by using the <strong>mid-year population</strong> (population on July 1st, or the average of January 1st and December 31st). This is the midpoint approximation in action. Using January 1st instead of mid-year would systematically undercount exposure in a growing population. This seemingly minor accounting choice actually matters when computing rates precisely.</p>
+  <p>This is also the conceptual starting point for <strong>life table construction</strong> — the central tool of mortality analysis and the main topic of Day 2.</p>
+</div>
+
+<hr>
+
+<!-- ==================== DAY 1 SUMMARY ==================== -->
+<div class="callout note">
+  <div class="callout-title">📝 Day 1 Summary — What We Have Built</div>
+  <p>Starting from a single counting identity (the balancing equation), everything followed by necessity:</p>
+  <ul>
+    <li><strong>§1–2:</strong> The <strong>balancing equation</strong> — four doors into a population; stocks vs flows</li>
+    <li><strong>§3:</strong> Divide by population size → <strong>crude rates</strong>; additive becomes <strong>multiplicative</strong></li>
+    <li><strong>§4:</strong> Chain one-step rules → <strong>geometric growth</strong> \(K_t = K_0(1+r)^t\); solve for average \(r\)</li>
+    <li><strong>§5:</strong> Let compounding frequency → ∞ → <strong>exponential growth</strong> \(K_t = K_0 e^{rt}\); the number \(e\)</li>
+    <li><strong>§6:</strong> Take the log → <strong>log-linear diagnostic</strong>; slope of \(\ln K\) against \(t\) equals \(r\)</li>
+    <li><strong>§7:</strong> Set \(K_t = 2K_0\), solve → <strong>doubling time</strong> \(\ln 2 / r\); Rule of 70</li>
+    <li><strong>§8–9:</strong> Historical \(r \approx 0\) → \(b \approx d = 1/e_0\) → <strong>stationary identity</strong> \(b \cdot e_0 = 1\)</li>
+    <li><strong>§10:</strong> Births grow exponentially → integrate → <strong>Keyfitz total births</strong> ~80 billion</li>
+    <li><strong>§11:</strong> <strong>Taylor series</strong> — why \((1+r)^t \approx e^{rt}\) and where rules of thumb come from</li>
+    <li><strong>§12:</strong> Differentiate Form 1 → <strong>ODE</strong> \(dK/dt = rK\); three equivalent forms of the same model</li>
+    <li><strong>§13:</strong> Modify the ODE → <strong>logistic growth</strong>; carrying capacity; grandfather of feedback models</li>
+    <li><strong>§14:</strong> Integrate \(K(t)\) → <strong>person-years</strong>; midpoint approximation; the denominator of all rates</li>
+  </ul>
+  <p><strong>Day 2</strong> will build directly on this foundation to introduce the life table — the central tool of mortality analysis — and the stable population model.</p>
+</div>
+
+<div class="callout note">
+  <div class="callout-title">📝 Consolidation — Calculus Moves Used in Day 1</div>
+  <p>If you are rusty on calculus, here are the five operations Day 1 actually required, in order of first appearance. You do not need to derive them from scratch — just recognise them when they appear:</p>
+  <ol style="margin-top:.5rem;">
+    <li><strong>Powers and roots</strong> (§4): \((1+r)^t\) and its inverse \((K_t/K_0)^{1/t}\). Basic algebra of exponents.</li>
+    <li><strong>Limits</strong> (§5): \(\lim_{n\to\infty}(1+r/n)^{nt} = e^{rt}\). The idea is that as you compound more and more frequently, you converge to a fixed value. The table in §5 shows this numerically — you don't need to prove it.</li>
+    <li><strong>Logarithms</strong> (§5–6): \(\ln\) is the inverse of \(e^x\). It turns multiplication into addition and exponentiation into multiplication. Knowing \(\ln(e^{rt}) = rt\) is sufficient for everything in this course.</li>
+    <li><strong>Differentiation</strong> (§12): \(\frac{d}{dt}e^{rt} = r\,e^{rt}\) (the exponential differentiates to itself, scaled by \(r\)), and \(\frac{d}{dt}\ln f = f'/f\) (the chain rule for logs). These two rules generate Forms 2 and 3.</li>
+    <li><strong>Integration</strong> (§10, §14): \(\int e^{rx}\,dx = \frac{1}{r}e^{rx}\) (the anti-derivative of the exponential), and the trapezoid approximation \(\int_{t_1}^{t_2} K\,dt \approx (t_2-t_1)\cdot\frac{K(t_1)+K(t_2)}{2}\) (area of a trapezoid).</li>
+  </ol>
+  <p>If any of these feel shaky, the most productive thing is to practise the log rule \(r = (\ln K_t - \ln K_0)/t\) by plugging in numbers from the historical table in §8. The other operations follow naturally once you are comfortable with logs.</p>
+</div>
+
+
+<!-- =============================================
+     ALL WIDGET JAVASCRIPT
+     ============================================= -->
+<script>
+// ─── Helpers ───────────────────────────────────────────────
+function fmt(n) {
+  if (n >= 1e9)  return (n/1e9).toFixed(2) + 'B';
+  if (n >= 1e6)  return (n/1e6).toFixed(2) + 'M';
+  if (n >= 1e3)  return (n/1e3).toFixed(1) + 'k';
+  return n.toFixed(1);
+}
+const CHART_DEFAULTS = {
+  responsive: true,
+  maintainAspectRatio: false,
+  animation: { duration: 200 },
+  plugins: { legend: { labels: { font: { family: 'sans-serif', size: 12 } } } }
+};
+
+// ─── Widget 1: Compounding Frequency ───────────────────────
+let ch1 = null;
+function upW1() {
+  const r = +document.getElementById('w1r').value / 100;
+  const t = +document.getElementById('w1t').value;
+  document.getElementById('w1rv').textContent = (r*100).toFixed(0)+'%';
+  document.getElementById('w1tv').textContent = t;
+
+  const labels = ['Annual\n(n=1)', 'Quarterly\n(n=4)', 'Monthly\n(n=12)', 'Weekly\n(n=52)', 'Daily\n(n=365)', 'Continuous\ne^{rt}'];
+  const ns     = [1, 4, 12, 52, 365, Infinity];
+  const vals   = ns.map(n => n===Infinity ? Math.exp(r*t) : Math.pow(1+r/n, n*t));
+  const colors = ['#3b82f6','#06b6d4','#8b5cf6','#f59e0b','#10b981','#ef4444'];
+
+  if (ch1) ch1.destroy();
+  ch1 = new Chart(document.getElementById('c1'), {
+    type: 'bar',
+    data: {
+      labels: ['Annual', 'Quarterly', 'Monthly', 'Weekly', 'Daily', 'Continuous'],
+      datasets: [{ data: vals, backgroundColor: colors, borderRadius: 5 }]
+    },
+    options: {
+      ...CHART_DEFAULTS,
+      plugins: { legend: { display: false },
+        tooltip: { callbacks: { label: c => 'Growth factor: ' + c.parsed.y.toFixed(5) } } },
+      scales: { y: { title: { display: true, text: 'Growth factor  K_t / K_0' } } }
+    }
+  });
+  const diff = ((vals[5]-vals[0])/vals[0]*100).toFixed(3);
+  document.getElementById('w1o').innerHTML =
+    `At r = ${(r*100).toFixed(0)}% over ${t} years — ` +
+    `Annual: <span class="big">${vals[0].toFixed(4)}×</span> &nbsp;|&nbsp; ` +
+    `Continuous (e<sup>rt</sup>): <span class="big">${vals[5].toFixed(4)}×</span><br>` +
+    `Difference from switching to continuous compounding: <strong>+${diff}%</strong>. ` +
+    `For typical demographic rates (&lt;5%), this difference is tiny.`;
+}
+upW1();
+
+// ─── Widget 2: Projection + Log Toggle ─────────────────────
+let ch2 = null, w2scale = 'linear';
+function setScale(s) {
+  w2scale = s;
+  document.getElementById('btnLin').classList.toggle('active', s==='linear');
+  document.getElementById('btnLog').classList.toggle('active', s==='log');
+  upW2();
+}
+function upW2() {
+  const k0 = +document.getElementById('w2k').value;
+  const r  = +document.getElementById('w2r').value / 1000;
+  const T  = +document.getElementById('w2t').value;
+  document.getElementById('w2kv').textContent = k0 + 'M';
+  document.getElementById('w2rv').textContent = (r*100).toFixed(1)+'%';
+  document.getElementById('w2tv').textContent = T;
+
+  const xs=[], ys=[];
+  for (let i=0; i<=T; i+=Math.max(1, Math.floor(T/200))) {
+    xs.push(i);
+    const v = k0 * Math.exp(r*i);
+    ys.push(w2scale==='log' ? Math.log(v) : v);
+  }
+
+  if (ch2) ch2.destroy();
+  ch2 = new Chart(document.getElementById('c2'), {
+    type: 'line',
+    data: { labels: xs,
+      datasets: [{ label: w2scale==='log' ? 'ln(Population / M)' : 'Population (M)',
+        data: ys, borderColor: '#1e3a8a', backgroundColor: 'rgba(30,58,138,.08)',
+        borderWidth: 2, pointRadius: 0, fill: true, tension: 0.1 }] },
+    options: { ...CHART_DEFAULTS,
+      plugins: { legend: { display: false } },
+      scales: {
+        x: { title: { display: true, text: 'Years from start' },
+             ticks: { maxTicksLimit: 10 } },
+        y: { title: { display: true, text: w2scale==='log' ? 'ln(Population / M)' : 'Population (M)' } }
+      }
+    }
+  });
+
+  const final = k0 * Math.exp(r*T);
+  const td = r>0 ? (Math.LN2/r).toFixed(1) : (r<0 ? (-Math.LN2/r).toFixed(1)+' (halving time)' : '∞');
+  document.getElementById('w2o').innerHTML =
+    `After ${T} years: <span class="big">${fmt(final*1e6)}</span> people &nbsp;|&nbsp; ` +
+    `r = ${(r*100).toFixed(2)}%/yr &nbsp;|&nbsp; ${r>0?'Doubling':'Halving'} time: <strong>${td} yrs</strong><br>` +
+    (w2scale==='log'
+      ? '<em>✓ On the log scale, exponential growth appears as a perfect straight line with slope r.</em>'
+      : '<em>Switch to log scale — the curve becomes a straight line, confirming exponential growth.</em>');
+}
+upW2();
+
+// ─── Widget 3: Doubling Time / Rule of 70 ──────────────────
+let ch3 = null;
+function upW3() {
+  const rpct = +document.getElementById('w3r').value / 10;
+  document.getElementById('w3rv').textContent = rpct.toFixed(1)+'%';
+  const r = rpct/100;
+  const exact  = Math.LN2/r;
+  const rule70 = 70/rpct;
+  const err    = Math.abs(rule70-exact)/exact*100;
+
+  // Build curves from 0.2% to 15%
+  const xs=[], ex=[], r7=[];
+  for (let i=2; i<=150; i++) {
+    const rv=i/10, rr=rv/100;
+    xs.push(rv.toFixed(1)+'%');
+    ex.push(Math.LN2/rr);
+    r7.push(70/rv);
+  }
+  if (ch3) ch3.destroy();
+  ch3 = new Chart(document.getElementById('c3'), {
+    type: 'line',
+    data: { labels: xs, datasets: [
+      { label: 'Exact: ln(2)/r', data: ex, borderColor:'#1e3a8a', borderWidth:2, pointRadius:0 },
+      { label: 'Rule of 70: 70/r%', data: r7, borderColor:'#ef4444', borderDash:[6,3], borderWidth:2, pointRadius:0 }
+    ]},
+    options: { ...CHART_DEFAULTS,
+      scales: {
+        x: { title:{ display:true, text:'Growth rate (%)' }, ticks:{ maxTicksLimit:10 } },
+        y: { title:{ display:true, text:'Doubling time (years)' } }
+      }
+    }
+  });
+  document.getElementById('w3o').innerHTML =
+    `At r = ${rpct.toFixed(1)}%/yr:<br>` +
+    `Exact: ln(2)/${r.toFixed(4)} = <span class="big">${exact.toFixed(2)} yrs</span> &nbsp;|&nbsp; ` +
+    `Rule of 70: 70/${rpct.toFixed(1)} = <span class="big">${rule70.toFixed(2)} yrs</span><br>` +
+    `Approximation error: <strong>${err.toFixed(2)}%</strong>. ` +
+    (err < 1 ? 'Negligible — the rule of 70 is excellent here.' :
+     err < 5 ? 'Small — acceptable for mental arithmetic.' :
+     'Noticeable at this high rate — the rule of 70 becomes less accurate above ~10%.');
+}
+upW3();
+
+// ─── Widget 4: b·e₀ = 1 ─────────────────────────────────────
+let ch4 = null;
+function upW4() {
+  const b1000 = +document.getElementById('w4b').value;
+  const e0    = +document.getElementById('w4e').value;
+  document.getElementById('w4bv').textContent = b1000 + '‰';
+  document.getElementById('w4ev').textContent = e0;
+
+  const product = (b1000/1000)*e0;
+
+  // Historical data: [name, b per 1000, e0]
+  const hist = [
+    {n:'England 1750',   b:35,   e:37},
+    {n:'France 1870',    b:26,   e:43},
+    {n:'India 1950',     b:45,   e:32},
+    {n:'China 1980',     b:18,   e:67},
+    {n:'US 2019',        b:12.4, e:79},
+    {n:'Japan 2022',     b:6.3,  e:84},
+    {n:'Niger 2022',     b:47,   e:62},
+    {n:'Sweden 2022',    b:10.5, e:83},
+  ];
+
+  // Hyperbola b*e0 = 1000 (b in per 1000)
+  const curveE=[], curveB=[];
+  for (let e=22; e<=90; e++) { curveE.push(e); curveB.push(1000/e); }
+
+  const colourPt = p => p<0.82 ? '#ef4444' : p<1.2 ? '#22c55e' : '#3b82f6';
+
+  if (ch4) ch4.destroy();
+  ch4 = new Chart(document.getElementById('c4'), {
+    type: 'scatter',
+    data: { datasets: [
+      { label: 'Stationary: b·e₀=1',
+        data: curveE.map((e,i)=>({x:e,y:curveB[i]})),
+        type:'line', borderColor:'#94a3b8', borderDash:[4,3],
+        borderWidth:1.5, pointRadius:0, fill:false },
+      { label: 'Historical populations',
+        data: hist.map(h=>({x:h.e, y:h.b})),
+        backgroundColor: hist.map(h=>colourPt((h.b/1000)*h.e)),
+        pointRadius:8, pointStyle:'circle' },
+      { label: 'Your selection',
+        data: [{x:e0, y:b1000}],
+        backgroundColor:'#f59e0b', pointRadius:12, pointStyle:'star' }
+    ]},
+    options: { ...CHART_DEFAULTS,
+      plugins: { tooltip: { callbacks: { label: c => {
+        if (c.datasetIndex===1) {
+          const h=hist[c.dataIndex];
+          return `${h.n}: b=${h.b}‰, e₀=${h.e}, b·e₀=${((h.b/1000)*h.e).toFixed(2)}`;
+        }
+        return `e₀=${c.parsed.x}, b=${c.parsed.y.toFixed(1)}‰`;
+      }}}},
+      scales: {
+        x: { title:{display:true,text:'Life expectancy e₀ (years)'}, min:20, max:90 },
+        y: { title:{display:true,text:'Crude birth rate b (per 1,000/yr)'}, min:0, max:62 }
+      }
+    }
+  });
+
+  const status = product<0.82 ? '📉 Declining population (b·e₀ < 1)' :
+                 product>1.20 ? '📈 Growing population (b·e₀ > 1)' :
+                                '⚖️ Near-stationary (b·e₀ ≈ 1)';
+  document.getElementById('w4o').innerHTML =
+    `b = ${b1000}‰, e₀ = ${e0} yrs &nbsp;→&nbsp; b·e₀ = <span class="big">${product.toFixed(3)}</span> &nbsp; ${status}<br>` +
+    `<em>Dashed curve: all (e₀, b) pairs with b·e₀ = 1. Coloured dots: real populations. Green = near-stationary, red = declining, blue = growing.</em>`;
+}
+upW4();
+
+// ─── Widget 5: Keyfitz / Total Births ──────────────────────
+(function initW5() {
+  // Periods: [label, start pop M, end pop M, duration yrs, avg birth rate per person]
+  const periods = [
+    {l:'200k–80k BC',  K1:0.002, K2:5,    t:120000, b:0.055},
+    {l:'80k–10k BC',   K1:5,     K2:8,    t:70000,  b:0.055},
+    {l:'10k BC–1 AD',  K1:8,     K2:200,  t:10001,  b:0.050},
+    {l:'1–1750 AD',    K1:200,   K2:750,  t:1749,   b:0.045},
+    {l:'1750–1900',    K1:750,   K2:1600, t:150,    b:0.040},
+    {l:'1900–1950',    K1:1600,  K2:2500, t:50,     b:0.035},
+    {l:'1950–2000',    K1:2500,  K2:6000, t:50,     b:0.030},
+    {l:'2000–2025',    K1:6000,  K2:8000, t:25,     b:0.020},
+  ];
+
+  const births = periods.map(p => {
+    const r = Math.log(p.K2/p.K1)/p.t;
+    const integral = Math.abs(r) < 1e-10
+      ? p.K1 * p.t
+      : p.K1 * (Math.exp(r*p.t)-1)/r;
+    return p.b * integral; // millions
+  });
+
+  const total = births.reduce((a,v)=>a+v,0);
+  const alive = 8000;
+  const frac  = (alive/total*100).toFixed(1);
+
+  let ch5 = new Chart(document.getElementById('c5'), {
+    type: 'bar',
+    data: {
+      labels: periods.map(p=>p.l),
+      datasets: [{
+        label: 'Estimated births (millions)',
+        data: births.map(v=>Math.round(v)),
+        backgroundColor: '#2563eb',
+        borderRadius: 4
+      }]
+    },
+    options: { ...CHART_DEFAULTS,
+      plugins: { legend:{display:false} },
+      scales: { y: { title:{display:true,text:'Births (millions)'} } }
+    }
+  });
+
+  document.getElementById('w5o').innerHTML =
+    `<strong>Estimated total births ever:</strong> <span class="big">${(total/1000).toFixed(0)} billion</span><br>` +
+    `Currently alive (~2025): ~8 billion<br>` +
+    `<strong>Fraction alive today: <span class="big">${frac}%</span></strong><br>` +
+    `<em>This is a rough calculation using simplified period assumptions. Published estimates range from 80–108 billion total births (Haub, 2011). The 10% figure Chung cites is consistent with these estimates.</em>`;
+})();
+
+// ─── Widget 6: Logistic Growth ─────────────────────────────
+let ch6 = null;
+function upW6() {
+  const r  = +document.getElementById('w6r').value  / 100;
+  const kp = +document.getElementById('w6k').value;
+  const k0 = +document.getElementById('w6k0').value;
+  document.getElementById('w6rv').textContent  = r.toFixed(2);
+  document.getElementById('w6kv').textContent  = kp.toLocaleString();
+  document.getElementById('w6k0v').textContent = k0;
+
+  const T = Math.min(300, Math.max(60, Math.ceil(6/r)));
+  const xs=[], logistic=[], expo=[], cap=[];
+  for (let i=0; i<=T; i++) {
+    xs.push(i);
+    const L = kp / (1 + ((kp-k0)/k0)*Math.exp(-r*i));
+    logistic.push(L);
+    expo.push(Math.min(k0*Math.exp(r*i), kp*1.8));
+    cap.push(kp);
+  }
+
+  if (ch6) ch6.destroy();
+  ch6 = new Chart(document.getElementById('c6'), {
+    type: 'line',
+    data: { labels: xs, datasets: [
+      { label: 'Logistic K(t)',
+        data: logistic, borderColor:'#1e3a8a',
+        backgroundColor:'rgba(30,58,138,.1)',
+        borderWidth:2.5, pointRadius:0, fill:true },
+      { label: 'Pure exponential (no limit)',
+        data: expo, borderColor:'#ef4444',
+        borderDash:[5,3], borderWidth:1.5, pointRadius:0, fill:false },
+      { label: 'Carrying capacity κ',
+        data: cap, borderColor:'#16a34a',
+        borderDash:[3,2], borderWidth:1, pointRadius:0, fill:false }
+    ]},
+    options: { ...CHART_DEFAULTS,
+      scales: {
+        x: { title:{display:true,text:'Time'}, ticks:{maxTicksLimit:10} },
+        y: { title:{display:true,text:'Population K(t)'}, max: kp*1.15 }
+      }
+    }
+  });
+
+  const inflT  = Math.log((kp-k0)/k0)/r;
+  const inflTxt = inflT>0 ? inflT.toFixed(1) : 'already past';
+  document.getElementById('w6o').innerHTML =
+    `Carrying capacity: κ = ${kp.toLocaleString()} &nbsp;|&nbsp; ` +
+    `Inflection point (fastest growth): K = κ/2 = ${(kp/2).toLocaleString()}, at t ≈ ${inflTxt}<br>` +
+    `<em>Growth is fastest when the population is exactly half the carrying capacity. Below κ/2, the exponential term dominates and growth accelerates. Above κ/2, the braking term dominates and growth decelerates. At exactly κ/2 the two balance — that is the inflection point of the S-curve.</em>`;
+}
+upW6();
+</script>
+
+</body>
+</html>
