@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Formal Demography — Day 2</title>
+<title>Formal Demography — Day 2 (v6)</title>
 <script>
 window.MathJax = {
   tex: { inlineMath:[['\\(','\\)']], displayMath:[['\\[','\\]']] },
@@ -208,9 +208,9 @@ hr{border:none;border-top:1px solid var(--rule);margin:3rem 0}
 </div>
 
 <div class="callout history">
-  <div class="callout-title">🏛️ Historical Note — Wilhelm Lexis and Francis Galton</div>
-  <p><strong>Wilhelm Lexis</strong> (1837–1914) was a German statistician and economist who introduced the diagram that bears his name in 1875. He used it to visualise the relationship between demographic events, age, and time — a visualisation tool so useful it became standard in demography and epidemiology.</p>
-  <p><strong>Francis Galton</strong> (1822–1911) in connection with branching processes and lineages — the question of how family lines survive or die out over generations. Galton, Darwin's cousin, founded the field of eugenics (now discredited) but also made genuine mathematical contributions: he co-invented regression and correlation with Karl Pearson, and the <strong>Galton–Watson process</strong> (branching process) models the survival of surnames and family lines over generations. The connection to Lexis diagrams is that following lineages through time is, conceptually, following diagonal lines in the Lexis plane.</p>
+  <div class="callout-title">🏛️ Historical Note — Wilhelm Lexis</div>
+  <p><strong>Wilhelm Lexis</strong> (1837–1914) was a German statistician and economist who introduced the diagram that bears his name in 1875. He used it to visualise the relationship between demographic events, age, and time — a visualisation tool so useful it became standard in demography and epidemiology. Lexis was also interested in the statistical properties of demographic series: his <strong>Lexis ratio</strong> (comparing observed to binomial variance in a series of proportions) was an early attempt to classify statistical distributions as sub-normal, normal, or super-normal — a precursor to over-dispersion analysis in modern statistics.</p>
+  <p>The Lexis diagram's genius is its economy: two axes (calendar time, age) plus the 45° lifeline slope encodes a third dimension (birth cohort = time − age) for free. Any box you draw in the plane immediately defines a well-specified demographic quantity: its area is the exposure, its interior events are the numerator, and the ratio is a rate. Almost every confusion about demographic rates dissolves when you draw the Lexis box.</p>
 </div>
 
 <div class="callout demography">
@@ -286,7 +286,7 @@ hr{border:none;border-top:1px solid var(--rule);margin:3rem 0}
   \]
 </div>
 
-<p>And by linearity: \(\frac{K(t_1)+K(t_2)}{2} = K\!\left(\frac{t_1+t_2}{2}\right)\) — the average of endpoints equals the midpoint value. This is why every statistical bureau reports mid-year population estimates. The longer the period, the more concerned we need to be about non-linearity.</p>
+<p>When \(K(t)\) is approximately linear over the interval — which it will be for any short period — the average of the endpoint values equals the midpoint value: \(\frac{K(t_1)+K(t_2)}{2} \approx K\!\left(\frac{t_1+t_2}{2}\right)\). This is an approximation, not an algebraic identity; it holds exactly only for linear functions and improves as the interval shortens. This is why every statistical bureau reports mid-year population estimates. The longer the period, the more concerned we need to be about non-linearity in \(K(t)\) — particularly if population is growing fast or a large shock (war, epidemic) falls within the interval.</p>
 
 
 <!-- ===== SECTION 4 ===== -->
@@ -434,6 +434,43 @@ function llxStep2(){
 }
 
 
+function llxStep3(){
+  // The pivot step: draw the sorted bars, then overlay a vertical "age slicer"
+  // to show that the count of bars extending past age x IS N(x)
+  llxClearAxes();
+  const xSc=d3.scaleLinear().domain([0,115]).range([0,Liw]);
+  const rowH=Lih/LLX_N;
+  llxXAxis(xSc,'Age x (years)');
+  llxYAxis(d3.scaleLinear().domain([0,LLX_N]).range([Lih,0]),'Each row = one person (sorted)');
+  const posMap=new Array(LLX_N);
+  llxSortedIdx.forEach((person,rank)=>{ posMap[person]=rank; });
+  // draw sorted bars (faded)
+  llxG.selectAll('.llx-lifeline').data(llxRawAges).join('line').attr('class','llx-lifeline')
+    .attr('x1',0).attr('x2',d=>xSc(d))
+    .attr('y1',(_,i)=>posMap[i]*rowH+rowH/2).attr('y2',(_,i)=>posMap[i]*rowH+rowH/2)
+    .attr('stroke',d=>llxCol(d)).attr('stroke-width',Math.max(1,rowH-0.8)).attr('opacity',.4);
+  // vertical slicer at the median age
+  const sliceAge = d3.median(llxRawAges);
+  llxG.append('line').attr('class','llx-lifeline')
+    .attr('x1',xSc(sliceAge)).attr('x2',xSc(sliceAge))
+    .attr('y1',0).attr('y2',Lih)
+    .attr('stroke','#ef4444').attr('stroke-width',2).attr('stroke-dasharray','5,3');
+  // count bars extending past sliceAge
+  const countPast = llxRawAges.filter(a=>a>sliceAge).length;
+  // shade the bars that extend past the slicer
+  llxG.selectAll('.llx-alive').data(llxRawAges).join('line').attr('class','llx-alive')
+    .filter(d=>d>sliceAge)
+    .attr('x1',0).attr('x2',d=>xSc(d))
+    .attr('y1',(_,i)=>posMap[i]*rowH+rowH/2).attr('y2',(_,i)=>posMap[i]*rowH+rowH/2)
+    .attr('stroke',d=>llxCol(d)).attr('stroke-width',Math.max(1,rowH-0.8)).attr('opacity',.85);
+  llxG.append('text').attr('x',xSc(sliceAge)+5).attr('y',16)
+    .attr('font-size','10.5').attr('fill','#ef4444').attr('font-family','sans-serif')
+    .text(`age ${Math.round(sliceAge)}`);
+  llxG.append('text').attr('x',xSc(sliceAge)+5).attr('y',30)
+    .attr('font-size','10').attr('fill','#1e3a8a').attr('font-family','sans-serif')
+    .text(`N(${Math.round(sliceAge)}) = ${countPast} bars cross here`);
+}
+
 function llxStep4(){
   llxClearAxes();
   const xSc=d3.scaleLinear().domain([0,llxMaxAge]).range([0,Liw]);
@@ -479,10 +516,13 @@ const LLX_STEPS=[
   {title:'Sort by length — shortest first',draw:llxStep2,
    desc:`Re-order the bars so the <strong>shortest is at the top, longest at the bottom</strong>. The right edge of the bars (marked in red) now forms an ascending staircase — a monotone non-decreasing function of rank.`},
 
-  {title:'Rotate 90° — age on the horizontal axis',draw:llxStep4,
-   desc:`Instead of "how long did person k live?", ask: <strong>"how many people are still alive at age x?"</strong>. The bars that extend past any vertical line at age x are the survivors. Count them: that count is <span class="eq">N(x)</span>. It steps down by 1 each time someone dies.`},
+  {title:'Ask a new question — who is alive at age x?',draw:llxStep3,
+   desc:`Here is the key reinterpretation. Instead of asking <strong>"how long did person k live?"</strong>, ask <strong>"how many people are still alive at age x?"</strong>. The answer is: count the bars that extend <em>past</em> the vertical red slicer. Every bar reaching beyond age ${Math.round(d3.median(llxRawAges))} belongs to someone still alive at that age. That count is <span class="eq">N(x)</span>. Slide the slicer to any age and read off N(x). This reinterpretation — from "length of bar k" to "count of bars crossing vertical line x" — is the conceptual pivot of the life table.`},
+
+  {title:'Plot N(x) directly — the survival staircase',draw:llxStep4,
+   desc:`Now plot <span class="eq">N(x)</span> as a function of age. Each death drops the count by 1, producing a staircase that starts at ${LLX_N} (age 0) and descends to 0. This is the survival staircase — and it encodes the same information as all those sorted bars, but now in a form that depends only on age, not on which person is which.`},
   {title:'Normalise → l(x) emerges',draw:llxStep5,
-   desc:`Divide by <span class="eq">N(0) = ${LLX_N}</span> so the curve starts at 1. With a larger cohort (N→∞) the staircase (grey) smooths into a continuous curve — the <strong>survival function l(x)</strong> (dark blue). The shaded area beneath equals life expectancy: <span class="eq">e₀ = ∫ l(x) dx</span>.`}
+   desc:`Divide by <span class="eq">N(0) = ${LLX_N}</span> so the curve starts at 1.0 and is now a <em>proportion</em> rather than a count. With a larger cohort (N→∞) the staircase (grey) smooths into a continuous curve — the <strong>survival function l(x)</strong> (dark blue). The shaded area beneath equals life expectancy: <span class="eq">e₀ = ∫ l(x) dx</span> — the area under the whole curve is the average number of years lived.`}
 ];
 
 // ─── controller ──────────────────────────────────────────────
@@ -647,7 +687,7 @@ llxGoTo(0);
     <button class="tb active" onclick="setRegime('modern')">Modern (rich country)</button>
     <button class="tb" onclick="setRegime('historical')">Pre-industrial</button>
     <button class="tb" onclick="setRegime('highinfant')">High infant mortality</button>
-    <button class="tb" onclick="setRegime('linear')">Constant hazard</button>
+    <button class="tb" onclick="setRegime('linear')">Constant hazard (μ = 0.02)</button>
   </div>
   <div class="cb"><canvas id="c2"></canvas></div>
   <div class="wo" id="w2o"></div>
@@ -673,20 +713,20 @@ llxGoTo(0);
   <p>In the Lexis diagram picture, <span class="tip" data-key="nlx">\({}_nL_x\)</span> is the total length of all the horizontal life-line segments that fall within the Lexis box defined by ages \(x\) to \(x+n\). The life lines are always there underneath the life table, even when we look only at the endpoint dots.</p>
 </div>
 
-<h3>The Exact Algebraic Form</h3>
+<h3>The Algebraic Form Under the UDD Assumption</h3>
 
-<p>The trapezoid is an approximation. But there is also an <em>exact</em> algebraic breakdown of <span class="tip" data-key="nlx">\({}_nL_x\)</span> that is worth knowing. Consider the <span class="tip" data-key="ndx">\({}_nd_x\)</span> people who die in the interval \([x, x+n)\). On average they die at the midpoint — having lived roughly \(n/2\) years in the interval. The \(l_{x+n}\) survivors each contribute the full \(n\) years. So:</p>
+<p>There is an intuitive algebraic derivation of <span class="tip" data-key="nlx">\({}_nL_x\)</span> that is worth seeing once. It requires one assumption — the <strong>uniform distribution of deaths (UDD)</strong>: deaths within the interval are spread evenly across the \(n\) years. Under UDD, a person who dies between ages \(x\) and \(x+n\) is equally likely to die at any point, so their average exposure time is \(n/2\) years. Survivors contribute the full \(n\) years. So:</p>
 
 <div class="fb">
-  <div class="fl">Exact Decomposition of <span class="tip" data-key="nlx">\({}_nL_x\)</span> (from slides)</div>
+  <div class="fl">Decomposition of <span class="tip" data-key="nlx">\({}_nL_x\)</span> under UDD</div>
   \[
-    {}_nL_x = n \cdot l_{x+n} + \tfrac{1}{2}\cdot n \cdot {}_nd_x
+    {}_nL_x = \underbrace{n \cdot l_{x+n}}_{\text{survivors: full }n\text{ yrs each}} + \underbrace{\tfrac{n}{2}\cdot {}_nd_x}_{\text{deaths: avg }n/2\text{ yrs each}}
     = n\cdot l_{x+n} + \tfrac{n}{2}\cdot(l_x - l_{x+n})
     = \tfrac{n}{2}(l_x + l_{x+n})
   \]
 </div>
 
-<p>The last step shows this is exactly the trapezoid rule — the two expressions are identical when deaths are uniformly distributed within the interval. So the "trapezoid approximation" and this "exact" decomposition give the same answer under the uniform distribution of deaths assumption. In practice, the trapezoid \(\frac{n}{2}(l_x + l_{x+n})\) is the standard formula used for all adult age groups.</p>
+<p>The final expression \(\frac{n}{2}(l_x + l_{x+n})\) is exactly the trapezoid rule — the two approaches are identical under UDD, which is reassuring. This is why the trapezoid is the standard formula for all adult age groups: the UDD assumption is reasonable when mortality is low and age patterns are smooth. It breaks down in infancy (deaths are heavily front-loaded in the first weeks of life) and at the oldest ages.</p>
 
 <div class="callout note">
   <div class="callout-title">📝 Rule of Thumb: \({}_nL_x \approx n \cdot l_x\)</div>
@@ -866,8 +906,28 @@ llxGoTo(0);
 </div>
 
 <div class="callout note">
-  <div class="callout-title">📝 The UDD Assumption</div>
-  <p>The "uniform distribution of deaths" (UDD) assumption says that within each age interval, deaths are distributed uniformly — i.e., a person who dies between ages \(x\) and \(x+n\) is equally likely to die at any point in the interval. Under this assumption, the average exposure time for a person who dies is \(n/2\) years. This gives \({}_nL_x = n \cdot l_{x+n} + (n/2) \cdot {}_nd_x\), and leads to the conversion formula above. The UDD assumption breaks down badly in the first year of life (infant mortality is very front-loaded — many neonatal deaths in the first week) and at the oldest ages, but it is a reasonable approximation for most adult age groups.</p>
+  <div class="callout-title">📝 The UDD Assumption and Where the Conversion Formula Comes From</div>
+  <p>The "uniform distribution of deaths" (UDD) assumption says that within each age interval, deaths are distributed uniformly — i.e., a person who dies between ages \(x\) and \(x+n\) is equally likely to die at any point in the interval. Under this assumption, the average exposure time for a person who dies is \(n/2\) years, giving \({}_nL_x = n \cdot l_{x+n} + (n/2) \cdot {}_nd_x\) as derived in §7.</p>
+  <p>The conversion formula \({}_nq_x = \frac{n \cdot {}_nM_x}{1 + \frac{n}{2} \cdot {}_nM_x}\) follows from five lines of algebra. Start from the definitions and the UDD expression for \({}_nL_x\):</p>
+  \[
+    {}_nM_x = \frac{{}_nd_x}{{}_nL_x} = \frac{{}_nd_x}{n\,l_{x+n} + \tfrac{n}{2}\,{}_nd_x}
+  \]
+  <p>Divide numerator and denominator by \(l_x\):</p>
+  \[
+    {}_nM_x = \frac{{}_nd_x/l_x}{n(l_{x+n}/l_x) + \tfrac{n}{2}({}_nd_x/l_x)}
+    = \frac{{}_nq_x}{n(1-{}_nq_x) + \tfrac{n}{2}\,{}_nq_x}
+    = \frac{{}_nq_x}{n - n\,{}_nq_x + \tfrac{n}{2}\,{}_nq_x}
+    = \frac{{}_nq_x}{n - \tfrac{n}{2}\,{}_nq_x}
+  \]
+  <p>Now solve for \({}_nq_x\): multiply both sides by the denominator, collect \({}_nq_x\) terms, and divide:</p>
+  \[
+    {}_nM_x\!\left(n - \tfrac{n}{2}\,{}_nq_x\right) = {}_nq_x
+    \;\implies\;
+    n\,{}_nM_x = {}_nq_x\!\left(1 + \tfrac{n}{2}\,{}_nM_x\right)
+    \;\implies\;
+    {}_nq_x = \frac{n\,{}_nM_x}{1 + \tfrac{n}{2}\,{}_nM_x}
+  \]
+  <p>So the formula is exact under UDD — no further approximation needed beyond that assumption. The UDD assumption breaks down in the first year of life (infant mortality is very front-loaded — many neonatal deaths in the first week) and at the oldest ages, but it is a reliable approximation for most adult age groups. In practice most demographic software uses this formula as the default \(M \to q\) conversion.</p>
 </div>
 
 <!-- WIDGET 4: nqx vs nMx -->
@@ -957,7 +1017,7 @@ llxGoTo(0);
   \]
 </div>
 
-<p>The limit works because: (1) \(\frac{l_x - l_{x+n}}{n} \to -l'(x)\) by the definition of the derivative, and (2) \(\frac{l_x + l_{x+n}}{2} \to l(x)\) as the two endpoints converge. The result is:</p>
+<p>The limit works in two steps. First: \(\frac{l_x - l_{x+n}}{n} \to -l'(x)\) as \(n \to 0\), by the definition of the derivative (the difference quotient converges to the derivative; the minus sign appears because \(l_{x+n}\) is in the numerator subtracted from \(l_x\)). Second: the factor \(\frac{2}{l_x + l_{x+n}}\) has \(l_x + l_{x+n} \to 2l(x)\) as \(n \to 0\), so this factor converges to \(\frac{2}{2l(x)} = \frac{1}{l(x)}\). The 2s cancel and you're left with \(\frac{-l'(x)}{l(x)}\). The result is:</p>
 
 <div class="fb">
   <div class="fl">The Force of Mortality</div>
@@ -1176,9 +1236,11 @@ const REGIMES = {
           0.080,0.120,0.175,0.250,0.340,0.450,0.580,0.720,1.0000]
   },
   linear: {
-    label: 'Constant hazard',
-    nqx: [0.010,0.010,0.012,0.012,0.013,0.013,0.014,0.015,0.016,0.018,
-          0.020,0.025,0.030,0.040,0.055,0.080,0.120,0.200,1.0000]
+    // Constant force of mortality μ = 0.02/yr → _nq_x = 1 - e^{-μn}
+    // n=1: 1-e^{-0.02}≈0.0198; n=4: 1-e^{-0.08}≈0.0769; n=5: 1-e^{-0.10}≈0.0952
+    label: 'Constant hazard (μ = 0.02/yr)',
+    nqx: [0.0198,0.0769,0.0952,0.0952,0.0952,0.0952,0.0952,0.0952,0.0952,0.0952,
+          0.0952,0.0952,0.0952,0.0952,0.0952,0.0952,0.0952,0.0952,1.0000]
   }
 };
 
