@@ -175,7 +175,7 @@ hr{border:none;border-top:1px solid var(--rule);margin:3rem 0}
   <ol>
     <li>The <strong>Lexis diagram</strong> organises all of demographic analysis: every rate is events ÷ person-years in a Lexis box. Draw the box first, confusion dissolves.</li>
     <li>The <strong>life table</strong> converts individual lifelines into a survivorship function \(l_x\) — a smooth, non-increasing curve from 1 at birth to 0 at maximum age.</li>
-    <li><strong>Death probability \({}_nq_x\) ≠ death rate \({}_nM_x\)</strong>: they differ because some person-years in the interval are lived by people who die. \({}_nq_x \approx n\,{}_nM_x / (1 + (n - {}_na_x)\,{}_nM_x)\).</li>
+    <li><strong>Death probability <span class="tip" data-key="nqx">\({}_nq_x\)</span> ≠ death rate <span class="tip" data-key="nmx">\({}_nM_x\)</span></strong>: they differ because some person-years in the interval are lived by people who die. \({}_nq_x \approx n\,{}_nM_x / (1 + (n - {}_na_x)\,{}_nM_x)\), where <span class="tip" data-key="nax">\({}_na_x\)</span> is the average time lived by those who die in the interval.</li>
     <li>Life expectancy \(e_x = T_x / l_x\) is the ratio of total future person-years to survivors at age \(x\). <em>Period</em> \(e_0\) is a synthetic snapshot, not a forecast.</li>
     <li>The force of mortality \(\mu(x) = -\tfrac{d}{dx}\ln l(x)\) is the continuous limit of the death rate — the instantaneous speed of dying at age \(x\).</li>
   </ol>
@@ -314,7 +314,7 @@ hr{border:none;border-top:1px solid var(--rule);margin:3rem 0}
 <!-- ===== SECTION 3 ===== -->
 <h2 id="s3"><span class="sn">3</span> Cohorts, Periods, and Person-Years of Exposure</h2>
 
-<p>The Lexis diagram immediately forces a question that we deferred in Day 1: when we wrote \(b = \text{Births}/\text{Pop}\) and \(d = \text{Deaths}/\text{Pop}\), what exactly was in the denominator? We used <span class="tip" data-key="Kt">\(K(t)\)</span> — total population at a point in time. But The lecture returns to this and sharpens it: the <strong>correct denominator is not <span class="tip" data-key="Kt">\(K(t)\)</span> exactly, but rather the total population-duration of exposure</strong> to the risk of the event. That is, the sum of the lengths of all lifelines passing through the relevant Lexis box. The proper denominator is <strong>person-years</strong>.</p>
+<p>The Lexis diagram immediately forces a question that we deferred in Day 1: when we wrote <span class="tip" data-key="b">\(b = \text{Births}/\text{Pop}\)</span> and <span class="tip" data-key="d">\(d = \text{Deaths}/\text{Pop}\)</span>, what exactly was in the denominator? We used <span class="tip" data-key="Kt">\(K(t)\)</span> — total population at a point in time. But The lecture returns to this and sharpens it: the <strong>correct denominator is not <span class="tip" data-key="Kt">\(K(t)\)</span> exactly, but rather the total population-duration of exposure</strong> to the risk of the event. That is, the sum of the lengths of all lifelines passing through the relevant Lexis box. The proper denominator is <strong>person-years</strong>.</p>
 
 <p>For most practical purposes, the mid-year population (which we derived at the end of Day 1) is an excellent approximation. But understanding <em>why</em> requires the Lexis diagram — and it becomes genuinely important in age-specific analysis, where the boxes are smaller and the approximation is cruder.</p>
 
@@ -337,7 +337,7 @@ hr{border:none;border-top:1px solid var(--rule);margin:3rem 0}
 
 <h3>What is the Right Denominator? Exposure and Person-Years</h3>
 
-<p>A key question: when we compute \(b = \text{Births}/\text{Pop}\) or \(d = \text{Deaths}/\text{Pop}\), what exactly should the denominator be?</p>
+<p>A key question: when we compute <span class="tip" data-key="b">\(b = \text{Births}/\text{Pop}\)</span> or <span class="tip" data-key="d">\(d = \text{Deaths}/\text{Pop}\)</span>, what exactly should the denominator be?</p>
 
 <p>The conceptually correct answer is: <strong>person-years of exposure</strong> to the risk of the event. For births, it's person-years lived by people capable of giving birth. For deaths, it's person-years lived by people capable of dying (i.e., everyone). This is the <em>area of the relevant Lexis box</em>.</p>
 
@@ -1910,6 +1910,153 @@ const T={
     title:'Person-time',
     eq:'\u222b K(t) dt',
     def:'Total time lived by all individuals. Equivalent to person-years when measured in years. The area under the population trajectory.'
+  },
+  /* ── additional variable tips ─────────────────────── */
+  'b':{
+    title:'b \u2014 Crude birth rate',
+    eq:'b = Births / K(t)',
+    def:'Births per person per year. Called \u201ccrude\u201d because every person \u2014 regardless of age or sex \u2014 is in the denominator. In a stationary population: b = 1/e\u2080. Internationally reported per 1,000 people.'
+  },
+  'd':{
+    title:'d \u2014 Crude death rate',
+    eq:'d = Deaths / K(t)',
+    def:'Deaths per person per year. In a near-stationary population: d \u2248 1/e\u2080, so life expectancy and death rate are reciprocals. Comparing crude death rates across countries with different age structures is misleading \u2014 use age-standardised rates instead.'
+  },
+  'nax':{
+    title:'\u2099a\u2093 \u2014 Average person-years lived by deaths',
+    eq:'\u2099a\u2093 = (\u2099L\u2093 \u2212 n\u00b7l\u2093\u208a\u2099) / \u2099d\u2093',
+    def:'Average time lived within [x, x+n) by people who die in that interval. Under UDD: \u2099a\u2093 = n/2. In the first year of life \u2099a\u2093 < 0.5 (infant deaths are front-loaded in early weeks). Critical for converting rates (\u2099M\u2093) to probabilities (\u2099q\u2093).'
+  },
+  /* ── additional phrase tips ───────────────────────── */
+  'crude birth rate':{
+    title:'Crude birth rate b',
+    eq:'b = Births / K(t)',
+    def:'Total births per person per year, ignoring age structure. \u201cCrude\u201d because all ages are in the denominator equally, though only women of reproductive age actually give birth.'
+  },
+  'crude death rate':{
+    title:'Crude death rate d',
+    eq:'d = Deaths / K(t)',
+    def:'Total deaths per person per year, ignoring age structure. Misleading for cross-country comparisons: a country with an older population will have a higher crude death rate even if its age-specific mortality is lower.'
+  },
+  'crude rate':{
+    title:'Crude rate',
+    eq:'crude rate = events / total population',
+    def:'A rate using total population as denominator, regardless of who is at risk. Contrasted with age-specific or standardised rates, which control for population composition.'
+  },
+  'rate of natural increase':{
+    title:'Rate of natural increase',
+    eq:'r = b \u2212 d',
+    def:'Growth rate from births minus deaths alone (excluding migration). Positive when births exceed deaths. Related to doubling time: T\u2082 = ln(2)/r \u2248 70/r%.'
+  },
+  'geometric mean':{
+    title:'Geometric mean',
+    eq:'GM = (x\u2081 \u00b7 x\u2082 \u00b7 \u2026 \u00b7 x\u2099)^(1/n)',
+    def:'The correct average for quantities that compound (multiply) over time. For growth rates over t periods: (K\u209c/K\u2080)^(1/t). Always \u2264 arithmetic mean for positive numbers. Also called CAGR in finance.'
+  },
+  'arithmetic mean':{
+    title:'Arithmetic mean',
+    eq:'AM = (x\u2081 + x\u2082 + \u2026 + x\u2099) / n',
+    def:'Simple sum-divided-by-count average. Correct for additive quantities, but wrong for compounding (multiplicative) processes. Using it for growth rates overstates the true rate when rates vary.'
+  },
+  'natural logarithm':{
+    title:'Natural logarithm ln(x)',
+    eq:'ln(e\u02e3) = x; \u2009 ln(ab) = ln a + ln b',
+    def:'Logarithm base e (the inverse of the exponential). In demography: taking ln of population turns exponential growth into a straight line whose slope is r. Also converts multiplication into addition, making growth rates easy to average and compare.'
+  },
+  'closed population':{
+    title:'Closed population',
+    eq:'K(t\u2082) = K(t\u2081) + B \u2212 D',
+    def:'A population with no in- or out-migration. The balancing equation simplifies to births minus deaths only. Most formal demography assumes closure for mathematical tractability; a reasonable approximation for large national populations over short periods.'
+  },
+  'logistic growth':{
+    title:'Logistic growth',
+    eq:'dK/dt = rK(1 \u2212 K/\u03ba)',
+    def:'Population growth that decelerates as it approaches a ceiling (the carrying capacity \u03ba). Produces an S-shaped (sigmoid) curve. Fastest growth at K = \u03ba/2. Proposed by Pierre-Fran\u00e7ois Verhulst (1838); widely used in ecology.'
+  },
+  "Little's Law":{
+    title:"Little\u2019s Law",
+    eq:'N = \u03bb \u00b7 W\u0305',
+    def:'In a stationary system: average number in system (N) = arrival rate (\u03bb) \u00d7 average time in system (W\u0305). In demography: population = birth rate \u00d7 life expectancy. Proved by John Little (1961); applies to queues, hospitals, internet routers \u2014 and populations.'
+  },
+  'Rule of 70':{
+    title:'Rule of 70',
+    eq:'T\u2082 \u2248 70 / r%',
+    def:'Mental arithmetic shortcut: doubling time \u2248 70 \u00f7 the growth rate expressed as a percentage. Exact formula: ln(2)/r \u2248 0.693/r. Use 72 for higher rates (>6%); 70 is more accurate for typical demographic rates (<3%).'
+  },
+  'vital registration':{
+    title:'Vital registration system',
+    eq:'records births, deaths, marriages \u2026',
+    def:"A country\u2019s continuous administrative system for recording demographic events as they happen. Provides the \u2018flows\u2019 in the balancing equation. High-quality in high-income countries; incomplete or absent in many LMICs."
+  },
+  'census':{
+    title:'Census',
+    eq:'population stock at a point in time',
+    def:'A complete count of all persons in a territory at one moment. Provides the \u2018stock\u2019 estimate. Typically conducted every 10 years. Subject to undercounting, especially of young children and marginalised populations.'
+  },
+  'fertility transition':{
+    title:'Fertility transition',
+    eq:'TFR: 6+ \u2192 \u22482.1 (replacement level)',
+    def:'The historical decline in average births per woman from pre-industrial levels (~5\u20137) to near-replacement (~2.1). Usually follows mortality decline by one or two generations. The primary driver of slowing population growth globally.'
+  },
+  'demographic transition':{
+    title:'Demographic transition',
+    eq:'high b,d \u2192 high b, low d \u2192 low b,d',
+    def:'The shift from high birth + death rates (slow growth) through a high-birth + low-death phase (rapid population growth) to low birth + death rates (stable again). Explains the 20th-century population explosion and the current deceleration.'
+  },
+  'exponential growth':{
+    title:'Exponential growth',
+    eq:'K(t) = K\u2080 \u00b7 e^(rt)',
+    def:'Continuous-time model: population grows at a constant proportional rate r. The limiting case of more-and-more-frequent discrete compounding. Produces a straight line on a log-population plot with slope r.'
+  },
+  'geometric growth':{
+    title:'Geometric (discrete) growth',
+    eq:'K(t) = K\u2080(1+r)^t',
+    def:'Discrete-time model: population multiplied by (1+r) each period. Foundation of demographic projection. Nearly identical to exponential growth for small r; for typical demographic rates the two differ by < 0.1%.'
+  },
+  'CAGR':{
+    title:'Compound Annual Growth Rate',
+    eq:'CAGR = (K\u209c/K\u2080)^(1/t) \u2212 1',
+    def:'The geometric-mean annual rate equivalent to the overall growth from K\u2080 to K\u209c over t years. Identical to the demographic growth rate r\u0304. Used in finance for the same mathematical reason: growth compounds, so you need the geometric mean, not the arithmetic mean.'
+  },
+  'radix':{
+    title:'Radix l(0)',
+    eq:'l(0) = 1 \u2009(or 100,000 in period tables)',
+    def:'The starting value of the survivorship function l(x) at age 0. By convention l(0) = 1 (Berkeley) or 100,000 (many national tables). All subsequent l(x) values express the fraction of the original cohort surviving to age x.'
+  },
+  'cohort life table':{
+    title:'Cohort life table',
+    eq:'follows a real birth cohort to extinction',
+    def:'A life table tracking actual mortality of a real cohort born in the same year. Gives true cohort life expectancy. Requires ~100+ years of data to complete. The conceptual reference point for understanding period life tables.'
+  },
+  'period life table':{
+    title:'Period life table',
+    eq:'snapshot of current age-specific death rates',
+    def:"A synthetic life table applying the age-specific death rates observed in a single period to a hypothetical cohort. What national statistics agencies publish annually. Underestimates true life expectancy when mortality is improving over time."
+  },
+  'UDD':{
+    title:'UDD \u2014 Uniform Distribution of Deaths',
+    eq:'\u2099q\u2093 = n\u00b7\u2099M\u2093 / (1 + (n\u2212\u2099a\u2093)\u00b7\u2099M\u2093)',
+    def:'Assumption that deaths within an age interval are uniformly distributed, implying \u2099a\u2093 = n/2. Allows conversion of observed mortality rates (\u2099M\u2093) to probabilities (\u2099q\u2093). Standard in most life table software; breaks down at age 0 and at the very oldest ages.'
+  },
+  'infant mortality':{
+    title:'Infant mortality rate (IMR)',
+    eq:'IMR = \u2081q\u2080 = (deaths under age 1) / births',
+    def:'Probability of dying before age 1. The most age-sensitive part of the life table. Pre-industrial: 200\u2013400 per 1,000 births. Modern high-income countries: under 5 per 1,000. A primary indicator of public health quality.'
+  },
+  'synthetic cohort':{
+    title:'Synthetic cohort',
+    eq:'hypothetical cohort facing current period rates',
+    def:"A hypothetical (not real) cohort used in period analysis. Experiences today\u2019s age-specific rates as it \u2018ages\u2019. Period life expectancy is the lifespan of a synthetic cohort \u2014 not any real individual\u2019s expected lifespan."
+  },
+  'abridged life table':{
+    title:'Abridged life table',
+    eq:'age groups: 0, 1\u20134, 5\u20139, 10\u201314 \u2026',
+    def:'A life table using grouped age intervals (typically 5 years) rather than single years of age. Standard when single-year data are too thin. The first year of life is usually treated separately because infant mortality is front-loaded in early weeks.'
+  },
+  'epidemiological transition':{
+    title:'Epidemiological transition',
+    eq:'infectious disease \u2192 chronic / NCD deaths',
+    def:'The historical shift from mortality dominated by infectious and parasitic diseases to deaths caused by chronic diseases (cardiovascular disease, cancer) at older ages. Described by Abdel Omran (1971). Explains the rectangularisation of the survival curve.'
   }
 };
 
