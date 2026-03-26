@@ -2075,6 +2075,37 @@ const T={
     title:'Epidemiological transition',
     eq:'infectious disease \u2192 chronic / NCD deaths',
     def:'The historical shift from mortality dominated by infectious and parasitic diseases to deaths caused by chronic diseases (cardiovascular disease, cancer) at older ages. Described by Abdel Omran (1971). Explains the rectangularisation of the l(x) survival curve.'
+  },
+  /* ── Day 1 additions ──────────────────────────────────────────── */
+  'Taylor series':{
+    title:'Taylor series',
+    eq:'f(x) \u2248 f(a) + f\u2032(a)(x\u2212a) + f\u2033(a)/2!(x\u2212a)\u00b2 + \u2026',
+    def:'A polynomial approximation of any smooth function around a point a. In formal demography it explains every rule of thumb: ln(1+r)\u2248r for small r (and thus why the slope of log K equals r), and why (1+r)^t \u2248 e^(rt). Each extra term improves precision; just two terms often suffice. Named after Brook Taylor (1715).'
+  },
+  'ODE':{
+    title:'ODE \u2014 Ordinary Differential Equation',
+    eq:'dK/dt = r\u00b7K(t) \u2192 K(t) = K\u2080e^(rt)',
+    def:'An equation relating a function to its own derivative. The exponential growth model is the simplest demographic ODE: the rate of change of K is proportional to K itself. Solving it (separating variables and integrating) gives K(t) = K\u2080e^(rt). The survival equation dl/dx = \u2212\u03bc(x)l(x) is another ODE, solved the same way.'
+  },
+  'log-linear':{
+    title:'Log-linear (semi-log) diagnostic',
+    eq:'ln K(t) = ln K\u2080 + r\u00b7t \u2014 slope = r',
+    def:'A plot with ln(population) on the y-axis and calendar time on the x-axis. Under exponential growth K(t) = K\u2080e^(rt), taking logs gives a straight line with slope r. Non-linearity in the log-population plot signals that the growth rate is changing \u2014 a quick and powerful diagnostic for model fit.'
+  },
+  'Keyfitz':{
+    title:'Keyfitz integral / total births ever',
+    eq:'\u222b K(t)\u00b7b dt = b/r [K(t\u2082)\u2212K(t\u2081)]',
+    def:'Nathan Keyfitz (1913\u20132010) used the exponential model to estimate \u224880 billion total human births in history. Method: for each era, integrate K(t)\u00b7b (births per year) over the period. With constant r and b, the integral reduces to (b/r)[e^(rt\u2082)\u2212e^(rt\u2081)]. Keyfitz\u2019s great skill was finding elegant approximations that yielded insight before computers existed.'
+  },
+  'differential equation':{
+    title:'Differential equation',
+    eq:'dK/dt = r\u00b7K or dl/dx = \u2212\u03bc(x)\u00b7l',
+    def:'An equation where a function\u2019s derivative is related to the function itself. Demographic models are naturally expressed as ODEs: exponential growth (dK/dt = rK), logistic growth (dK/dt = rK(1\u2212K/\u03ba)), and the survival equation. Solving means finding the function \u2014 not a number \u2014 that satisfies the equation.'
+  },
+  'separation of variables':{
+    title:'Separation of variables',
+    eq:'dl/l = \u2212\u03bc(x)dx \u21d2 integrate both sides',
+    def:'A technique for solving ODEs where the dependent variable (here l) and the independent variable (here x or t) can be placed on opposite sides of the equation. Used to derive K(t) = K\u2080e^(rt) from dK/dt = rK, and l(x) = e^(\u2212\u222b\u03bc) from dl/dx = \u2212\u03bc\u00b7l. Conceptually: each small change in the function is proportional to a small change in the variable \u2014 integrate both sides to recover the function.'
   }
 };
 
@@ -2115,7 +2146,7 @@ function attachVars(){
 
 /* ── phrase walker (English terms in prose) ──────────────────── */
 const PHRASES=Object.keys(T)
-  .filter(k=>k.length>3 && !/^(lx|nlx|tx|ex|mu|nqx|npx|nmx|ndx|Kt|r)$/.test(k))
+  .filter(k=>k.length>=3 && !/^(lx|nlx|tx|ex|mu|nqx|npx|nmx|ndx|Kt|r)$/.test(k))
   .sort((a,b)=>b.length-a.length);
 
 const SKIP=new Set(['SCRIPT','STYLE','CODE','PRE','SVG','INPUT','TEXTAREA','BUTTON','A']);

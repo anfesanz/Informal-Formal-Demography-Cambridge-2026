@@ -168,7 +168,7 @@ hr{border:none;border-top:1px solid var(--rule);margin:3rem 0}
   <ol>
     <li>Survival is <strong>multiplicative</strong>: \(l(x) = \prod_i {}_np_i\). Probabilities multiply; hazards add.</li>
     <li><strong>TFR</strong> is the area under the age-specific fertility curve — the average children per woman if current rates applied throughout life. Replacement level ≈ 2.1.</li>
-    <li><strong>NRR</strong> = GRR × average survivorship through reproductive ages. NRR &gt; 1 → long-run growth; NRR &lt; 1 → long-run decline. UK NRR ≈ 0.80 in 2020.</li>
+    <li><strong><span class="tip" data-key="NRR">NRR</span></strong> = <span class="tip" data-key="GRR">GRR</span> × average survivorship through reproductive ages. <span class="tip" data-key="NRR">NRR</span> &gt; 1 → long-run growth; <span class="tip" data-key="NRR">NRR</span> &lt; 1 → long-run decline. UK <span class="tip" data-key="NRR">NRR</span> ≈ 0.80 in 2020.</li>
     <li>Rule of thumb: \(r \approx \ln(\text{NRR}) / \mu\) where \(\mu\) is the mean age of childbearing (~28–30 years in most countries).</li>
     <li>Population projection is a <strong>Markov process</strong>: \(\mathbf{K}_{t+1} = \mathbf{A}\,\mathbf{K}_t\). Long-run behaviour is determined by the dominant eigenvalue of the Leslie matrix.</li>
   </ol>
@@ -604,13 +604,13 @@ hr{border:none;border-top:1px solid var(--rule);margin:3rem 0}
 
 <div class="callout intuition">
   <div class="callout-title">💡 Intuition — The Yellow Shaded Area</div>
-  <p>On the board, Robert drew a fertility curve \(f(x)\) (the bell-shaped curve of births by age), then shaded the area under \(f(x) \cdot l(x) \cdot F_{\text{FAB}}\) in yellow. That yellow area is the NRR. Why yellow? Because it represents the daughters that actually make it to birth — some of the potential births are "eaten" by mortality (the survivorship \(l(x)/l(0)\) is less than 1 for all ages) and some are filtered to sons (the \(F_{\text{FAB}}\) factor). The yellow area is always smaller than the total area under \(f(x)\), which is the GRR — and that is why NRR &lt; GRR always.</p>
+  <p>On the board, Robert drew a fertility curve \(f(x)\) (the bell-shaped curve of births by age), then shaded the area under \(f(x) \cdot l(x) \cdot F_{\text{FAB}}\) in yellow. That yellow area is the <span class="tip" data-key="NRR">NRR</span>. Why yellow? Because it represents the daughters that actually make it to birth — some of the potential births are "eaten" by mortality (the survivorship \(l(x)/l(0)\) is less than 1 for all ages) and some are filtered to sons (the \(F_{\text{FAB}}\) factor). The yellow area is always smaller than the total area under \(f(x)\), which is the <span class="tip" data-key="GRR">GRR</span> — and that is why <span class="tip" data-key="NRR">NRR</span> &lt; <span class="tip" data-key="GRR">GRR</span> always.</p>
 </div>
 
 <!-- Widget 3: NRR calculator -->
 <div class="widget">
   <div class="widget-title">Widget 3 — NRR vs GRR: The Role of Survivorship</div>
-  <div class="ws">Adjust female survivorship at mean childbearing age and the GRR to see how NRR changes. The key relationship is NRR ≈ GRR × l(μ), where l(μ) is survivorship at the mean age of childbearing.</div>
+  <div class="ws">Adjust female survivorship at mean childbearing age and the GRR to see how NRR changes. The key relationship is NRR ≈ GRR × <span class="tip" data-key="lmu">l(μ)</span>, where <span class="tip" data-key="lmu">l(μ)</span> is survivorship at the mean age of childbearing.</div>
   <div class="sr">
     <label>Gross Reproduction Rate (GRR)</label>
     <input type="range" min="0.8" max="4.0" value="1.6" step="0.05" id="sld_grr" oninput="updateNRR()">
@@ -710,7 +710,7 @@ hr{border:none;border-top:1px solid var(--rule);margin:3rem 0}
 
 <div class="callout demography">
   <div class="callout-title">📊 The NRR Phase Plot</div>
-  <p>The lecture showed a <strong>phase plot</strong> with GRR on one axis and l(μ) on the other, with contour lines marking NRR = 0.8, 1.0, and 1.2. Historical data points for different countries and eras scatter across this plot. The contours are hyperbolas — the equation GRR × l(μ) = NRR defines a rectangular hyperbola. Countries in the upper-left quadrant (high fertility, high child mortality) and countries in the lower-right (low fertility, low mortality) can both sit on the NRR = 1 contour. The plot reveals that a country's demographic transition — the move from high fertility/high mortality to low fertility/low mortality — traces a curved path across this diagram.</p>
+  <p>The lecture showed a <strong>phase plot</strong> with GRR on one axis and <span class="tip" data-key="lmu">l(μ)</span> on the other, with contour lines marking NRR = 0.8, 1.0, and 1.2. Historical data points for different countries and eras scatter across this plot. The contours are hyperbolas — the equation GRR × <span class="tip" data-key="lmu">l(μ)</span> = NRR defines a rectangular hyperbola. Countries in the upper-left quadrant (high fertility, high child mortality) and countries in the lower-right (low fertility, low mortality) can both sit on the NRR = 1 contour. The plot reveals that a country's demographic transition — the move from high fertility/high mortality to low fertility/low mortality — traces a curved path across this diagram.</p>
 </div>
 
 <h3>Connecting NRR to the Growth Rate r</h3>
@@ -973,7 +973,7 @@ hr{border:none;border-top:1px solid var(--rule);margin:3rem 0}
   <ul>
     <li>The <strong>survival function</strong> is \(l(x) = e^{-\int_0^x \mu(y)dy}\): survival is exponential decay driven by the cumulative hazard. Probabilities multiply; hazards add.</li>
     <li>The <strong>NRR</strong> combines fertility (\(f(x)\)), mortality (\(l(x)\)), and sex ratio (\(F_{\text{FAB}}\)) into a single generational replacement measure. NRR = 1 means exact replacement.</li>
-    <li>NRR ≈ GRR × l(μ): a decomposition into a pure fertility measure and a pure mortality measure.</li>
+    <li>NRR ≈ GRR × <span class="tip" data-key="lmu">l(μ)</span>: a decomposition into a pure fertility measure and a pure mortality measure.</li>
     <li>The <strong>rule of thumb</strong> \(r \approx \log(\text{NRR})/\mu\) links the NRR (generational multiplier) to the instantaneous growth rate \(r\) via the mean age of childbearing \(\mu\).</li>
     <li><strong>Population projection</strong> is matrix multiplication: \(\mathbf{k}_t = A^t \mathbf{k}_0\). The long-run behaviour is governed by the dominant eigenvalue and eigenvector of the Leslie matrix.</li>
     <li>All of these ideas — NRR, stable population, eigenvalues — will come together in Days 4 and 5 when we study the <strong>stable population model</strong> and <strong>Lotka's equation</strong>.</li>
@@ -1593,6 +1593,52 @@ const T={
     title:'Abridged life table',
     eq:'5-year age groups (0, 1\u20134, 5\u20139, \u2026)',
     def:'A life table using grouped age intervals (typically 5 years) rather than single years of age. More practical for real data. Uses the same columns (l_x, _nd_x, _nq_x, _nL_x, T_x, e_x) but at 5-year steps, with a special treatment for the infant mortality group (0\u20131 and 1\u20134).'
+  },
+  /* ── Day 3 additions ──────────────────────────────────────────── */
+  'ODE':{
+    title:'ODE \u2014 Ordinary Differential Equation',
+    eq:'dl/dx = \u2212\u03bc(x)\u00b7l(x) \u2192 l(x) = e^(\u2212\u222b\u03bc)',
+    def:'An equation relating a function to its own derivative. The survival ODE dl/dx = \u2212\u03bc(x)l(x) is solved by separation of variables: divide by l, integrate, and exponentiate to obtain l(x) = exp(\u2212\u222b\u2080\u02e3\u03bc(y)dy). The exponential growth ODE dK/dt = rK is structurally identical but for growth rather than decline.'
+  },
+  'HMD':{
+    title:'HMD \u2014 Human Mortality Database',
+    eq:'mortality.org \u2014 ~40 countries',
+    def:'The authoritative public repository of harmonised historical mortality data, maintained by UC Berkeley and the Max Planck Institute for Demographic Research. Covers ~40 countries, some series back to 1751. Provides standardised life tables, death rates, and population exposures. The standard reference for historical mortality analysis. Freely accessible at mortality.org.'
+  },
+  'Human Mortality Database':{
+    title:'Human Mortality Database (HMD)',
+    eq:'mortality.org \u2014 ~40 countries, some to 1751',
+    def:'Public repository of harmonised historical mortality data maintained by UC Berkeley and Max Planck Institute. Covers ~40 countries. Provides life tables and death-rate data in standardised format. The go-to source for any historical comparison of mortality levels and trends. Free access at mortality.org.'
+  },
+  'frailty':{
+    title:'Unobserved frailty (heterogeneity)',
+    eq:'\u03bc_i(x) = z_i \u00b7 \u03bc\u2080(x), \u2009 z\u1d62 ~ Gamma',
+    def:'Hidden variation in mortality risk between individuals. Frail individuals (high z) die earlier; robust individuals (low z) survive longer. As the frail die first, the surviving population becomes increasingly robust \u2014 so the observed population-average hazard declines even if each individual\u2019s hazard is constant. The standard life table ignores frailty; the Vaup\u00e9l, Manton & Stallard (1979) gamma-frailty model accounts for it.'
+  },
+  'unobserved frailty':{
+    title:'Unobserved frailty',
+    eq:'\u03bc_i(x) = z_i \u00b7 \u03bc\u2080(x)',
+    def:'Hidden individual-level variation in mortality risk. Because frail people die preferentially at younger ages, cohort survivors are progressively more robust than the average \u2014 causing the observed hazard to decline with age faster than any individual\u2019s true hazard. A key source of bias in life tables that assume population homogeneity.'
+  },
+  'Brass':{
+    title:'William Brass / Brass relational model',
+    eq:'logit\u202fS(x) = \u03b1 + \u03b2\u202flogit\u202fS\u2080(x)',
+    def:'Sir William Brass (1921\u20132001) pioneered demographic methods for data-scarce high-mortality populations. His relational logit model expresses any survival schedule as a two-parameter (\u03b1, \u03b2) transformation of a standard schedule S\u2080(x): \u03b1 shifts the overall level of mortality; \u03b2 changes the age-pattern. Enormously influential in Sub-Saharan African demography, where registration data are incomplete.'
+  },
+  'separation of variables':{
+    title:'Separation of variables',
+    eq:'dl/l = \u2212\u03bc(x)dx \u21d2 integrate \u21d2 exponentiate',
+    def:'A technique for solving ODEs where all terms involving the dependent variable are placed on one side and the independent variable on the other. Step 1: divide both sides of dl/dx = \u2212\u03bc(x)l by l. Step 2: recognise d(ln l)/dx. Step 3: integrate from 0 to x. Step 4: exponentiate to recover l(x) = e^(\u2212H(x)).'
+  },
+  'Cox regression':{
+    title:'Cox proportional hazards model',
+    eq:'\u03bc(x | Z) = \u03bc\u2080(x) \u00b7 exp(\u03b2\u00b7Z)',
+    def:'A semi-parametric regression model for survival data, introduced by Sir David Cox (1972). The hazard for individual i with covariates Z is a baseline hazard \u03bc\u2080(x) multiplied by exp(\u03b2Z). "Proportional" because the hazard ratio for any two individuals is constant over time. The most widely used survival regression model in medicine and epidemiology.'
+  },
+  'lmu':{
+    title:'l(\u03bc) \u2014 survivorship at mean age of childbearing',
+    eq:'NRR \u2248 GRR \u00d7 l(\u03bc)/l(0)',
+    def:'The fraction of the birth cohort still alive at the mean age of childbearing \u03bc (roughly 27\u201330 in low-mortality populations). Acts as the "mortality discount" converting the mortality-free GRR into the mortality-adjusted NRR. In high-mortality populations l(\u03bc) can be 0.80 or lower, requiring a much higher GRR to achieve replacement.'
   }
 };
 
@@ -1633,7 +1679,7 @@ function attachVars(){
 
 /* ── phrase walker (auto-wraps English terms in prose) ──────────── */
 const PHRASES=Object.keys(T)
-  .filter(k=>k.length>3 && !/^(lx|nlx|tx|ex|mu|nqx|npx|nmx|ndx|r|Hx|TFR|GRR|NRR|fx|nFx|FFAB|nax|mubar)$/.test(k))
+  .filter(k=>k.length>=3 && !/^(lx|nlx|tx|ex|mu|nqx|npx|nmx|ndx|r|Hx|TFR|GRR|NRR|fx|nFx|FFAB|nax|mubar|lmu)$/.test(k))
   .sort((a,b)=>b.length-a.length);
 
 const SKIP=new Set(['SCRIPT','STYLE','CODE','PRE','SVG','INPUT','TEXTAREA','BUTTON','A']);

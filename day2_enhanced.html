@@ -2057,6 +2057,57 @@ const T={
     title:'Epidemiological transition',
     eq:'infectious disease \u2192 chronic / NCD deaths',
     def:'The historical shift from mortality dominated by infectious and parasitic diseases to deaths caused by chronic diseases (cardiovascular disease, cancer) at older ages. Described by Abdel Omran (1971). Explains the rectangularisation of the survival curve.'
+  },
+  /* ── Day 2 additions ──────────────────────────────────────────── */
+  'Taylor series':{
+    title:'Taylor series',
+    eq:'f(x) \u2248 f(a) + f\u2032(a)(x\u2212a) + f\u2033(a)/2!(x\u2212a)\u00b2 + \u2026',
+    def:'A polynomial approximation of any smooth function around a point a. Explains every demographic rule of thumb: ln(1+r)\u2248r for small r (so the log-population slope equals r), and why (1+r)^t \u2248 e^(rt). Each extra term gives more precision. Named after Brook Taylor (1715).'
+  },
+  'ODE':{
+    title:'ODE \u2014 Ordinary Differential Equation',
+    eq:'dK/dt = r\u00b7K(t) or dl/dx = \u2212\u03bc(x)\u00b7l(x)',
+    def:'An equation relating a function to its own derivative. The exponential growth model is the simplest demographic ODE. The survival ODE \u2014 dl/dx = \u2212\u03bc(x)l(x) \u2014 is solved by separation of variables to give the fundamental result l(x) = exp(\u2212\u222b\u2080\u02e3\u03bc(y)dy).'
+  },
+  'Fourier series':{
+    title:'Fourier series',
+    eq:'f(x) \u2248 a\u2080 + \u03a3 [a\u2099cos(2\u03c0nx/T) + b\u2099sin(2\u03c0nx/T)]',
+    def:'Any periodic function can be approximated by a sum of sines and cosines. The analogue of Taylor series for periodic phenomena. Used in demographic time-series analysis to detect seasonal cycles in births and deaths. Linked to the Taylor expansion of e^x via Euler\u2019s formula: e^(ix) = cos x + i sin x. Introduced by J.-B. Fourier (1807).'
+  },
+  'Fourier':{
+    title:'Jean-Baptiste Joseph Fourier (1768\u20131830)',
+    eq:'f(x) = a\u2080 + \u03a3 a\u2099cos(nx) + b\u2099sin(nx)',
+    def:'French mathematician who showed that any periodic function can be represented as a sum of sines and cosines (Fourier series). Introduced the idea in 1807 while studying heat conduction; Lagrange initially rejected it. Fourier analysis is the foundation of signal processing, MRI, image compression (JPEG), and spectral analysis of demographic time series. His work is linked to the exponential function via Euler\u2019s formula e^(ix) = cos x + i sin x.'
+  },
+  'Human Mortality Database':{
+    title:'Human Mortality Database (HMD)',
+    eq:'mortality.org \u2014 ~40 countries, some to 1751',
+    def:'The authoritative public repository of harmonised historical mortality data, maintained by UC Berkeley and the Max Planck Institute for Demographic Research. Covers ~40 countries, with some series back to 1751. Provides life tables, death rates and population exposures in standardised format. The standard reference for historical mortality analysis in academic demography. Freely accessible at mortality.org.'
+  },
+  'HMD':{
+    title:'HMD \u2014 Human Mortality Database',
+    eq:'mortality.org \u2014 ~40 countries',
+    def:'Public repository of historical mortality data maintained by UC Berkeley and the Max Planck Institute. ~40 countries, some series back to 1751. Standard reference for historical mortality analysis. Freely accessible at mortality.org.'
+  },
+  'Kaplan-Meier':{
+    title:'Kaplan-Meier estimator',
+    eq:'S(t) = \u220f_{t_i\u2264t} (1 \u2212 d_i/n_i)',
+    def:'Non-parametric estimator of the survival function from censored data. Produces a step function that drops at each observed event time t_i by d_i/n_i (deaths at that time divided by the risk set). Standard in clinical trials and epidemiology. Introduced by Kaplan & Meier (1958). In demography the convention is reversed: the age axis is fixed and the decrement varies.'
+  },
+  'differential equation':{
+    title:'Differential equation',
+    eq:'dK/dt = r\u00b7K or dl/dx = \u2212\u03bc(x)\u00b7l',
+    def:'An equation where a function\u2019s rate of change is related to the function itself. The two key demographic ODEs: (1) dK/dt = rK for exponential growth, and (2) dl/dx = \u2212\u03bc(x)l(x) for the survival function. Both are solved by separation of variables and integration.'
+  },
+  'separation of variables':{
+    title:'Separation of variables',
+    eq:'dl/l = \u2212\u03bc(x)dx \u21d2 integrate both sides',
+    def:'A technique for solving ODEs where the dependent and independent variables are placed on opposite sides. Used to derive l(x) = e^(\u2212\u222b\u03bc) from dl/dx = \u2212\u03bc\u00b7l. Step 1: divide both sides by l. Step 2: recognise the left-hand side as d(ln l)/dx. Step 3: integrate. Step 4: exponentiate.'
+  },
+  'log-linear':{
+    title:'Log-linear (semi-log) diagnostic',
+    eq:'ln K(t) = ln K\u2080 + r\u00b7t \u2014 slope = r',
+    def:'A plot with ln(population) on the y-axis and calendar time on the x-axis. Under exponential growth, ln K is a straight line with slope r. Non-linearity signals a changing growth rate. Used to check whether the exponential model fits before applying it to data.'
   }
 };
 
@@ -2097,7 +2148,7 @@ function attachVars(){
 
 /* ── phrase walker (English terms in prose) ──────────────────── */
 const PHRASES=Object.keys(T)
-  .filter(k=>k.length>3 && !/^(lx|nlx|tx|ex|mu|nqx|npx|nmx|ndx|Kt|r)$/.test(k))
+  .filter(k=>k.length>=3 && !/^(lx|nlx|tx|ex|mu|nqx|npx|nmx|ndx|Kt|r)$/.test(k))
   .sort((a,b)=>b.length-a.length);
 
 const SKIP=new Set(['SCRIPT','STYLE','CODE','PRE','SVG','INPUT','TEXTAREA','BUTTON','A']);
