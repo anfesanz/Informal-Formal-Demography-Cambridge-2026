@@ -91,8 +91,7 @@ hr{border:none;border-top:1px solid var(--rule);margin:3rem 0}
 .matrix-table .state-side{background:#f1f5f9;font-family:var(--sans);font-size:.78rem;font-weight:600;padding:.3rem .6rem;text-align:right}
 @media(max-width:620px){body{font-size:15px;padding:1rem 1rem 5rem}h1{font-size:1.7rem}h2{font-size:1.3rem}.sr label{min-width:160px}.two-col{grid-template-columns:1fr}.markov-container{grid-template-columns:1fr}}
 /* ---- Tooltips ---- */
-.tip{border-bottom:1.5px dashed var(--acm);cursor:help}
-#tt{position:fixed;background:#1e293b;color:#e2e8f0;padding:.45rem .8rem;border-radius:7px;font-family:var(--sans);font-size:.79rem;line-height:1.55;max-width:260px;pointer-events:none;z-index:9999;display:none;box-shadow:0 4px 16px rgba(0,0,0,.35)}
+.tip{cursor:help}
 
 /* =============================================
    DAY NAVIGATION BAR
@@ -470,13 +469,13 @@ hr{border:none;border-top:1px solid var(--rule);margin:3rem 0}
 
 
 <!-- ===== SECTION 6 ===== -->
-<h2 id="s6"><span class="sn">6</span> Period Fertility: Age-Specific Rates, TFR, and the 3D Surface</h2>
+<h2 id="s6"><span class="sn">6</span> Cohort Fertility: Age-Specific Rates, TFR, and the 3D Surface</h2>
 
 <p>Having described how people die, we now describe how people are born. The lecture introduced <strong>age-specific fertility rates</strong> and the summary measures derived from them.</p>
 
 <div class="callout note">
-  <div class="callout-title">📝 Period vs Cohort Fertility</div>
-  <p>The rates defined here are <strong>period</strong> fertility rates: they are computed from a single calendar year (or period) by dividing births occurring to women aged \(x\) in that year by the woman-years of exposure at age \(x\) in that year. No single real woman experiences these rates across her lifetime — it is a synthetic cross-section, exactly analogous to the period life table. A <strong>cohort</strong> fertility rate, by contrast, follows a real group of women born in the same year and tracks their births as they age. Period and cohort measures usually differ, especially when fertility timing is shifting (e.g., the Baby Boom pushed period TFR high while cohort TFR stayed more moderate). The distinction matters for interpretation but not for the algebra.</p>
+  <div class="callout-title">📝 Cohort vs Period Fertility</div>
+  <p>Robert introduced fertility with a 3D surface explicitly labelled <em>"Cohort Fertility"</em>: each slice through the surface follows an actual birth cohort — the women born in 1933, in 1950, in 1970 — and records their age-specific birth rates as they aged through life. This is <strong>cohort fertility</strong>: real women, real births, observed trajectories. The ASFR formula \({}_nF_x = {}_nB_x / {}_nK_x\) and the TFR integral apply equally to cohort data. A <strong>period</strong> fertility rate, by contrast, takes a vertical slice through the Lexis diagram: all women alive in a single calendar year, across all ages simultaneously. Period TFR is a synthetic cross-section — no single real woman lives through those rates — analogous to the period life table. The two usually differ when the <em>timing</em> of births is shifting: the Baby Boom made period TFRs spike sharply while cohorts' completed fertility rose more moderately, because women were bunching births into a narrow window. The algebra is the same in both cases; the interpretation is not.</p>
 </div>
 
 <h3>Age-Specific Fertility Rates (Both Sexes)</h3>
@@ -510,7 +509,7 @@ hr{border:none;border-top:1px solid var(--rule);margin:3rem 0}
 
 <h3>The 3D Fertility Surface</h3>
 
-<p>The lecture showed a striking visualisation: a 3D surface of US age-specific fertility rates from 1933 to 2021, with age on one axis, calendar year on the other, and the ASFR value on the vertical. The shape of this surface encodes the full demographic history of American fertility — the Baby Boom peak (roughly 1957–1961) appears as a ridge; the post-Boom decline shows as a drop-off; the shift toward later childbearing in recent decades is visible as the "hump" moving toward higher ages over time. Such surfaces are a powerful way to see the interaction of period and cohort effects simultaneously.</p>
+<p>Robert showed a 3D surface of US age-specific fertility rates, labelled <em>"Cohort Fertility"</em>, covering birth cohorts 1933–2021 with ages 12–55 on one axis and birth-cohort year on the other. Reading the surface along the diagonal (following a cohort) gives completed cohort fertility. Reading it vertically (a fixed calendar year, all ages) gives period fertility. The Baby Boom appears as a prominent ridge — cohorts born in the late 1920s and 1930s had notably high ASFRs, and the bunching of births into the late 1950s and early 1960s produced a period-TFR spike far above actual completed cohort fertility. The post-Boom shift toward later childbearing shows as the fertility hump migrating toward older ages over time. Such surfaces are the richest possible summary of a population's reproductive history.</p>
 
 <div class="callout mistake">
   <div class="callout-title">⚠ Common Mistake — TFR is Not Completed Fertility</div>
@@ -1159,7 +1158,8 @@ function buildMarkov(){
     options:{
       responsive:true,maintainAspectRatio:false,
       scales:{
-        y:{title:{display:true,text:'Fraction of living population (excl. dead)'},min:0,max:1,stacked:false}
+        y:{title:{display:true,text:'% of population'},min:0,max:100,stacked:false,
+           ticks:{callback:v=>v+'%'}}
       },
       plugins:{legend:{position:'top'}}
     }
@@ -1173,7 +1173,8 @@ function updateMarkov(){
   document.getElementById('val_m0').textContent = sM+'%';
 
   // Clamp so total doesn't exceed 100
-  if(sS + sM > 95) sM = 95 - sS;
+  if(sS + sM > 95) sM = Math.max(0, 95 - sS);
+  document.getElementById('val_m0').textContent = sM+'%';
   const sW = Math.max(0, Math.round((100-sS-sM)*0.5));
   const sD = Math.max(0, 100-sS-sM-sW);
 
@@ -1195,42 +1196,6 @@ function updateMarkov(){
 }
 buildMarkov(); updateMarkov();
 
-// ============================================================
-// Tooltip system for .tip spans
-// ============================================================
-const TIPS = {
-  mu:            'Force of mortality μ(x): instantaneous risk of death at exact age x, given survival to that age. Equals −d(log l)/dx.',
-  Hx:            'Cumulative hazard H(x) = ∫₀ˣ μ(y) dy: total mortality "dose" accumulated from birth to age x. Survival l(x) = e^−H(x).',
-  TFR:           'Total Fertility Rate: expected births per woman over her reproductive lifetime (both sexes), assuming current period rates and no mortality. TFR ≈ 2.1 for replacement in low-mortality countries.',
-  GRR:           'Gross Reproduction Rate: expected daughters per woman, assuming she survives through the reproductive period. GRR = TFR × F_FAB ≈ TFR × 0.4878.',
-  NRR:           'Net Reproduction Ratio R₀: daughters per woman after accounting for mortality. NRR > 1 → growing; NRR < 1 → shrinking; NRR = 1 → exact replacement.',
-  r:             'Intrinsic growth rate r: instantaneous rate of natural increase. r = log(NRR)/μ ≈ (birth rate − death rate) in a stable population.',
-  mubar:         'Mean age of childbearing μ: weighted average age at birth, with weights f(x)·l(x)/l(0). Used as an estimate of generation length G in the rule of thumb r ≈ log(NRR)/μ.',
-  lx:            'Survivorship l(x): proportion of a birth cohort alive at exact age x. l(0) = 1 (or radix 100,000); never increases with age.',
-  nqx:           'n-year death probability ₙqₓ: probability of dying in [x, x+n) given alive at exact age x. Related to central rate by ₙqₓ = n·ₙMₓ / (1 + (n−ₙaₓ)·ₙMₓ).',
-  ex:            'Life expectancy eₓ: expected remaining years of life at exact age x. e₀ is life expectancy at birth; e₁ can exceed e₀ in high-mortality populations.',
-  fx:            'Age-specific fertility rate f(x): births per woman per year at exact age x (continuous form). Integral over reproductive ages = TFR.',
-  nFx:           'Age-specific fertility rate ₙFₓ: births per woman-year in age group [x, x+n). Multiply by n to get contribution to TFR: TFR = Σ ₙFₓ·n.',
-  FFAB:          'Fraction Female at Birth F_FAB ≈ 0.4878: proportion of births that are girls. F_FAB = 1/(1 + SRB) where SRB ≈ 1.05 is the sex ratio at birth.',
-  'Markov process': 'Markov process: a stochastic model in which the probability of moving to the next state depends only on the current state, not on the history of how you arrived there.',
-  'Leslie matrix':  'Leslie matrix: the standard age-structured population projection matrix. Subdiagonal entries are survivorships l(x+n)/l(x); top-row entries encode age-specific fertilities. Eigenvalues give long-run growth rate and stable age structure.'
-};
-const ttEl = document.createElement('div');
-ttEl.id = 'tt';
-document.body.appendChild(ttEl);
-document.querySelectorAll('.tip').forEach(el => {
-  el.addEventListener('mouseenter', () => {
-    const key = el.dataset.key;
-    if(TIPS[key]){ ttEl.textContent = TIPS[key]; ttEl.style.display = 'block'; }
-  });
-  el.addEventListener('mousemove', e => {
-    const x = Math.min(e.clientX + 14, window.innerWidth - 275);
-    const y = e.clientY - ttEl.offsetHeight - 10;
-    ttEl.style.left = x + 'px';
-    ttEl.style.top  = Math.max(y, 4) + 'px';
-  });
-  el.addEventListener('mouseleave', () => { ttEl.style.display = 'none'; });
-});
 </script>
 
 <!-- ═══ TOOLTIP SYSTEM ═══════════════════════════════════════════ -->
@@ -1486,6 +1451,148 @@ const T={
     title:'Mean age of childbearing \u03bc',
     eq:'\u03bc = \u222bx\u00b7f(x)\u00b7l(x) dx / \u222bf(x)\u00b7l(x) dx',
     def:'Average age at which women give birth, weighted by both the fertility schedule and survivorship. The \u201ccentre of mass\u201d of the NRR integrand. Used as an estimate of generation length in r \u2248 log(NRR)/\u03bc.'
+  },
+  /* ── Fertility-specific additions ────────────────────────────── */
+  'cohort fertility':{
+    title:'Cohort fertility',
+    eq:'follows women born in year c as they age',
+    def:'Fertility measured by following an actual birth cohort \u2014 all women born in the same year \u2014 and recording their births as they age from 15 to 50. The diagonal cut through the Lexis diagram. Completed cohort fertility is the cohort\u2019s TFR once all women have passed age 50.'
+  },
+  'period fertility':{
+    title:'Period fertility',
+    eq:'vertical slice of Lexis diagram, year t',
+    def:'Fertility measured from a single calendar year: for each age x, divide births to women aged x in year t by woman-years of exposure at age x in year t. No single real woman experiences the full schedule \u2014 it is a synthetic cross-section, analogous to the period life table.'
+  },
+  'cohort TFR':{
+    title:'Cohort TFR (completed fertility)',
+    eq:'TFR_c = \u03a3 \u2099F\u2093(cohort c) \u00b7 n',
+    def:'Total fertility rate for a specific birth cohort: the actual number of children born per woman over a lifetime. Measured only once a cohort has passed reproductive age. Usually closer to 2 than period TFR, which can oscillate with timing shifts.'
+  },
+  'period TFR':{
+    title:'Period TFR',
+    eq:'TFR_t = \u03a3 \u2099F\u2093(year t) \u00b7 n',
+    def:'Total fertility rate computed from a single calendar year\u2019s ASFRs. Sensitive to tempo effects: when women delay births, period TFR falls even if they eventually have the same number of children. Not a forecast of actual completed cohort fertility.'
+  },
+  'completed cohort fertility':{
+    title:'Completed cohort fertility',
+    eq:'CCF = TFR for cohort once age 50+ is reached',
+    def:'The actual total number of children born to women in a specific birth cohort, measured after they have passed reproductive age. Unlike period TFR, it is not affected by changes in the timing of births \u2014 it reflects true quantum of fertility.'
+  },
+  'completed fertility':{
+    title:'Completed fertility',
+    eq:'CCF = TFR for cohort once age 50+ is reached',
+    def:'Synonym for completed cohort fertility: the actual number of children per woman for a real birth cohort, counted once all women have passed age 50. Unaffected by tempo distortions that inflate or deflate period TFR.'
+  },
+  'tempo effect':{
+    title:'Tempo effect',
+    eq:'period TFR \u2260 quantum if timing shifts',
+    def:'The distortion in period TFR caused by a change in the timing of births. If women systematically delay childbearing, period TFR falls \u2014 not because they have fewer children in total, but because births are spread over more calendar time. Bongaarts and Feeney (1998) proposed a tempo-adjusted TFR to correct for this.'
+  },
+  'tempo effects':{
+    title:'Tempo effects',
+    eq:'period TFR \u2260 quantum if timing shifts',
+    def:'Distortions in period TFR caused by shifts in the timing of births across cohorts. A rise in mean age at childbearing suppresses period TFR below true quantum; a fall inflates it. Prominent during the Baby Boom (bunching) and the subsequent fertility postponement.'
+  },
+  'Baby Boom':{
+    title:'Baby Boom (c. 1946\u20131964)',
+    eq:'US period TFR peaked \u2248 3.7 in 1957',
+    def:'Post-WWII surge in births across the US, UK, Canada, and Australia. Partly a tempo effect: cohorts who delayed childbearing during the Depression and war compressed births into the late 1940s and 1950s, producing a period-TFR spike. The Baby Boom cohort (born 1946\u20131964) was explicitly noted by Robert as an example of how cohort timing affects period measures.'
+  },
+  'replacement level':{
+    title:'Replacement level fertility',
+    eq:'TFR \u2248 2.1 in low-mortality populations',
+    def:'The TFR at which a population exactly replaces itself from one generation to the next (NRR = 1). Slightly above 2.0 because some girls die before completing reproduction. In high-mortality populations, replacement requires a higher TFR; in very low-mortality populations it approaches 2.0.'
+  },
+  'parity':{
+    title:'Parity',
+    eq:'parity k = woman has had k children',
+    def:'The number of children a woman has given birth to. Parity 0 = childless; parity 1 = one child; etc. Age-parity-specific fertility rates (e.g. rate at which parity-1 women become parity-2) give a more refined picture than simple ASFRs, and are the building blocks of parity progression ratios.'
+  },
+  'ASFR':{
+    title:'ASFR \u2014 Age-Specific Fertility Rate',
+    eq:'\u2099F\u2093 = \u2099B\u2093 / \u2099K\u2093',
+    def:'Births in age group [x, x+n) per person-year of woman-years in that group. The basic building block of all fertility analysis. Sum (weighted by interval width n) gives TFR. Can be computed for a period (vertical Lexis slice) or a cohort (diagonal Lexis slice).'
+  },
+  'reproductive age':{
+    title:'Reproductive age span',
+    eq:'conventionally ages 15\u201349 (or 15\u201354)',
+    def:'The age range over which female fertility is non-negligible. Births below age 15 and above age 50 are rare enough to be excluded from standard ASFR tables. The convention \u221215\u201349\u2019 covers 7 five-year age groups; some studies extend to 50\u201354.'
+  },
+  /* ── Mathematical and population-structure terms ─────────────── */
+  'eigenvalue':{
+    title:'Eigenvalue \u03bb',
+    eq:'A\u00b7v = \u03bb\u00b7v',
+    def:'A scalar \u03bb such that multiplying the matrix A by vector v just scales v by \u03bb. For a Leslie matrix, the dominant (largest) eigenvalue gives the long-run growth rate: \u03bb\u2081 = e^r. If \u03bb\u2081 > 1 the population grows; < 1 it shrinks.'
+  },
+  'dominant eigenvalue':{
+    title:'Dominant eigenvalue \u03bb\u2081',
+    eq:'\u03bb\u2081 = e^r (long-run growth rate)',
+    def:'The largest eigenvalue of the Leslie matrix. Determines the long-run growth rate of a population: r = log(\u03bb\u2081). All other eigenvalues shrink in relative importance over time, so the population eventually grows at rate r regardless of its initial age structure.'
+  },
+  'eigenvector':{
+    title:'Eigenvector',
+    eq:'A\u00b7v = \u03bb\u00b7v',
+    def:'A non-zero vector v whose direction is unchanged when multiplied by A. The eigenvector corresponding to the dominant eigenvalue \u03bb\u2081 of a Leslie matrix gives the stable age structure \u2014 the age distribution a population converges to under constant fertility and mortality.'
+  },
+  'stable age structure':{
+    title:'Stable age structure',
+    eq:'dominant eigenvector of Leslie matrix A',
+    def:'The age distribution a population converges to when fertility and mortality schedules are held constant over a long period. Once reached, the age structure stays constant while the population grows (or declines) at the intrinsic rate r. All initial age structures converge to it.'
+  },
+  'age structure':{
+    title:'Age structure',
+    eq:'vector k = (k_0, k_5, k_{10}, \u2026)',
+    def:'The distribution of a population across age groups. Formally the state vector k_t in a Leslie matrix projection. Affects overall birth and death rates even if age-specific rates are constant \u2014 a young population grows faster than an old one with identical schedules.'
+  },
+  'crude birth rate':{
+    title:'Crude birth rate (CBR)',
+    eq:'CBR = B / K',
+    def:'Total births per person-year of exposure (total population). \u201cCrude\u201d because it is not adjusted for age structure. A young population has a high CBR even with moderate fertility; an old population has a low CBR. Contrast with age-specific fertility rates, which control for age.'
+  },
+  'crude death rate':{
+    title:'Crude death rate (CDR)',
+    eq:'CDR = D / K',
+    def:'Total deaths per person-year. Sensitive to age structure \u2014 an old population can have a high CDR even with low age-specific mortality. Cross-country CDR comparisons are misleading without age standardisation.'
+  },
+  'population momentum':{
+    title:'Population momentum',
+    eq:'growth even after TFR reaches replacement',
+    def:'The tendency for a population to keep growing (or shrinking) after fertility reaches replacement level, because of a young (or old) age structure inherited from the past. A population with many young women will produce more births than deaths even at TFR = 2.1. Estimated to account for ~2/3 of future growth in high-fertility countries.'
+  },
+  'demographic transition':{
+    title:'Demographic transition',
+    eq:'high \u2192 low mortality then fertility',
+    def:'The historical shift from high mortality and high fertility (stable but slow growth) through falling mortality (rapid growth) to low mortality and low fertility (stable again). Most countries have completed it; some are mid-transition. The transition produces a temporary period of rapid growth and population momentum.'
+  },
+  'radix':{
+    title:'Radix l(0)',
+    eq:'l(0) = 1 (Berkeley) or 100,000',
+    def:'The starting value of the survivorship function l(x). Robert used l(0) = 1 (the \u201cBerkeley\u201d convention); many life tables use 100,000. Choice of radix does not affect rates or probabilities \u2014 it is just a scaling convention.'
+  },
+  'birth cohort':{
+    title:'Birth cohort',
+    eq:'all persons born in year c',
+    def:'All individuals born in the same year (or time period). Cohort analysis follows this group through time as they age together. On a Lexis diagram, a birth cohort is represented by a diagonal band. Contrast with a \u201cperiod\u201d analysis, which slices vertically across all ages at a fixed time.'
+  },
+  'parity progression ratio':{
+    title:'Parity progression ratio (PPR)',
+    eq:'PPR_k = Pr(k+1 children | k children)',
+    def:'The probability that a woman who has had k children goes on to have a k+1th child. A more refined measure than TFR: decomposition into PPRs shows whether low fertility is driven by more childlessness (low PPR\u2080) or fewer high-parity births (low PPR\u2082, PPR\u2083).'
+  },
+  'Lexis diagram':{
+    title:'Lexis diagram',
+    eq:'axes: calendar time t, age x',
+    def:'A coordinate system with calendar time on the x-axis and age on the y-axis. Each life is a diagonal line of slope 1. Vertical cuts = period data; horizontal cuts = age-group data; diagonal cuts = cohort data. The essential organising tool of formal demography.'
+  },
+  'natural increase':{
+    title:'Rate of natural increase',
+    eq:'r = b \u2212 d',
+    def:'Birth rate minus death rate. Equals the intrinsic growth rate r in a stable population. Positive: population growing; negative: shrinking; zero: stationary. Does not include migration.'
+  },
+  'abridged life table':{
+    title:'Abridged life table',
+    eq:'5-year age groups (0, 1\u20134, 5\u20139, \u2026)',
+    def:'A life table using grouped age intervals (typically 5 years) rather than single years of age. More practical for real data. Uses the same columns (l_x, _nd_x, _nq_x, _nL_x, T_x, e_x) but at 5-year steps, with a special treatment for the infant mortality group (0\u20131 and 1\u20134).'
   }
 };
 
