@@ -94,7 +94,7 @@ h1{font-size:2rem;color:var(--accent);margin-bottom:.3rem;line-height:1.2}
 <p class="subtitle">Robert Chung's Informal Introduction to Formal Demography · Cambridge, March 2026</p>
 
 <div class="about-box">
-  All terms encountered across the five-day course. Hover or tap any <em>underlined dashed</em> term in the day notes to see a quick tooltip; come here for the full definition, formula, and cross-references. Use the search box to filter.
+  All terms encountered across the five-day course — now covering <strong>~60 entries</strong> across all three days. Hover or tap any <em>underlined dashed</em> term in the day notes to see a quick tooltip; come here for the full definition, formula, historical context, and cross-references. Use the search box to filter by any keyword.
 </div>
 
 <!-- STICKY SEARCH -->
@@ -116,31 +116,75 @@ h1{font-size:2rem;color:var(--accent);margin-bottom:.3rem;line-height:1.2}
 <div class="letter-section" id="letter-A">
   <div class="letter-heading">A</div>
 
-  <div class="term-card" data-terms="abridged life table age group interval">
+  <div class="term-card" data-terms="abridged life table age group interval 5-year">
     <div class="term-header">
       <span class="term-name">Abridged life table</span>
     </div>
     <div class="term-tags"><span class="tag day2">Day 2</span><span class="tag day3">Day 3</span><span class="tag mortality">Mortality</span></div>
     <div class="term-body">
-      <p>A life table that uses grouped age intervals (typically 0, 1–4, 5–9, 10–14, … in five-year bands) rather than single years of age. The columns are the same as a complete life table — \({}_nM_x\), \({}_nq_x\), \({}_na_x\), \(l_x\), \({}_nd_x\), \({}_nL_x\), \(T_x\), \(e_x\) — but each row covers \(n\) years rather than 1 year. Most published life tables (including those from the Human Mortality Database) are in abridged form for older age groups.</p>
-      <p>The interval width \(n\) matters: using \(n=5\) loses information about mortality within each 5-year band. The parameter \({}_na_x\) ("average years lived in the interval by those who die in it") partially corrects for this.</p>
+      <p>A life table that uses grouped age intervals (typically 0, 1–4, 5–9, 10–14, … in five-year bands) rather than single years of age. The columns are identical to a complete life table — \({}_nM_x\), \({}_nq_x\), \({}_na_x\), \(l_x\), \({}_nd_x\), \({}_nL_x\), \(T_x\), \(e_x\) — but each row covers \(n\) years rather than 1.</p>
+      <p>The interval width \(n\) matters: using \(n=5\) loses information about mortality within each band. The \({}_na_x\) parameter ("average years lived in the interval by those who die in it") partially corrects for this. Most published life tables (including those from the HMD) are in abridged form for older age groups.</p>
     </div>
     <div class="term-links">→ Day 3, §5</div>
   </div>
 
-  <div class="term-card" data-terms="age-specific fertility rate ASFR f(x) fertility schedule">
+  <div class="term-card" data-terms="age-at-death distribution density f(x) deaths distribution">
+    <div class="term-header">
+      <span class="term-name">Age-at-death distribution</span>
+      <span class="term-symbol">\(f(x)\)</span>
+    </div>
+    <div class="term-tags"><span class="tag day2">Day 2</span><span class="tag mortality">Mortality</span></div>
+    <div class="term-body">
+      <p>The density function describing the distribution of deaths by age. It is the negative derivative of the survivorship function, equal to the product of the force of mortality and the survival function:</p>
+      <div class="term-formula">\[ f(x) = -l'(x) = \mu(x)\cdot l(x) \]</div>
+      <p>Since \(l(x)\) decreases from 1 to 0, \(f(x)\) integrates to 1 and is a proper probability density. <strong>Historical shape:</strong> in pre-industrial populations, \(f(x)\) was bimodal — a large infant spike (many deaths in the first year) and a smaller hump at older ages. In modern populations it is roughly bell-shaped, concentrated in late old age. The progressive compression of deaths into old age is called the "rectangularisation" of the survival curve.</p>
+    </div>
+    <div class="term-links">→ Day 2, §5</div>
+  </div>
+
+  <div class="term-card" data-terms="age-specific fertility rate ASFR f(x) nFx fertility schedule births per woman">
     <div class="term-header">
       <span class="term-name">Age-specific fertility rate (ASFR)</span>
-      <span class="term-symbol">f(x) or \({}_nF_x\)</span>
+      <span class="term-symbol">\({}_nF_x\)</span>
     </div>
     <div class="term-tags"><span class="tag day3">Day 3</span><span class="tag fertility">Fertility</span></div>
     <div class="term-body">
-      <p>The number of births per woman-year of exposure in age group \([x, x+n)\). Computed as: births to women aged \(x\) to \(x+n\) divided by person-years lived by women in that age group.</p>
-      <div class="term-formula">\[ {}_nF_x = \frac{\text{births to women aged } [x,x+n)}{{}_nL_x^{\text{female}}} \]</div>
-      <p>Age-specific rates are defined only over the reproductive ages, conventionally taken as 15–49 (sometimes 10–54). The ASFR schedule describes the <em>shape</em> of childbearing — high fertility societies tend to start childbearing earlier and continue later; low-fertility societies show a narrow peak around age 28–32.</p>
-      <p><strong>Real-world example:</strong> In England and Wales (2020), peak ASFR was around age 30–34 at approximately 95 births per 1,000 women per year. In Niger, the peak is in the early 20s at over 300 per 1,000.</p>
+      <p>The number of births per woman-year of exposure in age group \([x, x+n)\):</p>
+      <div class="term-formula">\[ {}_nF_x = \frac{\text{births to women aged } [x,x+n)}{{}_nK_x^{\text{female}}} \]</div>
+      <p>Age-specific rates cover the reproductive ages 15–49 (sometimes 10–54). The ASFR schedule describes the <em>shape</em> of childbearing — high-fertility societies start earlier and continue later; low-fertility societies show a narrow peak around age 28–32.</p>
+      <p><strong>Common mistake:</strong> when summing discrete ASFRs to get the TFR, you must multiply each rate by the interval width \(n\) — the TFR is the <em>area</em> under the fertility curve, not the sum of the heights.</p>
+      <p><strong>Real-world:</strong> England and Wales (2020) peak ASFR ≈ 95 per 1,000 women at ages 30–34. Niger peak ≈ 300+ per 1,000 in the early 20s.</p>
     </div>
     <div class="term-links">→ Day 3, §6</div>
+  </div>
+
+  <div class="term-card" data-terms="age-specific mortality rate nMx death rate observed rate denominator person-years">
+    <div class="term-header">
+      <span class="term-name">Age-specific mortality rate</span>
+      <span class="term-symbol">\({}_nM_x\)</span>
+    </div>
+    <div class="term-tags"><span class="tag day2">Day 2</span><span class="tag mortality">Mortality</span></div>
+    <div class="term-body">
+      <p>The number of deaths in age group \([x, x+n)\) per person-year of exposure in that group:</p>
+      <div class="term-formula">\[ {}_nM_x = \frac{{}_nd_x}{{}_nL_x} \]</div>
+      <p>This is the rate that vital registration systems produce — the observable quantity from real data. The denominator is person-years \({}_nL_x\), not the number alive at the start of the interval \(l_x\). This distinction is crucial: if half the deaths happen early in the interval, those people contribute less than \(n\) person-years each.</p>
+      <p><strong>Rate ≠ probability:</strong> \({}_nM_x\) is a rate; \({}_nq_x\) is a probability. Converting between them requires an assumption about how deaths are distributed within the interval (typically UDD: uniform distribution of deaths, giving \({}_na_x = n/2\)).</p>
+    </div>
+    <div class="term-links">→ Day 2, §7 · Day 2, §9</div>
+  </div>
+
+  <div class="term-card" data-terms="average person-years lived deaths nax a_x separation factor">
+    <div class="term-header">
+      <span class="term-name">Average person-years lived by deaths</span>
+      <span class="term-symbol">\({}_na_x\)</span>
+    </div>
+    <div class="term-tags"><span class="tag day2">Day 2</span><span class="tag mortality">Mortality</span></div>
+    <div class="term-body">
+      <p>The average number of years lived within interval \([x, x+n)\) by individuals who die in that interval. It fills the gap between the endpoints: if someone dies at age \(x+a\) where \(0 \leq a \leq n\), their contribution to person-years is \(a\), not \(n\). The average over all deaths in the interval is \({}_na_x\).</p>
+      <div class="term-formula">\[ {}_na_x = \frac{{}_nL_x - n\cdot l_{x+n}}{{}_nd_x} \]</div>
+      <p><strong>UDD assumption:</strong> if deaths are uniformly distributed within the interval, \({}_na_x = n/2\). This fails at age 0 (infant deaths cluster in the first weeks of life, so \({}_1a_0 \approx 0.1\text{–}0.3\)) and at the very oldest ages. The value of \({}_na_x\) is critical for converting observed rates \({}_nM_x\) to probabilities \({}_nq_x\): \({}_nq_x = n\,{}_nM_x / (1 + (n - {}_na_x)\,{}_nM_x)\).</p>
+    </div>
+    <div class="term-links">→ Day 2, §9</div>
   </div>
 
 </div>
@@ -149,7 +193,20 @@ h1{font-size:2rem;color:var(--accent);margin-bottom:.3rem;line-height:1.2}
 <div class="letter-section" id="letter-B">
   <div class="letter-heading">B</div>
 
-  <div class="term-card" data-terms="balancing equation births deaths migration natural change">
+  <div class="term-card" data-terms="baby boom 1946 1964 United States birth cohort post-war">
+    <div class="term-header">
+      <span class="term-name">Baby Boom</span>
+    </div>
+    <div class="term-tags"><span class="tag day3">Day 3</span><span class="tag growth">Growth</span></div>
+    <div class="term-body">
+      <p>The surge in birth rates in the United States (and many other high-income countries) following World War II, conventionally defined as <strong>1946–1964</strong>. The boom began in 1946 as soldiers returned and families resumed plans deferred during the war; it ended around 1964 as the contraceptive pill became widely available and the cultural moment shifted.</p>
+      <p>The leading edge of the Baby Boomers reached retirement age from about 2011, creating the "silver tsunami" now straining pension systems, healthcare infrastructure, and labour markets across the developed world. The cohort illustrates why age structure matters: even when NRR is near 1, a bulge cohort can drive decades of social and economic change as it ages through the system.</p>
+      <p><strong>Lexis diagram note:</strong> the Baby Boom appears as a thickened diagonal band in any Lexis representation of US births — or as a pronounced spike in a plot of births by year.</p>
+    </div>
+    <div class="term-links">→ Day 3, §1</div>
+  </div>
+
+  <div class="term-card" data-terms="balancing equation births deaths migration natural change accounting identity">
     <div class="term-header">
       <span class="term-name">Balancing equation</span>
     </div>
@@ -157,10 +214,24 @@ h1{font-size:2rem;color:var(--accent);margin-bottom:.3rem;line-height:1.2}
     <div class="term-body">
       <p>The fundamental accounting identity of demography. For any population over any time interval:</p>
       <div class="term-formula">\[ P_{\text{now}} = P_{\text{before}} + \text{Births} - \text{Deaths} + \text{In-migrants} - \text{Out-migrants} \]</div>
-      <p>There are exactly four "doors" through which a population can change. No other mechanism exists. The equation is an identity — it is always true by definition — and underlies every demographic model, projection, and estimate.</p>
-      <p>For a <em>closed population</em> (no migration), it simplifies to \(P_{\text{now}} = P_{\text{before}} + B - D\). In practice, adjustment and error terms are added to reconcile different data sources (census vs vital registration).</p>
+      <p>There are exactly four "doors" through which a population can change — births, deaths, in-migration, and out-migration — and no others. The equation is always true by definition; it underlies every demographic model, projection, and estimate.</p>
+      <p>For a <em>closed population</em> (no migration), it simplifies to \(P_{\text{now}} = P_{\text{before}} + B - D\). In practice, adjustment and residual error terms are added to reconcile different data sources (census vs. vital registration).</p>
     </div>
     <div class="term-links">→ Day 1, §1</div>
+  </div>
+
+  <div class="term-card" data-terms="Brass relational model logit survival schedule standard William Brass">
+    <div class="term-header">
+      <span class="term-name">Brass relational logit model</span>
+    </div>
+    <div class="term-tags"><span class="tag day3">Day 3</span><span class="tag mortality">Mortality</span><span class="tag method">Method</span></div>
+    <div class="term-body">
+      <p>A two-parameter model for representing any survival schedule as a transformation of a standard schedule \(S_0(x)\), introduced by Sir William Brass (1921–2001):</p>
+      <div class="term-formula">\[ \text{logit}\,S(x) = \alpha + \beta\,\text{logit}\,S_0(x) \]</div>
+      <p>where \(\text{logit}\,p = \frac{1}{2}\ln\frac{p}{1-p}\). The parameter \(\alpha\) shifts the overall level of mortality (positive \(\alpha\) → higher mortality); \(\beta\) changes the age pattern (values above 1 concentrate mortality at younger or older ages relative to the standard).</p>
+      <p>Brass was motivated by the reality that many developing countries lacked complete death registration, but partial data — child mortality surveys, census questions about survival of children — could still identify the two parameters. His methods remain foundational in Sub-Saharan African demography and indirect estimation more broadly.</p>
+    </div>
+    <div class="term-links">→ Day 3, §2</div>
   </div>
 
 </div>
@@ -169,55 +240,84 @@ h1{font-size:2rem;color:var(--accent);margin-bottom:.3rem;line-height:1.2}
 <div class="letter-section" id="letter-C">
   <div class="letter-heading">C</div>
 
-  <div class="term-card" data-terms="censoring right left censored survival analysis">
+  <div class="term-card" data-terms="carrying capacity kappa K-max logistic ceiling maximum population">
+    <div class="term-header">
+      <span class="term-name">Carrying capacity</span>
+      <span class="term-symbol">\(\kappa\)</span>
+    </div>
+    <div class="term-tags"><span class="tag day1">Day 1</span><span class="tag growth">Growth</span></div>
+    <div class="term-body">
+      <p>The maximum population size that an environment (or resource base) can sustain indefinitely. In the logistic growth model, \(\kappa\) is the ceiling that the population asymptotically approaches:</p>
+      <div class="term-formula">\[ \frac{dK}{dt} = rK\!\left(1 - \frac{K}{\kappa}\right) \]</div>
+      <p>Population growth is fastest at \(K = \kappa/2\) (the inflection point of the S-curve), then decelerates as resources become scarce. In ecology, \(\kappa\) depends on food availability, space, and predation. In human demography, the concept has had mixed reception — technological progress (the Green Revolution, synthetic fertilisers) has repeatedly raised the practical ceiling, making it hard to estimate empirically.</p>
+    </div>
+    <div class="term-links">→ Day 1, §13</div>
+  </div>
+
+  <div class="term-card" data-terms="censoring right left censored survival analysis partial observation">
     <div class="term-header">
       <span class="term-name">Censoring</span>
     </div>
     <div class="term-tags"><span class="tag day3">Day 3</span><span class="tag method">Method</span></div>
     <div class="term-body">
-      <p>In survival analysis, a person is <em>censored</em> when their event time is not fully observed. <strong>Right censoring</strong> (most common): the person is still alive (or in the risk state) when observation ends — you know they survived at least \(t\) years but not how long after. <strong>Left censoring</strong>: the event occurred before the study began — you know it happened, but not when.</p>
-      <p>Ignoring censored individuals biases estimates by under-counting exposure time. The Kaplan-Meier estimator handles right censoring correctly by including partial contributions to person-time.</p>
+      <p>In survival analysis, a person is <em>censored</em> when their event time is not fully observed. <strong>Right censoring</strong> (most common): the person is still alive when observation ends — you know they survived at least \(t\) years but not how long after. <strong>Left censoring</strong>: the event occurred before the study began — you know it happened, but not when.</p>
+      <p>Ignoring censored individuals biases survival estimates downward by under-counting person-time. The Kaplan-Meier estimator handles right censoring correctly by including partial contributions to person-time: each person contributes exposure up to their last known alive time, then exits the risk set.</p>
     </div>
     <div class="term-links">→ Day 3, §4</div>
   </div>
 
-  <div class="term-card" data-terms="cohort birth cohort generation">
+  <div class="term-card" data-terms="cohort birth cohort generation diagonal Lexis">
     <div class="term-header">
       <span class="term-name">Cohort</span>
     </div>
     <div class="term-tags"><span class="tag day2">Day 2</span><span class="tag method">Method</span></div>
     <div class="term-body">
-      <p>A group of individuals who share a common defining event within a specific time period — most commonly, a <em>birth cohort</em> (all persons born in a given year or range of years). On the Lexis diagram, a birth cohort occupies a diagonal band.</p>
-      <p><strong>Cohort vs. period:</strong> cohort analysis follows the same people through time (reading diagonally in the Lexis diagram); period analysis takes a snapshot at one moment across all ages (reading vertically). Cohort life expectancy requires waiting decades; period life expectancy uses current rates applied to a synthetic cohort.</p>
+      <p>A group of individuals who share a common defining event within a specific time period — most commonly, a <em>birth cohort</em> (all persons born in a given year or range of years). On the Lexis diagram, a birth cohort occupies a diagonal band slanting upward to the right.</p>
+      <p><strong>Cohort vs. period:</strong> cohort analysis follows the same people through time (diagonal in the Lexis diagram); period analysis takes a snapshot across all ages at one moment (vertical slice). Cohort life expectancy requires waiting decades for a cohort to die out; period life expectancy uses current rates applied to a synthetic cohort — the two differ when mortality is changing.</p>
     </div>
     <div class="term-links">→ Day 2, §3</div>
   </div>
 
-  <div class="term-card" data-terms="crude birth rate crude death rate crude rate CBR CDR">
+  <div class="term-card" data-terms="Cox regression proportional hazards model survival regression covariates">
+    <div class="term-header">
+      <span class="term-name">Cox proportional hazards model</span>
+    </div>
+    <div class="term-tags"><span class="tag day3">Day 3</span><span class="tag method">Method</span></div>
+    <div class="term-body">
+      <p>A semi-parametric regression model for survival data, introduced by Sir David Cox (1972). The hazard for individual \(i\) with covariates \(\mathbf{Z}\) is:</p>
+      <div class="term-formula">\[ \mu(x \mid \mathbf{Z}) = \mu_0(x)\cdot\exp(\boldsymbol{\beta}\cdot\mathbf{Z}) \]</div>
+      <p>The baseline hazard \(\mu_0(x)\) can take any shape (the "semi-parametric" part); the covariate effect is multiplicative. "Proportional hazards" means the hazard ratio between any two individuals is constant over time: \(\mu_i(x)/\mu_j(x) = \exp(\boldsymbol{\beta}\cdot(\mathbf{Z}_i - \mathbf{Z}_j))\) regardless of age \(x\).</p>
+      <p>The most widely used survival regression model in medicine and epidemiology. In demography, it appears in studies linking individual-level characteristics (education, income, smoking) to mortality risk. The product formula \(l(x) = \prod {}_np\) is the demographic analogue of the Cox baseline survival function.</p>
+    </div>
+    <div class="term-links">→ Day 3, §3 (historical note)</div>
+  </div>
+
+  <div class="term-card" data-terms="crude birth rate crude death rate crude rate CBR CDR b d">
     <div class="term-header">
       <span class="term-name">Crude birth / death rate</span>
       <span class="term-symbol">b, d</span>
     </div>
     <div class="term-tags"><span class="tag day1">Day 1</span><span class="tag growth">Growth</span></div>
     <div class="term-body">
-      <p>The number of births (or deaths) per person in the population per unit time, ignoring age structure:</p>
-      <div class="term-formula">\[ b = \frac{\text{Births}}{P}, \quad d = \frac{\text{Deaths}}{P} \]</div>
-      <p>Called "crude" because every person in the denominator is treated as equally exposed — a newborn counts the same as a 40-year-old in the birth rate denominator. Age-standardised or age-specific rates correct for this.</p>
+      <p>The number of births (or deaths) per person per unit time, ignoring age structure:</p>
+      <div class="term-formula">\[ b = \frac{\text{Births}}{K(t)}, \qquad d = \frac{\text{Deaths}}{K(t)} \]</div>
+      <p>Called "crude" because every person is in the denominator equally — a newborn counts the same as a 40-year-old. This makes crude rates misleading for cross-country comparisons: a country with an older age structure will have a higher crude death rate even if its age-specific mortality is lower.</p>
       <p><strong>UK example (2020):</strong> crude birth rate ≈ 10.5/1,000; crude death rate ≈ 9.4/1,000 → crude rate of natural increase ≈ 1.1/1,000 (0.11% per year).</p>
     </div>
     <div class="term-links">→ Day 1, §3</div>
   </div>
 
-  <div class="term-card" data-terms="cumulative hazard integrated hazard H(x) Lambda">
+  <div class="term-card" data-terms="cumulative hazard integrated hazard H(x) Lambda total dose mortality">
     <div class="term-header">
       <span class="term-name">Cumulative hazard</span>
-      <span class="term-symbol">H(x)</span>
+      <span class="term-symbol">\(H(x)\)</span>
     </div>
     <div class="term-tags"><span class="tag day3">Day 3</span><span class="tag mortality">Mortality</span></div>
     <div class="term-body">
-      <p>The total accumulated mortality hazard from birth to age \(x\):</p>
+      <p>The total accumulated mortality hazard from birth to age \(x\) — the area under the \(\mu(x)\) curve:</p>
       <div class="term-formula">\[ H(x) = \int_0^x \mu(y)\,dy \]</div>
-      <p>The survival function is then \(l(x) = e^{-H(x)}\). Because \(\mu(y) \geq 0\), \(H(x)\) is non-decreasing and \(l(x)\) is non-increasing. Think of \(H(x)\) as the "total lifetime dose" of mortality risk received up to age \(x\).</p>
+      <p>The survival function is then \(l(x) = e^{-H(x)}\). Because \(\mu(y) \geq 0\), \(H(x)\) is non-decreasing and \(l(x)\) is non-increasing. Think of \(H(x)\) as the "total lifetime dose" of mortality risk received by surviving to age \(x\). It is also written \(\Lambda(x)\) in the biostatistics literature.</p>
+      <p><strong>Gompertz example:</strong> with \(\mu(x) = ae^{bx}\), the cumulative hazard is \(H(x) = (a/b)(e^{bx} - 1)\) — it rises exponentially with age.</p>
     </div>
     <div class="term-links">→ Day 3, §1</div>
   </div>
@@ -228,15 +328,58 @@ h1{font-size:2rem;color:var(--accent);margin-bottom:.3rem;line-height:1.2}
 <div class="letter-section" id="letter-D">
   <div class="letter-heading">D</div>
 
-  <div class="term-card" data-terms="doubling time half life rule 70">
+  <div class="term-card" data-terms="deaths in interval ndx d_x proportion dying age group">
     <div class="term-header">
-      <span class="term-name">Doubling time</span>
+      <span class="term-name">Deaths in age interval</span>
+      <span class="term-symbol">\({}_nd_x\)</span>
+    </div>
+    <div class="term-tags"><span class="tag day2">Day 2</span><span class="tag mortality">Mortality</span></div>
+    <div class="term-body">
+      <p>The proportion of the original cohort dying between exact ages \(x\) and \(x+n\):</p>
+      <div class="term-formula">\[ {}_nd_x = l_x - l_{x+n} \]</div>
+      <p>Alternatively, \({}_nd_x = l_x \cdot {}_nq_x\). Because \(l_x\) and \(l_{x+n}\) are fractions of the original cohort (radix = 1), \({}_nd_x\) is also a fraction and all \({}_nd_x\) values sum to 1.</p>
+      <p>Plotted as a histogram against age, the \({}_nd_x\) column gives the age-at-death distribution — a vivid summary of where in the life course deaths occur. In pre-industrial populations, the histogram shows a large spike at age 0–1 and a hump at old age; modern populations show almost all deaths concentrated in old age.</p>
+    </div>
+    <div class="term-links">→ Day 2, §6</div>
+  </div>
+
+  <div class="term-card" data-terms="death probability nqx conditional probability dying interval">
+    <div class="term-header">
+      <span class="term-name">Death probability</span>
+      <span class="term-symbol">\({}_nq_x\)</span>
+    </div>
+    <div class="term-tags"><span class="tag day2">Day 2</span><span class="tag mortality">Mortality</span></div>
+    <div class="term-body">
+      <p>The probability that a person alive at exact age \(x\) dies before reaching age \(x+n\):</p>
+      <div class="term-formula">\[ {}_nq_x = \frac{{}_nd_x}{l_x} = 1 - \frac{l_{x+n}}{l_x} = 1 - {}_np_x \]</div>
+      <p>This is a conditional probability (conditioned on being alive at \(x\)). It differs from the mortality rate \({}_nM_x\) in an important way: the denominator of \({}_nq_x\) is \(l_x\) (everyone alive at the start), while the denominator of \({}_nM_x\) is \({}_nL_x\) (total person-years lived during the interval). Converting \({}_nM_x\) to \({}_nq_x\) requires the UDD assumption or knowledge of \({}_na_x\).</p>
+    </div>
+    <div class="term-links">→ Day 2, §6 · Day 2, §9</div>
+  </div>
+
+  <div class="term-card" data-terms="demographic transition high low birth death rate population growth history">
+    <div class="term-header">
+      <span class="term-name">Demographic transition</span>
     </div>
     <div class="term-tags"><span class="tag day1">Day 1</span><span class="tag growth">Growth</span></div>
     <div class="term-body">
-      <p>The time for a population growing at continuous rate \(r\) to double in size. From \(K_0 e^{rT} = 2K_0\):</p>
+      <p>The historical shift experienced by all countries as they develop, from a high-mortality, high-fertility equilibrium to a low-mortality, low-fertility equilibrium:</p>
+      <p><strong>Stage 1:</strong> High birth rates and high (and variable) death rates → slow, fluctuating population growth. <strong>Stage 2:</strong> Death rates fall (public health, nutrition, medicine) while birth rates remain high → rapid population growth. <strong>Stage 3:</strong> Birth rates fall (education, contraception, urbanisation) → growth decelerates. <strong>Stage 4:</strong> Both rates low → near-stationary population.</p>
+      <p>The 20th-century global population explosion (from ~1.6 billion in 1900 to ~8 billion in 2023) is explained almost entirely by the Stage 2 gap — mortality fell faster than fertility did. The theory was formalised by Frank Notestein (1945).</p>
+    </div>
+    <div class="term-links">→ Day 1, §14</div>
+  </div>
+
+  <div class="term-card" data-terms="doubling time half life rule 70 T2 growth rate years">
+    <div class="term-header">
+      <span class="term-name">Doubling time</span>
+      <span class="term-symbol">\(T_2 = \ln 2 / r\)</span>
+    </div>
+    <div class="term-tags"><span class="tag day1">Day 1</span><span class="tag growth">Growth</span></div>
+    <div class="term-body">
+      <p>The time for a population growing at continuous rate \(r\) to double. From \(K_0 e^{rT_2} = 2K_0\):</p>
       <div class="term-formula">\[ T_2 = \frac{\ln 2}{r} \approx \frac{0.693}{r} \approx \frac{70}{r\%} \]</div>
-      <p>The "Rule of 70": divide 70 by the percentage growth rate to get the approximate doubling time in years. At \(r = 1\%\), a population doubles in about 70 years; at \(r = 2\%\), in 35 years. At global peak population growth (~2% in the late 1960s), world population doubled in roughly a generation.</p>
+      <p>The <strong>Rule of 70</strong>: divide 70 by the percentage growth rate to get the approximate doubling time in years. At \(r = 1\%\): \(T_2 \approx 70\) years. At \(r = 2\%\): \(T_2 \approx 35\) years. At global peak growth (~2% in the late 1960s), world population doubled in roughly a generation. Use 72 for precision at higher rates (> 6%).</p>
     </div>
     <div class="term-links">→ Day 1, §7</div>
   </div>
@@ -247,32 +390,47 @@ h1{font-size:2rem;color:var(--accent);margin-bottom:.3rem;line-height:1.2}
 <div class="letter-section" id="letter-E">
   <div class="letter-heading">E</div>
 
-  <div class="term-card" data-terms="life expectancy e_x ex expected remaining years">
+  <div class="term-card" data-terms="epidemiological transition infectious chronic NCD Omran cause of death">
+    <div class="term-header">
+      <span class="term-name">Epidemiological transition</span>
+    </div>
+    <div class="term-tags"><span class="tag day2">Day 2</span><span class="tag mortality">Mortality</span></div>
+    <div class="term-body">
+      <p>The historical shift in the dominant causes of death, from infectious and parasitic diseases (cholera, smallpox, tuberculosis) to chronic non-communicable diseases (cardiovascular disease, cancer) at older ages. Described by Abdel Omran (1971).</p>
+      <p>The transition is linked to the demographic transition: falling infant and child mortality from infectious diseases is Stage 2. As the population ages, chronic diseases become the leading killers. The epidemiological transition also explains the "rectangularisation" of the \(l(x)\) survival curve — deaths become increasingly compressed into a narrow window at old age.</p>
+      <p>Some scholars identify a "fourth stage" where cardiovascular disease mortality itself declines (due to better treatment), pushing \(e_0\) above 80 in high-income countries.</p>
+    </div>
+    <div class="term-links">→ Day 2, §5 (callout)</div>
+  </div>
+
+  <div class="term-card" data-terms="life expectancy e_x ex expected remaining years period cohort e0">
     <div class="term-header">
       <span class="term-name">Life expectancy at age x</span>
       <span class="term-symbol">\(e_x\)</span>
     </div>
     <div class="term-tags"><span class="tag day2">Day 2</span><span class="tag mortality">Mortality</span></div>
     <div class="term-body">
-      <p>The expected number of additional years of life for a person who has already reached exact age \(x\), assuming the age-specific mortality rates of the relevant life table:</p>
+      <p>The expected number of additional years of life for a person who has already reached exact age \(x\):</p>
       <div class="term-formula">\[ e_x = \frac{T_x}{l_x} = \frac{\int_x^\omega l(a)\,da}{l(x)} \]</div>
-      <p><strong>Warning:</strong> When agencies report "life expectancy at birth," they almost always mean <em>period</em> life expectancy — a synthetic measure using current mortality rates, not a forecast for any actual cohort. During periods of improving mortality, period \(e_0\) <em>underestimates</em> the life span a newborn will actually experience.</p>
-      <p><strong>Real-world:</strong> UK period \(e_0\) in 2020: female ≈ 83, male ≈ 79. Japan female ≈ 88. Sierra Leone ≈ 55.</p>
+      <p><strong>Warning:</strong> when agencies report "life expectancy at birth," they almost always mean <em>period</em> life expectancy — a synthetic measure using current mortality rates, not a forecast. During periods of improving mortality, period \(e_0\) <em>underestimates</em> the lifespan a newborn will actually experience.</p>
+      <p><strong>Real-world (2020):</strong> UK period \(e_0\): female ≈ 83, male ≈ 79. Japan female ≈ 88. Sierra Leone ≈ 55.</p>
+      <p><strong>Stationary population identity:</strong> \(b \cdot e_0 = 1\) — the birth rate times life expectancy equals 1 (Little's Law).</p>
     </div>
     <div class="term-links">→ Day 2, §8</div>
   </div>
 
-  <div class="term-card" data-terms="exponential growth continuous growth Malthusian">
+  <div class="term-card" data-terms="exponential growth continuous growth Malthusian ODE e^rt">
     <div class="term-header">
       <span class="term-name">Exponential growth</span>
+      <span class="term-symbol">\(K(t) = K_0 e^{rt}\)</span>
     </div>
     <div class="term-tags"><span class="tag day1">Day 1</span><span class="tag growth">Growth</span></div>
     <div class="term-body">
       <p>The continuous-time limit of geometric growth, arising when population changes at a constant instantaneous rate \(r\):</p>
-      <div class="term-formula">\[ K(t) = K_0\,e^{rt} \]</div>
-      <p>Equivalently, \(r = \frac{1}{K}\frac{dK}{dt}\) — the per-capita growth rate. This is the simplest model of population change and the starting point for all more complex demographic models. In practice, populations cannot grow exponentially indefinitely — they are bounded by resources (logistic model) or demographic transitions.</p>
+      <div class="term-formula">\[ K(t) = K_0\,e^{rt}, \qquad \frac{dK}{dt} = r\,K(t) \]</div>
+      <p>On a log-population plot, exponential growth is a straight line with slope \(r\). In practice, populations cannot grow exponentially indefinitely — they are bounded by resources (logistic model) or by the demographic transition. Thomas Malthus (1798) first argued that human populations tend to grow exponentially while food production grows arithmetically, leading to periodic famine-checks on growth.</p>
     </div>
-    <div class="term-links">→ Day 1, §5</div>
+    <div class="term-links">→ Day 1, §5–§6</div>
   </div>
 
 </div>
@@ -281,19 +439,73 @@ h1{font-size:2rem;color:var(--accent);margin-bottom:.3rem;line-height:1.2}
 <div class="letter-section" id="letter-F">
   <div class="letter-heading">F</div>
 
-  <div class="term-card" data-terms="force of mortality hazard rate mu(x) instantaneous mortality">
+  <div class="term-card" data-terms="fertility transition TFR decline contraceptive pill demographic history">
+    <div class="term-header">
+      <span class="term-name">Fertility transition</span>
+    </div>
+    <div class="term-tags"><span class="tag day3">Day 3</span><span class="tag fertility">Fertility</span></div>
+    <div class="term-body">
+      <p>The historical decline in average births per woman from pre-industrial levels (TFR ~5–7) to near-replacement (~2.1) or below. Typically follows the mortality decline of the demographic transition by one or two generations — parents adjust their fertility downward once child survival improves and the economic returns to large families decline.</p>
+      <p>In many high-income countries the transition is complete and TFR has fallen well below replacement level (South Korea: 0.84 in 2023; Japan: ~1.2). In Sub-Saharan Africa it is still ongoing, with TFRs of 5–7 in some countries. The timing and pace of the fertility transition is the primary determinant of future population size.</p>
+    </div>
+    <div class="term-links">→ Day 3, §6</div>
+  </div>
+
+  <div class="term-card" data-terms="force of mortality hazard rate mu(x) instantaneous mortality ODE derivative">
     <div class="term-header">
       <span class="term-name">Force of mortality (hazard rate)</span>
       <span class="term-symbol">\(\mu(x)\)</span>
     </div>
     <div class="term-tags"><span class="tag day2">Day 2</span><span class="tag day3">Day 3</span><span class="tag mortality">Mortality</span></div>
     <div class="term-body">
-      <p>The instantaneous rate of dying at exact age \(x\), given survival to that age. It is the limiting case of the age-specific death rate as the interval width shrinks to zero:</p>
+      <p>The instantaneous rate of dying at exact age \(x\), given survival to that age — the limit of the age-specific mortality rate as interval width shrinks to zero:</p>
       <div class="term-formula">\[ \mu(x) = \lim_{n\to 0} {}_nM_x = -\frac{d}{dx}\ln l(x) = \frac{-l'(x)}{l(x)} \]</div>
-      <p>The survival function and force of mortality are in one-to-one correspondence: \(l(x) = e^{-\int_0^x \mu(y)\,dy}\). The Gompertz model, which fits many human populations well, assumes \(\mu(x) = ae^{bx}\) — hazard rising exponentially with age.</p>
-      <p><strong>Intuition:</strong> Think of \(\mu(x)\) as the instantaneous speed at which the cohort is dying at age \(x\). A Gompertz hazard roughly doubles every 8–10 years in adult humans — Makeham's law.</p>
+      <p>The survival function and force of mortality are in one-to-one correspondence: \(l(x) = e^{-\int_0^x \mu(y)\,dy}\). This relationship — the survival ODE \(dl/dx = -\mu(x)\,l(x)\) solved by separation of variables — is the mathematical heart of mortality analysis.</p>
+      <p>The Gompertz model (\(\mu(x) = ae^{bx}\)) fits many human populations well; hazard roughly doubles every 8–10 years in adults. The Makeham extension adds a constant background hazard for accidents.</p>
     </div>
     <div class="term-links">→ Day 2, §11 · Day 3, §1</div>
+  </div>
+
+  <div class="term-card" data-terms="Fourier series periodic sines cosines spectrum time series seasonal">
+    <div class="term-header">
+      <span class="term-name">Fourier series</span>
+    </div>
+    <div class="term-tags"><span class="tag day2">Day 2</span><span class="tag method">Method</span></div>
+    <div class="term-body">
+      <p>A representation of any periodic function as a sum of sines and cosines:</p>
+      <div class="term-formula">\[ f(x) \approx a_0 + \sum_{n=1}^N \left[a_n\cos\!\left(\tfrac{2\pi nx}{T}\right) + b_n\sin\!\left(\tfrac{2\pi nx}{T}\right)\right] \]</div>
+      <p>In demography, Fourier analysis is used to detect seasonal cycles in births and deaths. More broadly, Fourier and Taylor series are complementary: Taylor approximates smooth functions locally with polynomials; Fourier approximates periodic functions globally with sinusoids. They are connected via Euler's formula: \(e^{ix} = \cos x + i\sin x\), which shows the exponential and trigonometric functions are aspects of the same mathematical object.</p>
+      <p>Introduced by Jean-Baptiste Joseph Fourier (1768–1830). His 1807 memoir on heat conduction was initially rejected by Lagrange and Laplace. Fourier analysis is now the foundation of signal processing, MRI, and data compression (JPEG).</p>
+    </div>
+    <div class="term-links">→ Day 2, §1</div>
+  </div>
+
+  <div class="term-card" data-terms="fraction female at birth FFAB sex ratio births F_FAB daughters sons">
+    <div class="term-header">
+      <span class="term-name">Fraction female at birth</span>
+      <span class="term-symbol">\(F_{\text{FAB}} \approx 0.4878\)</span>
+    </div>
+    <div class="term-tags"><span class="tag day3">Day 3</span><span class="tag fertility">Fertility</span></div>
+    <div class="term-body">
+      <p>The proportion of all live births that are female. The sex ratio at birth is approximately 105 males per 100 females in most populations, giving:</p>
+      <div class="term-formula">\[ F_{\text{FAB}} = \frac{100}{100 + 105} \approx 0.4878 \]</div>
+      <p>Demographic reproduction is conventionally tracked through the female line — only daughters can themselves become mothers. Therefore all reproduction measures that focus on daughters (GRR, NRR, net maternity function) incorporate \(F_{\text{FAB}}\) as a multiplicative factor to convert from total births (TFR) to daughter births (GRR = \(F_{\text{FAB}} \times \text{TFR}\)).</p>
+      <p><strong>Common mistake:</strong> forgetting \(F_{\text{FAB}}\) when computing the NRR gives a result roughly twice the correct value.</p>
+    </div>
+    <div class="term-links">→ Day 3, §9</div>
+  </div>
+
+  <div class="term-card" data-terms="frailty unobserved heterogeneity mortality selection hidden risk variation">
+    <div class="term-header">
+      <span class="term-name">Frailty (unobserved)</span>
+    </div>
+    <div class="term-tags"><span class="tag day3">Day 3</span><span class="tag mortality">Mortality</span></div>
+    <div class="term-body">
+      <p>Hidden variation in mortality risk between individuals. The standard life table assumes all individuals in an age group face the same hazard — an approximation that ignores the biological reality that some people are constitutionally more robust and some more frail. In a multiplicative frailty model (Vaupél, Manton & Stallard, 1979), individual \(i\)'s hazard is:</p>
+      <div class="term-formula">\[ \mu_i(x) = z_i \cdot \mu_0(x), \qquad z_i \sim \text{Gamma}(1, \sigma^2) \]</div>
+      <p>Frail individuals (high \(z\)) die earlier; robust individuals (low \(z\)) survive longer. As frail people die preferentially, the surviving population becomes increasingly robust — so the <em>observed</em> population-average hazard declines with age faster than any individual's true hazard. This means life table mortality rates in old age understate the individual hazard that survivors actually face. Frailty is a major theme in longevity research and a reason why Gompertz models eventually "decelerate" at very old ages in empirical data.</p>
+    </div>
+    <div class="term-links">→ Day 3, §3 (callout)</div>
   </div>
 
 </div>
@@ -302,32 +514,47 @@ h1{font-size:2rem;color:var(--accent);margin-bottom:.3rem;line-height:1.2}
 <div class="letter-section" id="letter-G">
   <div class="letter-heading">G</div>
 
-  <div class="term-card" data-terms="GRR gross reproduction ratio daughters fertility">
+  <div class="term-card" data-terms="geometric growth discrete multiplication factor period Kt">
+    <div class="term-header">
+      <span class="term-name">Geometric growth</span>
+      <span class="term-symbol">\(K_t = K_0(1+r)^t\)</span>
+    </div>
+    <div class="term-tags"><span class="tag day1">Day 1</span><span class="tag growth">Growth</span></div>
+    <div class="term-body">
+      <p>Discrete-time population growth where the population is multiplied by a fixed factor each period:</p>
+      <div class="term-formula">\[ K_t = K_0(1+r)^t \]</div>
+      <p>The average growth rate over a period is the <em>geometric mean</em>, not the arithmetic mean: \(\bar{r} = (K_t/K_0)^{1/t} - 1\). This matters because arithmetic averaging overstates growth when rates vary. Example: +50% then −50% gives a geometric mean of −13%, not zero. For small \(r\) (< 5%), geometric and exponential growth are nearly indistinguishable: \((1+r)^t \approx e^{rt}\) by Taylor expansion.</p>
+    </div>
+    <div class="term-links">→ Day 1, §4</div>
+  </div>
+
+  <div class="term-card" data-terms="Gompertz model hazard exponential age Makeham mortality law">
+    <div class="term-header">
+      <span class="term-name">Gompertz model</span>
+      <span class="term-symbol">\(\mu(x) = ae^{bx}\)</span>
+    </div>
+    <div class="term-tags"><span class="tag day2">Day 2</span><span class="tag mortality">Mortality</span></div>
+    <div class="term-body">
+      <p>The most widely used parametric model for adult human mortality, introduced by Benjamin Gompertz (1825). The hazard rises exponentially with age:</p>
+      <div class="term-formula">\[ \mu(x) = a\,e^{bx} \]</div>
+      <p>\(a\) sets the baseline level; \(b\) sets the rate of ageing. In human populations, \(b \approx 0.08\text{–}0.10\), implying the hazard roughly doubles every 7–9 years. The Makeham extension adds a constant background: \(\mu(x) = A + Be^{cx}\), capturing mortality from accidents which does not increase with age.</p>
+      <p>Empirically, the Gompertz model fits well from about age 30 to 80; at very old ages (90+) the hazard decelerates, partly due to frailty selection (the most frail have already died).</p>
+    </div>
+    <div class="term-links">→ Day 2, §11</div>
+  </div>
+
+  <div class="term-card" data-terms="GRR gross reproduction ratio daughters fertility mortality-free">
     <div class="term-header">
       <span class="term-name">Gross Reproduction Ratio (GRR)</span>
       <span class="term-symbol">GRR</span>
     </div>
     <div class="term-tags"><span class="tag day3">Day 3</span><span class="tag fertility">Fertility</span></div>
     <div class="term-body">
-      <p>The average number of daughters a woman would have over her lifetime if she experienced current age-specific fertility rates and <em>no woman died before the end of the reproductive period</em>:</p>
+      <p>The average number of daughters a woman would have over her lifetime under current age-specific fertility rates, assuming <em>no woman dies before the end of the reproductive period</em>:</p>
       <div class="term-formula">\[ \text{GRR} = F_{\text{FAB}} \int_{15}^{50} f(x)\,dx = F_{\text{FAB}} \cdot \text{TFR} \]</div>
-      <p>GRR counts only daughters because only daughters can themselves reproduce — demographic analysis focuses on the female line by convention. \(F_{\text{FAB}} \approx 0.4878\) (the fraction of births that are female). GRR ignores mortality — it assumes all women survive to complete their fertility. The NRR corrects this.</p>
-      <p><strong>Watch out:</strong> GRR ≠ NRR. The ratio NRR/GRR equals the average probability of a woman surviving through her reproductive years.</p>
+      <p>GRR counts only daughters because only daughters can themselves reproduce. It ignores mortality — it is a "mortality-free" upper bound on reproduction. The NRR corrects this by weighting the fertility schedule by survivorship. Always: NRR ≤ GRR; the ratio NRR/GRR ≈ \(l(\bar{\mu})/l(0)\), the fraction of women surviving through their reproductive years.</p>
     </div>
     <div class="term-links">→ Day 3, §7–§8</div>
-  </div>
-
-  <div class="term-card" data-terms="geometric growth discrete growth multiplication factor">
-    <div class="term-header">
-      <span class="term-name">Geometric growth</span>
-    </div>
-    <div class="term-tags"><span class="tag day1">Day 1</span><span class="tag growth">Growth</span></div>
-    <div class="term-body">
-      <p>Discrete-time population growth where the population is multiplied by a fixed factor each period:</p>
-      <div class="term-formula">\[ K_t = K_0(1+r)^t \]</div>
-      <p>The average growth rate over a period is the <em>geometric mean</em>, not the arithmetic mean: \(\bar{r} = (K_t/K_0)^{1/t} - 1\). This matters because arithmetic averaging overstates growth when rates vary. For example, +50% then −50% gives a geometric mean of −13%, not zero.</p>
-    </div>
-    <div class="term-links">→ Day 1, §4</div>
   </div>
 
 </div>
@@ -336,15 +563,37 @@ h1{font-size:2rem;color:var(--accent);margin-bottom:.3rem;line-height:1.2}
 <div class="letter-section" id="letter-H">
   <div class="letter-heading">H</div>
 
-  <div class="term-card" data-terms="human mortality database HMD mortality.org">
+  <div class="term-card" data-terms="human mortality database HMD mortality.org Berkeley Max Planck">
     <div class="term-header">
       <span class="term-name">Human Mortality Database (HMD)</span>
     </div>
     <div class="term-tags"><span class="tag day3">Day 3</span><span class="tag method">Method</span></div>
     <div class="term-body">
-      <p>The primary open-access repository of historical mortality and population data. Available at <em>mortality.org</em>, maintained jointly by UC Berkeley and the Max Planck Institute for Demographic Research. Covers ~40 countries, some series going back to the 17th century. Provides harmonised life table data enabling rigorous cross-country and historical comparisons. The standard reference for academic mortality research.</p>
+      <p>The primary open-access repository of historical mortality and population data, available at <em>mortality.org</em>. Maintained jointly by UC Berkeley and the Max Planck Institute for Demographic Research (founded 2000). Covers ~40 countries, some series going back to the 17th century. Provides harmonised life table data, death rates, and population exposures in standardised format, enabling rigorous cross-country and historical comparisons.</p>
+      <p>The HMD is the standard reference for academic mortality research and is cited in virtually every study of longevity trends. Data from England and Wales back to 1841 allow comparisons between pre-industrial and modern mortality regimes — a core exercise in the Day 3 notes.</p>
     </div>
     <div class="term-links">→ Day 3, §5</div>
+  </div>
+
+</div>
+
+<!-- ─── I ─── -->
+<div class="letter-section" id="letter-I">
+  <div class="letter-heading">I</div>
+
+  <div class="term-card" data-terms="infant mortality IMR 1q0 deaths under 1 year public health indicator">
+    <div class="term-header">
+      <span class="term-name">Infant mortality rate (IMR)</span>
+      <span class="term-symbol">\({}_1q_0\)</span>
+    </div>
+    <div class="term-tags"><span class="tag day2">Day 2</span><span class="tag mortality">Mortality</span></div>
+    <div class="term-body">
+      <p>The probability of dying before age 1, expressed per 1,000 live births:</p>
+      <div class="term-formula">\[ \text{IMR} = {}_1q_0 = \frac{\text{deaths under age 1}}{\text{live births}} \]</div>
+      <p>The most sensitive part of the life table — infant mortality is the first measure to improve as countries develop, and one of the last to stop falling. Pre-industrial rates: 200–400 per 1,000. Modern high-income countries: under 5 per 1,000. Afghanistan, Sierra Leone: still 50–60 per 1,000.</p>
+      <p>The first year of life requires special treatment in the life table because deaths cluster heavily in the first weeks (\({}_1a_0 \approx 0.1\text{–}0.3\), well below the UDD assumption of 0.5). Ignoring this gives a systematic error in converting \({}_1M_0\) to \({}_1q_0\).</p>
+    </div>
+    <div class="term-links">→ Day 2, §6 · Day 3, §5</div>
   </div>
 
 </div>
@@ -353,16 +602,31 @@ h1{font-size:2rem;color:var(--accent);margin-bottom:.3rem;line-height:1.2}
 <div class="letter-section" id="letter-K">
   <div class="letter-heading">K</div>
 
-  <div class="term-card" data-terms="Kaplan-Meier KM estimator survival curve step function">
+  <div class="term-card" data-terms="Kaplan-Meier KM estimator survival curve step function clinical trial">
     <div class="term-header">
       <span class="term-name">Kaplan-Meier estimator</span>
     </div>
     <div class="term-tags"><span class="tag day3">Day 3</span><span class="tag method">Method</span></div>
     <div class="term-body">
-      <p>The standard non-parametric estimator of the survival function from a sample, allowing for right-censored observations. Rather than fixing age intervals, the curve drops at each observed event time — producing a step function. Used in clinical trials, epidemiology, and any study with small samples and censoring.</p>
-      <p>The demographic life table and the KM estimator are mirror images: the life table fixes equal age intervals and lets the decrement vary; the KM estimator fixes the decrement at one death per step and lets the interval width vary.</p>
+      <p>The standard non-parametric estimator of the survival function from a sample, allowing for right-censored observations. Rather than fixing age intervals, the curve drops at each observed event time — producing a step function:</p>
+      <div class="term-formula">\[ \hat{S}(t) = \prod_{t_i \leq t} \left(1 - \frac{d_i}{n_i}\right) \]</div>
+      <p>where \(d_i\) = deaths at time \(t_i\) and \(n_i\) = risk set size just before \(t_i\). Introduced by Kaplan & Meier (1958). In clinical trials the time axis is fixed and the decrement size varies; in demography it is the reverse. The KM estimator is the foundation of modern survival analysis in medicine and epidemiology.</p>
     </div>
     <div class="term-links">→ Day 3, §4</div>
+  </div>
+
+  <div class="term-card" data-terms="Keyfitz integral total births ever 80 billion exponential integration Nathan">
+    <div class="term-header">
+      <span class="term-name">Keyfitz integral (total births ever)</span>
+    </div>
+    <div class="term-tags"><span class="tag day1">Day 1</span><span class="tag method">Method</span></div>
+    <div class="term-body">
+      <p>An application of the exponential model to estimate the total number of humans ever born, pioneered by Nathan Keyfitz (1913–2010). Under exponential growth with birth rate \(b\) and growth rate \(r\), total births between times \(t_1\) and \(t_2\) are:</p>
+      <div class="term-formula">\[ \int_{t_1}^{t_2} b\,K(t)\,dt = \frac{b}{r}\left[K(t_2) - K(t_1)\right] \]</div>
+      <p>Summing across all historical eras (each with different \(K\) and \(b\)) gives approximately <strong>~80 billion total births</strong> since the emergence of anatomically modern humans (~200,000 BCE). This means roughly 7–8% of all humans who ever lived are alive today.</p>
+      <p>Keyfitz's broader contribution was finding elegant approximations — many of them Taylor-series-based — that made demographic computation tractable before computers and kept the underlying logic visible.</p>
+    </div>
+    <div class="term-links">→ Day 1, §10</div>
   </div>
 
 </div>
@@ -371,67 +635,127 @@ h1{font-size:2rem;color:var(--accent);margin-bottom:.3rem;line-height:1.2}
 <div class="letter-section" id="letter-L">
   <div class="letter-heading">L</div>
 
-  <div class="term-card" data-terms="Leslie matrix population projection matrix age-structured">
+  <div class="term-card" data-terms="Leslie matrix population projection matrix age-structured eigenvalue">
     <div class="term-header">
       <span class="term-name">Leslie matrix</span>
     </div>
     <div class="term-tags"><span class="tag day3">Day 3</span><span class="tag method">Method</span></div>
     <div class="term-body">
-      <p>A square matrix \(\mathbf{A}\) used to project an age-structured population one time step forward: \(\mathbf{K}_{t+1} = \mathbf{A}\,\mathbf{K}_t\). The matrix encodes both mortality (survival probabilities on the subdiagonal) and fertility (top row, incorporating birth rates and survivorship to age 0). After many iterations, the population converges to stable age structure and grows at the dominant eigenvalue of \(\mathbf{A}\).</p>
+      <p>A square matrix \(\mathbf{A}\) used to project an age-structured population one time step forward: \(\mathbf{K}_{t+1} = \mathbf{A}\,\mathbf{K}_t\). The first row encodes fertility (births to each age group); the subdiagonal encodes survival probabilities (proportion surviving from one age group to the next). All other entries are zero.</p>
       <div class="term-formula">\[ \mathbf{A} = \begin{pmatrix} F_0 & F_1 & F_2 & \cdots \\ P_0 & 0 & 0 & \cdots \\ 0 & P_1 & 0 & \cdots \\ \vdots & & \ddots & \end{pmatrix} \]</div>
-      <p>Population projection is a Markov process: the future age structure depends only on the current age structure and the vital rates, not on history.</p>
+      <p>After many iterations, the population converges to stable age structure and grows at the dominant eigenvalue \(\lambda_1 = e^r\). Population projection is a Markov process — the future depends only on the present age structure and the vital rates, not on history.</p>
     </div>
     <div class="term-links">→ Day 3, §12</div>
   </div>
 
-  <div class="term-card" data-terms="Lexis diagram age time calendar period cohort">
+  <div class="term-card" data-terms="Lexis diagram age time calendar period cohort lifeline 45 degrees">
     <div class="term-header">
       <span class="term-name">Lexis diagram</span>
     </div>
     <div class="term-tags"><span class="tag day2">Day 2</span><span class="tag method">Method</span></div>
     <div class="term-body">
-      <p>A two-dimensional diagram with calendar time on the horizontal axis and age on the vertical axis. Each individual life is a 45° diagonal line, starting at birth (age 0, birth year) and ending at death. Three natural regions: a vertical strip = period; a horizontal strip = age group; a diagonal band = birth cohort.</p>
-      <p>Every demographic rate is a ratio whose numerator is events (deaths, births) in a Lexis box, and whose denominator is person-years of exposure in that box. The Lexis diagram resolves almost every confusion about "what is the right denominator."</p>
+      <p>A two-dimensional diagram with calendar time on the horizontal axis and age on the vertical axis. Each individual life is a 45° diagonal line starting at birth (age 0, birth year) and ending at death. Three natural regions: a vertical strip = period; a horizontal strip = age group; a diagonal band = birth cohort.</p>
+      <p>Every demographic rate is a ratio: numerator = events (deaths, births) in a Lexis box; denominator = person-years of exposure in that box. The Lexis diagram resolves almost every confusion about "what is the right denominator." Introduced by Wilhelm Lexis (1875); independently developed by others — Becker (1874) and du Pâquier — but Lexis's name stuck.</p>
     </div>
     <div class="term-links">→ Day 2, §2</div>
   </div>
 
-  <div class="term-card" data-terms="life table mortality table l(x) lx survival function">
+  <div class="term-card" data-terms="life table mortality table l(x) lx survival function Halley Graunt">
     <div class="term-header">
       <span class="term-name">Life table</span>
     </div>
     <div class="term-tags"><span class="tag day2">Day 2</span><span class="tag day3">Day 3</span><span class="tag mortality">Mortality</span></div>
     <div class="term-body">
-      <p>A table summarising the mortality experience of a cohort (or synthetic cohort) from birth to extinction. The key columns: \(l_x\) (survivors at exact age \(x\)), \({}_nd_x\) (deaths in interval), \({}_nq_x\) (death probability), \({}_np_x\) (survival probability), \({}_nL_x\) (person-years in interval), \(T_x\) (total future person-years from age \(x\)), \(e_x\) (life expectancy).</p>
-      <p>Period life tables use current age-specific rates applied to a synthetic cohort. Cohort life tables follow real people. The difference matters when mortality is improving: period \(e_0\) understates future lifespan.</p>
+      <p>A table summarising the mortality experience of a cohort (or synthetic cohort) from birth to extinction. Key columns: \(l_x\) (survivors), \({}_nd_x\) (deaths), \({}_nq_x\) (death probability), \({}_np_x\) (survival probability), \({}_nL_x\) (person-years), \(T_x\) (total future person-years), \(e_x\) (life expectancy).</p>
+      <p>Period life tables apply current age-specific rates to a synthetic cohort; cohort life tables follow real people. The difference matters when mortality is improving: period \(e_0\) understates future lifespan. The first life table was constructed by John Graunt (1662); the first actuarial life table by Edmund Halley (1693) using Breslau data.</p>
     </div>
     <div class="term-links">→ Day 2, §4–§8</div>
   </div>
 
-  <div class="term-card" data-terms="Little's Law stationary population N lambda W">
+  <div class="term-card" data-terms="Little's Law stationary population N lambda W mean time">
     <div class="term-header">
       <span class="term-name">Little's Law</span>
     </div>
     <div class="term-tags"><span class="tag day1">Day 1</span><span class="tag growth">Growth</span></div>
     <div class="term-body">
-      <p>In a stationary system (birth rate = death rate, stable size), the average number in the system equals the arrival rate times the average time spent:</p>
-      <div class="term-formula">\[ N = \lambda \cdot W \]</div>
-      <p>In demography: population size = crude birth rate × average length of life. For a stationary population with \(e_0 = 80\) years and 1 birth/year: \(N = 1 \times 80 = 80\) people. This is exact for stationary populations, a very good approximation for slowly-changing ones. It connects birth rates, life expectancy, and population size in a single elegant identity.</p>
+      <p>In any stationary system, the average number in the system equals the arrival rate times the average sojourn time:</p>
+      <div class="term-formula">\[ N = \lambda \cdot \bar{W} \]</div>
+      <p>In demography: population = birth rate × life expectancy (\(K = b \cdot e_0\)). For a stationary population with \(e_0 = 80\) years and \(b = 1/80\) per year per person, \(K = 1 \times 80 = 80\) people per annual birth. Proved by John Little (1961); applies to queues, hospitals, internet routers — and populations. This is exact for stationary populations, approximate otherwise.</p>
     </div>
     <div class="term-links">→ Day 1, §9</div>
   </div>
 
-  <div class="term-card" data-terms="logistic growth carrying capacity sigmoid S-curve">
+  <div class="term-card" data-terms="log-linear semi-log plot logarithm population straight line slope r diagnostic">
+    <div class="term-header">
+      <span class="term-name">Log-linear plot</span>
+    </div>
+    <div class="term-tags"><span class="tag day1">Day 1</span><span class="tag method">Method</span></div>
+    <div class="term-body">
+      <p>A graph with the <em>logarithm</em> of population on the y-axis and calendar time on the x-axis. Under exponential growth \(K(t) = K_0 e^{rt}\), taking logs gives:</p>
+      <div class="term-formula">\[ \ln K(t) = \ln K_0 + r\cdot t \]</div>
+      <p>This is a straight line with slope \(r\). Non-linearity in the log-population plot is therefore an immediate diagnostic: a bending upward means accelerating growth; bending downward means a falling growth rate. Pre-computing the logarithm transforms a multiplicative process into an additive one — which is why the log scale is the natural one for growth problems.</p>
+    </div>
+    <div class="term-links">→ Day 1, §12</div>
+  </div>
+
+  <div class="term-card" data-terms="logistic growth carrying capacity sigmoid S-curve Verhulst bounded">
     <div class="term-header">
       <span class="term-name">Logistic growth</span>
     </div>
     <div class="term-tags"><span class="tag day1">Day 1</span><span class="tag growth">Growth</span></div>
     <div class="term-body">
-      <p>A bounded growth model where the per-capita growth rate declines linearly as population approaches the carrying capacity \(K_{\max}\):</p>
-      <div class="term-formula">\[ \frac{dK}{dt} = rK\!\left(1 - \frac{K}{K_{\max}}\right) \]</div>
-      <p>The solution is an S-shaped (sigmoid) curve. At low population it looks exponential; near \(K_{\max}\) it flattens. Often used as a first-pass model for population limits. Real populations don't strictly follow logistic dynamics, but the qualitative S-shape is common in species introductions, technological adoption, and demographic transitions.</p>
+      <p>A bounded growth model where the per-capita growth rate declines linearly as the population approaches the carrying capacity \(\kappa\):</p>
+      <div class="term-formula">\[ \frac{dK}{dt} = rK\!\left(1 - \frac{K}{\kappa}\right) \]</div>
+      <p>The solution is an S-shaped (sigmoid) curve. At low population it resembles exponential growth; near \(\kappa\) it flattens. Growth is fastest at \(K = \kappa/2\). Proposed by Pierre-François Verhulst (1838); widely used in ecology. Real populations don't strictly follow logistic dynamics, but the qualitative S-shape is common in species introductions and technological adoption (the "diffusion of innovations" S-curve).</p>
     </div>
     <div class="term-links">→ Day 1, §13</div>
+  </div>
+
+  <div class="term-card" data-terms="l(mu) survivorship mean age childbearing lmu NRR GRR decomposition">
+    <div class="term-header">
+      <span class="term-name">l(μ) — survivorship at mean age of childbearing</span>
+      <span class="term-symbol">\(l(\bar{\mu})/l(0)\)</span>
+    </div>
+    <div class="term-tags"><span class="tag day3">Day 3</span><span class="tag fertility">Fertility</span><span class="tag mortality">Mortality</span></div>
+    <div class="term-body">
+      <p>The fraction of women in the birth cohort still alive at the mean age of childbearing \(\bar{\mu}\) (roughly 27–30 in low-mortality populations). It serves as the "mortality discount" in the key approximation:</p>
+      <div class="term-formula">\[ \text{NRR} \approx \text{GRR} \times \frac{l(\bar{\mu})}{l(0)} \]</div>
+      <p>This decomposition separates NRR into a pure fertility component (GRR) and a pure mortality component (\(l(\bar{\mu})/l(0)\)). A "phase plot" with GRR on one axis and \(l(\bar{\mu})\) on the other has hyperbolic NRR contours — countries can sit on the NRR = 1 replacement contour with very different combinations of fertility and mortality. In high-mortality settings (Sub-Saharan Africa), \(l(\bar{\mu}) \approx 0.80\text{–}0.85\), requiring a GRR above 1.2 to achieve replacement.</p>
+    </div>
+    <div class="term-links">→ Day 3, §10</div>
+  </div>
+
+</div>
+
+<!-- ─── M ─── -->
+<div class="letter-section" id="letter-M">
+  <div class="letter-heading">M</div>
+
+  <div class="term-card" data-terms="Markov process Markov chain memoryless age-structured projection Leslie">
+    <div class="term-header">
+      <span class="term-name">Markov process</span>
+    </div>
+    <div class="term-tags"><span class="tag day3">Day 3</span><span class="tag method">Method</span></div>
+    <div class="term-body">
+      <p>A stochastic process where the future state depends only on the present state, not on the past history of how that state was reached — the "memoryless" property. Population projection via the Leslie matrix is a deterministic Markov process: \(\mathbf{K}_{t+1} = \mathbf{A}\,\mathbf{K}_t\). The future age structure depends only on the current age structure and the vital rates matrix \(\mathbf{A}\).</p>
+      <p>The Markov assumption is also implicit in the standard life table: the probability of dying in \([2n, 3n)\) depends only on being alive at age \(2n\), not on how "easily" you survived to that age. This is an approximation — in reality, frail survivors carry their frailty forward. But it is a tractable and usually reasonable simplification.</p>
+    </div>
+    <div class="term-links">→ Day 3, §12</div>
+  </div>
+
+  <div class="term-card" data-terms="mean age childbearing mu bar generation length intrinsic rate rule thumb">
+    <div class="term-header">
+      <span class="term-name">Mean age of childbearing</span>
+      <span class="term-symbol">\(\bar{\mu}\)</span>
+    </div>
+    <div class="term-tags"><span class="tag day3">Day 3</span><span class="tag fertility">Fertility</span></div>
+    <div class="term-body">
+      <p>The weighted average age at which mothers give birth, weighting by the net maternity function \(f(x)\,l(x)/l(0)\):</p>
+      <div class="term-formula">\[ \bar{\mu} = \frac{\int_{15}^{50} x\,f(x)\,\frac{l(x)}{l(0)}\,dx}{\text{NRR}} \]</div>
+      <p>Approximately equal to the generation length (the average time between a woman's birth and the births of her daughters). This leads to the key rule of thumb: \(r \approx \ln(\text{NRR})\,/\,\bar{\mu}\). In low-mortality, low-fertility countries: \(\bar{\mu} \approx 28\text{–}30\) years.</p>
+      <p><strong>Intuition:</strong> \(\bar{\mu}\) is the "centre of mass" of the NRR integrand. If NRR = 1.5 and \(\bar{\mu} = 28\), then \(r \approx \ln(1.5)/28 \approx 0.014\) — 1.4% per year.</p>
+    </div>
+    <div class="term-links">→ Day 3, §11</div>
   </div>
 
 </div>
@@ -440,7 +764,21 @@ h1{font-size:2rem;color:var(--accent);margin-bottom:.3rem;line-height:1.2}
 <div class="letter-section" id="letter-N">
   <div class="letter-heading">N</div>
 
-  <div class="term-card" data-terms="NRR net reproduction ratio daughters replacement">
+  <div class="term-card" data-terms="net maternity function phi(x) NRR integrand fertility mortality combined">
+    <div class="term-header">
+      <span class="term-name">Net maternity function</span>
+      <span class="term-symbol">\(\phi(x)\)</span>
+    </div>
+    <div class="term-tags"><span class="tag day3">Day 3</span><span class="tag fertility">Fertility</span></div>
+    <div class="term-body">
+      <p>The product of the age-specific fertility rate and the survivorship function, scaled by \(F_{\text{FAB}}\):</p>
+      <div class="term-formula">\[ \phi(x) = f(x)\cdot\frac{l(x)}{l(0)}\cdot F_{\text{FAB}} \]</div>
+      <p>The integral of \(\phi(x)\) over the reproductive ages is the NRR. It represents the expected number of daughters born in a small age interval \([x, x+dx)\) to a woman who survives. The mean of this distribution (weighted by \(\phi(x)\)) is the mean age of childbearing \(\bar{\mu}\); the NRR is its total area. This function is the bridge between the fertility schedule, the survival schedule, and the long-run growth rate.</p>
+    </div>
+    <div class="term-links">→ Day 3, §8</div>
+  </div>
+
+  <div class="term-card" data-terms="NRR net reproduction ratio daughters replacement R0 generation">
     <div class="term-header">
       <span class="term-name">Net Reproduction Ratio (NRR)</span>
       <span class="term-symbol">NRR or \(R_0\)</span>
@@ -448,12 +786,32 @@ h1{font-size:2rem;color:var(--accent);margin-bottom:.3rem;line-height:1.2}
     <div class="term-tags"><span class="tag day3">Day 3</span><span class="tag fertility">Fertility</span><span class="tag mortality">Mortality</span></div>
     <div class="term-body">
       <p>The average number of daughters a woman would have over her lifetime, accounting for the probability of dying before each age of childbearing:</p>
-      <div class="term-formula">\[ \text{NRR} = F_{\text{FAB}} \int_{15}^{50} f(x)\,\frac{l(x)}{l(0)}\,dx \]</div>
-      <p>This is the central formula of Day 3. It combines the fertility schedule \(f(x)\) with the survivorship function \(l(x)/l(0)\). NRR = 1 means exact replacement; NRR &gt; 1 means long-run growth; NRR &lt; 1 means long-run decline.</p>
-      <p><strong>Real-world:</strong> UK NRR ≈ 0.80 (2020), Japan ≈ 0.60, Niger ≈ 3.5. Most high-income countries are well below replacement.</p>
-      <p><strong>Watch out:</strong> NRR &lt; 1 does not mean the population is shrinking <em>now</em> — a young age structure can produce population growth even with NRR &lt; 1, a phenomenon called <em>population momentum</em>.</p>
+      <div class="term-formula">\[ \text{NRR} = F_{\text{FAB}} \int_{15}^{50} f(x)\,\frac{l(x)}{l(0)}\,dx \approx \text{GRR} \times l(\bar{\mu}) \]</div>
+      <p>NRR = 1 means exact replacement; NRR &gt; 1 means long-run growth; NRR &lt; 1 means long-run decline. This is the central formula of Day 3 — it beautifully combines fertility and mortality in a single number.</p>
+      <p><strong>Real-world:</strong> UK ≈ 0.80 (2020); Japan ≈ 0.60; Niger ≈ 3.5. Most high-income countries are well below replacement.</p>
+      <p><strong>Watch out:</strong> NRR &lt; 1 does not mean the population is shrinking <em>now</em> — a young age structure produces momentum.</p>
     </div>
     <div class="term-links">→ Day 3, §8</div>
+  </div>
+
+</div>
+
+<!-- ─── O ─── -->
+<div class="letter-section" id="letter-O">
+  <div class="letter-heading">O</div>
+
+  <div class="term-card" data-terms="ODE ordinary differential equation dK/dt rate change function derivative solve">
+    <div class="term-header">
+      <span class="term-name">ODE (Ordinary Differential Equation)</span>
+    </div>
+    <div class="term-tags"><span class="tag day1">Day 1</span><span class="tag day3">Day 3</span><span class="tag method">Method</span></div>
+    <div class="term-body">
+      <p>An equation relating a function to its own derivative. Demographic models are naturally expressed as ODEs:</p>
+      <div class="term-formula">\[ \underbrace{\frac{dK}{dt} = r\,K(t)}_{\text{exponential growth}}, \qquad \underbrace{\frac{dl}{dx} = -\mu(x)\,l(x)}_{\text{survival equation}} \]</div>
+      <p>Solving the exponential growth ODE by <em>separation of variables</em> gives \(K(t) = K_0\,e^{rt}\). Solving the survival ODE the same way gives \(l(x) = \exp(-\int_0^x \mu(y)\,dy)\). The two ODEs are structurally identical — growth is the mirror image of decay.</p>
+      <p>You do not need to solve ODEs in general to use them in demography — the key insight is that the ODE form, the explicit formula, and the log-linear form are all equivalent ways of expressing the same model. Three shirts, one body.</p>
+    </div>
+    <div class="term-links">→ Day 1, §12 · Day 3, §1</div>
   </div>
 
 </div>
@@ -462,29 +820,68 @@ h1{font-size:2rem;color:var(--accent);margin-bottom:.3rem;line-height:1.2}
 <div class="letter-section" id="letter-P">
   <div class="letter-heading">P</div>
 
-  <div class="term-card" data-terms="period analysis cross-sectional current rates snapshot">
+  <div class="term-card" data-terms="period analysis cross-sectional current rates snapshot vertical Lexis">
     <div class="term-header">
       <span class="term-name">Period analysis</span>
     </div>
     <div class="term-tags"><span class="tag day2">Day 2</span><span class="tag method">Method</span></div>
     <div class="term-body">
-      <p>Analysis based on a fixed calendar period, combining experience of all age groups alive at that time — a vertical slice in the Lexis diagram. Period rates (e.g., period death rates, period TFR) describe what is happening <em>now</em>, but they refer to synthetic cohorts that do not literally exist. Contrasts with cohort analysis (following real people over time).</p>
-      <p>Period life expectancy is the most commonly cited demographic measure. It can move up or down rapidly with short-term changes in mortality (e.g., COVID-19 temporarily reduced period \(e_0\) by 1–2 years in many countries in 2020–21).</p>
+      <p>Analysis based on a fixed calendar period, combining experience of all age groups alive at that time — a vertical slice in the Lexis diagram. Period rates describe what is happening <em>now</em> but refer to synthetic cohorts that do not literally exist. Contrasts with cohort analysis (following real people over time).</p>
+      <p>Period life expectancy can move rapidly with short-term shocks: COVID-19 temporarily reduced period \(e_0\) by 1–2 years in many countries in 2020–21, then partially recovered as mortality returned to trend. Cohort life expectancy is more stable but can only be computed retrospectively.</p>
     </div>
     <div class="term-links">→ Day 2, §3</div>
   </div>
 
-  <div class="term-card" data-terms="person-years person time exposure denominator">
+  <div class="term-card" data-terms="person-years lived interval nLx nL_x person time age group exposure">
+    <div class="term-header">
+      <span class="term-name">Person-years lived in interval</span>
+      <span class="term-symbol">\({}_nL_x\)</span>
+    </div>
+    <div class="term-tags"><span class="tag day2">Day 2</span><span class="tag mortality">Mortality</span></div>
+    <div class="term-body">
+      <p>The total person-years contributed by the cohort between exact ages \(x\) and \(x+n\):</p>
+      <div class="term-formula">\[ {}_nL_x = \int_x^{x+n} l(y)\,dy \approx \frac{n}{2}(l_x + l_{x+n}) \]</div>
+      <p>Geometrically: the area under the \(l(x)\) curve between \(x\) and \(x+n\). The trapezoid approximation (second form) assumes \(l(x)\) is linear within the interval — good for most age groups, less precise in infancy. \({}_nL_x\) is the denominator of the age-specific mortality rate \({}_nM_x = {}_nd_x/{}_nL_x\). Summing all \({}_nL_x\) from age \(x\) onwards gives \(T_x\).</p>
+    </div>
+    <div class="term-links">→ Day 2, §7</div>
+  </div>
+
+  <div class="term-card" data-terms="person-years person time exposure denominator integral area population">
     <div class="term-header">
       <span class="term-name">Person-years (person-time)</span>
     </div>
     <div class="term-tags"><span class="tag day1">Day 1</span><span class="tag day2">Day 2</span><span class="tag method">Method</span></div>
     <div class="term-body">
-      <p>The total time lived by a group of people over an observation period. For a population of size \(K(t)\) evolving over time \([t_1, t_2]\):</p>
+      <p>The total time lived by a group of people over an observation period. For a population of size \(K(t)\) over \([t_1, t_2]\):</p>
       <div class="term-formula">\[ \text{PY} = \int_{t_1}^{t_2} K(t)\,dt \approx (t_2-t_1)\cdot\frac{K(t_1)+K(t_2)}{2} \]</div>
-      <p>The conceptually correct denominator for demographic rates. The mid-period population approximation (trapezoid rule) works well when \(K(t)\) changes slowly and smoothly. The area of a Lexis box equals the person-years of exposure in that box.</p>
+      <p>The conceptually correct denominator for all demographic rates. The mid-period approximation (trapezoid rule) works well when \(K(t)\) changes slowly. The area of a Lexis box equals the person-years of exposure in that box.</p>
     </div>
     <div class="term-links">→ Day 1, §14 · Day 2, §3</div>
+  </div>
+
+  <div class="term-card" data-terms="population momentum age structure growth NRR below replacement young">
+    <div class="term-header">
+      <span class="term-name">Population momentum</span>
+    </div>
+    <div class="term-tags"><span class="tag day3">Day 3</span><span class="tag growth">Growth</span></div>
+    <div class="term-body">
+      <p>The tendency of a population to continue growing for decades after its NRR (or TFR) reaches replacement level, because of a young age structure inherited from the high-fertility past. Even if every woman immediately adopted replacement-level fertility, the population would continue to grow because there are more women now entering reproductive ages than leaving them.</p>
+      <p>Keyfitz (1971) showed that the ultimate population size \(K_\infty\) after an instantaneous drop to NRR = 1 is approximately \(K_\infty \approx K_0 \cdot e_0 \cdot b\), where current birth rates and life expectancy reflect the previous growth. For many developing countries with young age structures, momentum could add 30–50% to the eventual population even if fertility fell to replacement tomorrow.</p>
+      <p>The converse also holds: countries with aging populations (Germany, Japan) continue to <em>shrink</em> even when fertility temporarily rises above replacement, because the pool of women of reproductive age is contracting.</p>
+    </div>
+    <div class="term-links">→ Day 3, §12</div>
+  </div>
+
+  <div class="term-card" data-terms="population projection Leslie matrix age structure vital rates future forecast">
+    <div class="term-header">
+      <span class="term-name">Population projection</span>
+    </div>
+    <div class="term-tags"><span class="tag day3">Day 3</span><span class="tag method">Method</span></div>
+    <div class="term-body">
+      <p>The mechanical application of current (or assumed future) age-specific mortality and fertility rates to an observed age structure to produce a forecast. Using the Leslie matrix: \(\mathbf{K}_{t+1} = \mathbf{A}\,\mathbf{K}_t\). After \(n\) steps: \(\mathbf{K}_{t+n} = \mathbf{A}^n\,\mathbf{K}_t\).</p>
+      <p>The long-run dynamics are governed by the dominant eigenvalue \(\lambda_1\) of \(\mathbf{A}\): if \(\lambda_1 > 1\) the population eventually grows at rate \(r = \ln\lambda_1\); if \(\lambda_1 < 1\) it declines. Projections beyond 20–30 years are highly sensitive to fertility assumptions — a small change in TFR compounds dramatically over long horizons. UN Population Division projections include high, medium, and low variants to bracket this uncertainty.</p>
+    </div>
+    <div class="term-links">→ Day 3, §12</div>
   </div>
 
 </div>
@@ -493,17 +890,56 @@ h1{font-size:2rem;color:var(--accent);margin-bottom:.3rem;line-height:1.2}
 <div class="letter-section" id="letter-R">
   <div class="letter-heading">R</div>
 
-  <div class="term-card" data-terms="rate of natural increase r intrinsic growth rate">
+  <div class="term-card" data-terms="radix l(0) l_0 100000 starting value convention cohort">
+    <div class="term-header">
+      <span class="term-name">Radix</span>
+      <span class="term-symbol">\(l_0\)</span>
+    </div>
+    <div class="term-tags"><span class="tag day2">Day 2</span><span class="tag mortality">Mortality</span></div>
+    <div class="term-body">
+      <p>The starting value of the survivorship function \(l(x)\) at age 0. By convention, life tables use either \(l_0 = 1\) (the Berkeley / probability convention used in this course) or \(l_0 = 100{,}000\) (used by most national statistics agencies). All subsequent \(l_x\) values express survival relative to the radix.</p>
+      <p>With radix = 1, every entry in the \(l_x\) column is immediately interpretable as a probability: \(l_{40} = 0.9\) means 90% of the cohort survives to age 40. With radix = 100,000, multiply by 10 to get per-1,000 figures. The columns \({}_nd_x\), \({}_nL_x\), and \(T_x\) scale with the radix; the rates \({}_nM_x\), \({}_nq_x\), and \(e_x\) are radix-independent.</p>
+    </div>
+    <div class="term-links">→ Day 2, §4</div>
+  </div>
+
+  <div class="term-card" data-terms="rate of natural increase r b-d intrinsic growth birth death difference">
     <div class="term-header">
       <span class="term-name">Rate of natural increase</span>
       <span class="term-symbol">\(r = b - d\)</span>
     </div>
     <div class="term-tags"><span class="tag day1">Day 1</span><span class="tag growth">Growth</span></div>
     <div class="term-body">
-      <p>The difference between the crude birth rate and crude death rate: \(r = b - d\). In the continuous-time model, it is the intrinsic growth rate of the exponential model \(K(t) = K_0 e^{rt}\). When \(r &gt; 0\) the population grows; when \(r &lt; 0\) it declines; when \(r = 0\) it is stationary.</p>
-      <p>The long-run intrinsic growth rate of a population with given mortality and fertility schedules can be approximated as \(r \approx \ln(\text{NRR}) / \mu\), where \(\mu\) is the mean age of childbearing (Day 3).</p>
+      <p>The difference between the crude birth rate and crude death rate: \(r = b - d\). In the continuous-time model it is the instantaneous growth rate: \(K(t) = K_0 e^{rt}\). When \(r > 0\) the population grows; when \(r < 0\) it declines; when \(r = 0\) it is stationary.</p>
+      <p>The long-run intrinsic growth rate consistent with given mortality and fertility schedules can be approximated as \(r \approx \ln(\text{NRR})\,/\,\bar{\mu}\), where \(\bar{\mu}\) is the mean age of childbearing.</p>
     </div>
     <div class="term-links">→ Day 1, §3 · Day 3, §10</div>
+  </div>
+
+  <div class="term-card" data-terms="replacement level TFR 2.1 NRR 1 replacement fertility">
+    <div class="term-header">
+      <span class="term-name">Replacement level</span>
+      <span class="term-symbol">TFR ≈ 2.1, NRR = 1</span>
+    </div>
+    <div class="term-tags"><span class="tag day3">Day 3</span><span class="tag fertility">Fertility</span></div>
+    <div class="term-body">
+      <p>The fertility level at which a population exactly replaces itself in the long run. In terms of NRR: replacement means NRR = 1 (exactly one daughter per woman who survives to reproduce). In terms of TFR: approximately 2.1 in low-mortality countries (slightly above 2.0 to account for the female infant mortality gap and the sex ratio at birth).</p>
+      <p>In high-mortality populations, replacement-level TFR can be 3+ because many women die before completing their reproductive years. The statement "TFR below 2.1 means population decline" is only approximately true and ignores the effect of age structure — a young population can grow even with TFR &lt; 2.1 (momentum), and an ageing population can shrink even with TFR briefly above 2.1.</p>
+    </div>
+    <div class="term-links">→ Day 3, §6</div>
+  </div>
+
+  <div class="term-card" data-terms="rule of 70 doubling time approximation growth rate per cent">
+    <div class="term-header">
+      <span class="term-name">Rule of 70</span>
+    </div>
+    <div class="term-tags"><span class="tag day1">Day 1</span><span class="tag method">Method</span></div>
+    <div class="term-body">
+      <p>The mental arithmetic shortcut for doubling time: divide 70 by the percentage growth rate:</p>
+      <div class="term-formula">\[ T_2 \approx \frac{70}{r\%} \]</div>
+      <p>Derived from the exact formula \(T_2 = \ln(2)/r \approx 0.693/r\); since \(0.693 \approx 0.70\), "70" works for typical demographic rates (under 3%). Use "72" for higher rates — it factors nicely (72 = 2×36 = 3×24 = 4×18 = 6×12 = 8×9) and is more accurate above 6%. The same rule applies in finance (CAGR) and any other exponentially-growing quantity.</p>
+    </div>
+    <div class="term-links">→ Day 1, §7</div>
   </div>
 
 </div>
@@ -512,42 +948,95 @@ h1{font-size:2rem;color:var(--accent);margin-bottom:.3rem;line-height:1.2}
 <div class="letter-section" id="letter-S">
   <div class="letter-heading">S</div>
 
-  <div class="term-card" data-terms="stable population stable age structure Lotka Euler">
+  <div class="term-card" data-terms="separation of variables ODE solving technique integral exponentiate">
+    <div class="term-header">
+      <span class="term-name">Separation of variables</span>
+    </div>
+    <div class="term-tags"><span class="tag day1">Day 1</span><span class="tag day3">Day 3</span><span class="tag method">Method</span></div>
+    <div class="term-body">
+      <p>A technique for solving ODEs by placing all terms involving the dependent variable on one side and the independent variable on the other, then integrating both sides separately:</p>
+      <div class="term-formula">\[ \frac{dl}{dx} = -\mu(x)\,l \;\;\Rightarrow\;\; \frac{dl}{l} = -\mu(x)\,dx \;\;\Rightarrow\;\; \ln l = -\int \mu \;\;\Rightarrow\;\; l(x) = e^{-H(x)} \]</div>
+      <p>The same steps solve the growth ODE: \(dK/K = r\,dt \Rightarrow \ln K = rt + C \Rightarrow K(t) = K_0 e^{rt}\). In both cases, separation turns a differential equation into two straightforward integrals. It works whenever the ODE can be written as \(f(y)\,dy = g(x)\,dx\).</p>
+    </div>
+    <div class="term-links">→ Day 1, §12 · Day 3, §1</div>
+  </div>
+
+  <div class="term-card" data-terms="stable population stable age structure eigenvalue Lotka intrinsic growth rate">
     <div class="term-header">
       <span class="term-name">Stable population</span>
     </div>
     <div class="term-tags"><span class="tag day3">Day 3</span><span class="tag growth">Growth</span></div>
     <div class="term-body">
-      <p>A theoretical population with constant age-specific fertility and mortality rates and no migration. Such a population converges to a fixed age structure (the stable age distribution) and grows at a constant rate \(r\) (the intrinsic growth rate). The stable population is the long-run equilibrium of the Leslie matrix: after enough iterations, the population's age composition becomes invariant to the initial age structure.</p>
-      <p>A <em>stationary</em> population is the special case where \(r = 0\) (NRR = 1). In a stationary population, the age structure is proportional to the life table's \(l_x\) column, and Little's Law holds exactly.</p>
+      <p>A theoretical population with constant age-specific fertility and mortality rates and no migration. Such a population converges to a fixed age structure (the stable age distribution) and grows at a constant rate \(r\) — the intrinsic growth rate, determined solely by the vital rates. The stable population is the long-run equilibrium of the Leslie matrix: after enough iterations, the age composition becomes invariant to the initial structure.</p>
+      <p>A <em>stationary</em> population is the special case where \(r = 0\) (NRR = 1). In a stationary population, the age structure is proportional to the life table's \(l_x\) column, and Little's Law holds exactly: \(b \cdot e_0 = 1\).</p>
     </div>
     <div class="term-links">→ Day 3, §12</div>
   </div>
 
-  <div class="term-card" data-terms="stock flow census vital registration snapshot interval">
+  <div class="term-card" data-terms="stationary population r=0 NRR=1 stable zero growth births deaths equal">
+    <div class="term-header">
+      <span class="term-name">Stationary population</span>
+      <span class="term-symbol">\(r = 0, \; b \cdot e_0 = 1\)</span>
+    </div>
+    <div class="term-tags"><span class="tag day1">Day 1</span><span class="tag growth">Growth</span></div>
+    <div class="term-body">
+      <p>A population with constant size: births exactly balance deaths, \(r = 0\), NRR = 1. In a stationary population, the age structure is proportional to the life table's \(l_x\) column — the proportion at each age is determined solely by mortality, not by fertility history. Little's Law gives the elegant identity:</p>
+      <div class="term-formula">\[ b \cdot e_0 = 1 \qquad \Leftrightarrow \qquad \text{birth rate} = \frac{1}{\text{life expectancy}} \]</div>
+      <p>A stationary population is the reference point for many demographic calculations. No actual population is ever truly stationary, but many advanced economies (e.g., Germany, Italy, Japan) are close enough that stationary approximations are useful.</p>
+    </div>
+    <div class="term-links">→ Day 1, §9</div>
+  </div>
+
+  <div class="term-card" data-terms="stock flow census vital registration snapshot interval point time">
     <div class="term-header">
       <span class="term-name">Stock vs. flow</span>
     </div>
     <div class="term-tags"><span class="tag day1">Day 1</span><span class="tag method">Method</span></div>
     <div class="term-body">
       <p>A <strong>stock</strong> is measured at a point in time (a snapshot): population size, number of survivors in a life table. A <strong>flow</strong> is measured over an interval: births per year, deaths per year. You cannot add a stock to a flow without specifying the time interval.</p>
-      <p>Data sources reflect this: stocks are measured by censuses; flows are recorded by vital registration systems. In countries without reliable vital registration, demographers must estimate flows from surveys.</p>
+      <p>Data sources reflect this distinction: stocks are measured by censuses (every 10 years); flows are recorded continuously by vital registration systems (birth and death certificates). In countries without reliable vital registration, demographers must estimate flows from surveys or indirect methods (e.g., the Brass relational model).</p>
     </div>
     <div class="term-links">→ Day 1, §2</div>
   </div>
 
-  <div class="term-card" data-terms="survival function survivorship lx l(x) probability surviving">
+  <div class="term-card" data-terms="survival probability npx p_x surviving age group product formula telescoping">
+    <div class="term-header">
+      <span class="term-name">Survival probability</span>
+      <span class="term-symbol">\({}_np_x\)</span>
+    </div>
+    <div class="term-tags"><span class="tag day2">Day 2</span><span class="tag day3">Day 3</span><span class="tag mortality">Mortality</span></div>
+    <div class="term-body">
+      <p>The probability of surviving from exact age \(x\) to exact age \(x+n\):</p>
+      <div class="term-formula">\[ {}_np_x = \frac{l_{x+n}}{l_x} = 1 - {}_nq_x \]</div>
+      <p>Survival probabilities <em>multiply</em>: to survive from age 0 to age \(x = kn\), you must survive each successive \(n\)-year segment, giving \(l(x) = {}_np_0 \cdot {}_np_n \cdot {}_np_{2n} \cdots {}_np_{(k-1)n}\). This multiplicative structure (probabilities multiply; hazards add) is the key structural fact of survival analysis.</p>
+    </div>
+    <div class="term-links">→ Day 2, §6 · Day 3, §3</div>
+  </div>
+
+  <div class="term-card" data-terms="survivorship function l(x) lx cohort proportion alive survival curve">
     <div class="term-header">
       <span class="term-name">Survivorship function</span>
       <span class="term-symbol">\(l_x\) or \(l(x)\)</span>
     </div>
     <div class="term-tags"><span class="tag day2">Day 2</span><span class="tag mortality">Mortality</span></div>
     <div class="term-body">
-      <p>The proportion of a cohort alive at exact age \(x\), given that the radix \(l_0 = 1\) (or conventionally 100,000). It is a non-increasing function from 1 at birth to 0 at the maximum age \(\omega\). The survival function is linked to the force of mortality by:</p>
-      <div class="term-formula">\[ l(x) = e^{-\int_0^x \mu(y)\,dy} = \exp(-H(x)) \]</div>
-      <p>Building \(l_x\): start with the sorted ages at death for a cohort, flip to decreasing order, rotate axes — the resulting staircase, when smoothed, is \(l_x\).</p>
+      <p>The proportion of the birth cohort alive at exact age \(x\). With radix \(l_0 = 1\), it is directly the probability of surviving from birth to age \(x\). Non-increasing from 1 to 0; linked to the force of mortality by:</p>
+      <div class="term-formula">\[ l(x) = e^{-\int_0^x \mu(y)\,dy} = e^{-H(x)} \]</div>
+      <p>The area under the entire \(l(x)\) curve equals life expectancy at birth \(e_0\). "Rectangularisation" of the survival curve — deaths becoming more concentrated at old age — is the defining feature of the epidemiological transition. Building \(l_x\): sort ages at death for a cohort, convert to a decreasing staircase, smooth.</p>
     </div>
     <div class="term-links">→ Day 2, §4–§5</div>
+  </div>
+
+  <div class="term-card" data-terms="synthetic cohort period rates hypothetical experience tempo quantum">
+    <div class="term-header">
+      <span class="term-name">Synthetic cohort</span>
+    </div>
+    <div class="term-tags"><span class="tag day2">Day 2</span><span class="tag day3">Day 3</span><span class="tag method">Method</span></div>
+    <div class="term-body">
+      <p>A hypothetical (not real) cohort that experiences the age-specific rates observed in a single calendar period as it "ages." Period life expectancy is the life expectancy of a synthetic cohort subject to today's age-specific death rates — no such cohort has ever existed.</p>
+      <p>The synthetic cohort concept is the bridge between cross-sectional (period) data and cohort interpretation. Because real cohorts cannot be observed in real time, demographers construct synthetic cohorts for current analysis and compare them to real cohorts for historical validation. Period TFR is similarly a synthetic measure — the total fertility of a woman who experiences today's age-specific fertility rates at every age.</p>
+    </div>
+    <div class="term-links">→ Day 2, §3 · Day 3, §6</div>
   </div>
 
 </div>
@@ -556,27 +1045,102 @@ h1{font-size:2rem;color:var(--accent);margin-bottom:.3rem;line-height:1.2}
 <div class="letter-section" id="letter-T">
   <div class="letter-heading">T</div>
 
-  <div class="term-card" data-terms="TFR total fertility rate births per woman period">
+  <div class="term-card" data-terms="Taylor series polynomial approximation ln(1+r) r rules of thumb Brook Taylor">
+    <div class="term-header">
+      <span class="term-name">Taylor series</span>
+    </div>
+    <div class="term-tags"><span class="tag day1">Day 1</span><span class="tag day2">Day 2</span><span class="tag method">Method</span></div>
+    <div class="term-body">
+      <p>A polynomial approximation of any smooth function around a point \(a\):</p>
+      <div class="term-formula">\[ f(x) = f(a) + f'(a)(x-a) + \frac{f''(a)}{2!}(x-a)^2 + \frac{f'''(a)}{3!}(x-a)^3 + \cdots \]</div>
+      <p>In formal demography, Taylor series are the engine behind every rule of thumb. Expanding \(\ln(1+r)\) around \(r = 0\) gives \(\ln(1+r) \approx r - r^2/2 + \cdots \approx r\) for small \(r\) — which explains why the slope of the log-population line equals the growth rate. Expanding \((1+r)^t\) gives \((1+r)^t \approx e^{rt}\) for small \(r\) — explaining why discrete and continuous growth models coincide at typical demographic rates. Named after Brook Taylor (1715); the special case \(a = 0\) is the Maclaurin series.</p>
+    </div>
+    <div class="term-links">→ Day 1, §11 · Day 2, §1</div>
+  </div>
+
+  <div class="term-card" data-terms="tempo effect quantum fertility timing postponement period TFR distortion">
+    <div class="term-header">
+      <span class="term-name">Tempo effect</span>
+    </div>
+    <div class="term-tags"><span class="tag day3">Day 3</span><span class="tag fertility">Fertility</span></div>
+    <div class="term-body">
+      <p>The distortion of period fertility measures (especially TFR) caused by changes in the <em>timing</em> of births, rather than in the ultimate number of children ("quantum"). When women postpone childbearing (increasing mean age of childbearing over time), period TFR falls below cohort TFR — not because fewer births will eventually occur, but because the same births are being pushed into the future.</p>
+      <p>Bongaarts and Feeney (1998) proposed an adjustment: tempo-adjusted TFR = period TFR / (1 − \(\dot{\mu}\)), where \(\dot{\mu}\) is the rate of change of the mean age of childbearing. Much of the dramatic TFR decline in Southern and Eastern Europe in the 1990s was a tempo effect, not a quantum decline — as demographers confirmed once those cohorts completed their fertility. The Baby Boom in the 1950s was partly a tempo effect in the opposite direction: women were bringing births <em>forward</em>, inflating period TFRs.</p>
+    </div>
+    <div class="term-links">→ Day 3, §6</div>
+  </div>
+
+  <div class="term-card" data-terms="TFR total fertility rate births per woman period replacement 2.1">
     <div class="term-header">
       <span class="term-name">Total Fertility Rate (TFR)</span>
       <span class="term-symbol">TFR</span>
     </div>
     <div class="term-tags"><span class="tag day3">Day 3</span><span class="tag fertility">Fertility</span></div>
     <div class="term-body">
-      <p>The sum of age-specific fertility rates across all reproductive ages (15–49), multiplied by the age-interval width \(n\):</p>
+      <p>The sum of age-specific fertility rates across all reproductive ages, multiplied by the age-interval width:</p>
       <div class="term-formula">\[ \text{TFR} = \sum_x {}_nF_x \cdot n = \int_{15}^{50} f(x)\,dx \]</div>
-      <p>Interpreted as the average number of children a woman would have if she survived through her reproductive years and experienced the current age-specific fertility rates throughout. It is a <em>period</em> measure — a snapshot, not a forecast.</p>
-      <p><strong>Replacement level:</strong> TFR ≈ 2.1 in low-mortality countries (slightly above 2.0 to account for female infant mortality and the sex ratio). TFR &lt; 2.1 does not immediately mean population decline — age structure matters.</p>
-      <p><strong>Real-world (2020):</strong> Japan ≈ 1.2 · South Korea ≈ 0.84 · UK ≈ 1.6 · USA ≈ 1.6 · France ≈ 1.8 · Niger ≈ 7.0</p>
+      <p>Interpreted as the average number of children a woman would have if she survived through her reproductive years and experienced current ASFRs throughout. A <em>period</em> measure — a synthetic snapshot, not a forecast.</p>
+      <p><strong>Replacement level:</strong> TFR ≈ 2.1 in low-mortality countries. <strong>Real-world (2020–22):</strong> South Korea ≈ 0.78 · Japan ≈ 1.2 · UK ≈ 1.6 · USA ≈ 1.6 · France ≈ 1.8 · Niger ≈ 7.0.</p>
     </div>
     <div class="term-links">→ Day 3, §6</div>
+  </div>
+
+  <div class="term-card" data-terms="Tx T_x total future person-years from age x life table column area under l(x)">
+    <div class="term-header">
+      <span class="term-name">Total future person-years</span>
+      <span class="term-symbol">\(T_x\)</span>
+    </div>
+    <div class="term-tags"><span class="tag day2">Day 2</span><span class="tag mortality">Mortality</span></div>
+    <div class="term-body">
+      <p>The total person-years lived by all survivors to age \(x\), from age \(x\) until the last member of the cohort dies:</p>
+      <div class="term-formula">\[ T_x = \int_x^\omega l(y)\,dy = \sum_{a \geq x} {}_nL_a \]</div>
+      <p>Geometrically: the area under the \(l(x)\) curve from \(x\) to \(\omega\). Dividing by the number alive at age \(x\) gives life expectancy: \(e_x = T_x / l_x\). At birth, \(T_0 = e_0\) (since \(l_0 = 1\)). The \(T_x\) column is computed by summing the \({}_nL_x\) column from the bottom up — the rightmost column of the standard life table layout.</p>
+    </div>
+    <div class="term-links">→ Day 2, §8</div>
+  </div>
+
+</div>
+
+<!-- ─── U ─── -->
+<div class="letter-section" id="letter-U">
+  <div class="letter-heading">U</div>
+
+  <div class="term-card" data-terms="UDD uniform distribution of deaths assumption rate probability conversion nax n/2">
+    <div class="term-header">
+      <span class="term-name">UDD (Uniform Distribution of Deaths)</span>
+    </div>
+    <div class="term-tags"><span class="tag day2">Day 2</span><span class="tag mortality">Mortality</span></div>
+    <div class="term-body">
+      <p>The standard assumption for converting observed mortality <em>rates</em> \({}_nM_x\) into life table <em>probabilities</em> \({}_nq_x\). UDD assumes deaths are spread uniformly across the age interval, implying \({}_na_x = n/2\) (people who die do so on average halfway through the interval). This gives:</p>
+      <div class="term-formula">\[ {}_nq_x = \frac{n\,{}_nM_x}{1 + (n - {}_na_x)\,{}_nM_x} = \frac{n\,{}_nM_x}{1 + \frac{n}{2}\,{}_nM_x} \]</div>
+      <p>UDD is reasonable for most adult age groups but breaks down at age 0 (infant deaths are heavily front-loaded in the first weeks of life) and at the very oldest ages (above 90, mortality is so high that deaths cluster early in each interval). Alternative assumptions: Balducci (constant force, UDD on complement) and the constant-hazard assumption.</p>
+    </div>
+    <div class="term-links">→ Day 2, §9</div>
+  </div>
+
+</div>
+
+<!-- ─── V ─── -->
+<div class="letter-section" id="letter-V">
+  <div class="letter-heading">V</div>
+
+  <div class="term-card" data-terms="vital registration births deaths certificates administrative continuous recording">
+    <div class="term-header">
+      <span class="term-name">Vital registration</span>
+    </div>
+    <div class="term-tags"><span class="tag day1">Day 1</span><span class="tag method">Method</span></div>
+    <div class="term-body">
+      <p>A country's continuous administrative system for recording demographic events — births, deaths, marriages, divorces — as they occur. Provides the "flow" data (births and deaths) used in the balancing equation and for constructing period life tables.</p>
+      <p>High-quality vital registration has existed in some European countries since the 17th century (Sweden began in 1749; England and Wales from 1837). Today, it is complete or near-complete in all high-income countries and many middle-income countries, but remains absent or unreliable in much of Sub-Saharan Africa and parts of South Asia, where the majority of global deaths still go unregistered. In such settings, indirect estimation methods (Brass techniques, model life tables, sibling survival analysis) substitute for direct registration data.</p>
+    </div>
+    <div class="term-links">→ Day 1, §2</div>
   </div>
 
 </div>
 
 </div><!-- end termContainer -->
 
-<!-- ─── JS: SEARCH + ALPHABET NAV + FLOATING TOC ─── -->
+<!-- ─── JS: SEARCH + ALPHABET NAV ─── -->
 <script>
 // Build alphabet nav from letter sections present
 (function(){
