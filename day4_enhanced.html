@@ -1,0 +1,1304 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Formal Demography — Day 4</title>
+<script>
+window.MathJax = {
+  tex: { inlineMath:[['\\(','\\)']], displayMath:[['\\[','\\]']] },
+  options: { skipHtmlTags:['script','noscript','style','textarea','pre'] }
+};
+</script>
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js" async></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#f9f7f3;--surface:#fff;--text:#1c1c2e;--muted:#64748b;--rule:#e2e8f0;
+  --accent:#1e3a8a;--acm:#2563eb;--acl:#dbeafe;
+  --def-bg:#f0fdf4;--def-br:#16a34a;
+  --int-bg:#fefce8;--int-br:#ca8a04;
+  --his-bg:#faf5ff;--his-br:#9333ea;
+  --dem-bg:#fff1f2;--dem-br:#e11d48;
+  --nte-bg:#f0f9ff;--nte-br:#0284c7;
+  --serif:Georgia,'Times New Roman',serif;
+  --sans:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+  --mono:'Courier New',Courier,monospace;
+}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:var(--serif);font-size:17px;line-height:1.85;max-width:880px;margin:0 auto;padding:2.5rem 1.5rem 8rem}
+h1{font-size:2.3rem;line-height:1.2;color:var(--accent);margin-bottom:.4rem}
+h2{font-size:1.55rem;color:var(--accent);border-bottom:2px solid var(--acm);padding-bottom:.3rem;margin:3.5rem 0 1.2rem}
+h3{font-size:1.1rem;margin:2rem 0 .6rem;color:#1e3a5f}
+p{margin-bottom:1.1rem}
+ul,ol{padding-left:1.8rem;margin-bottom:1.1rem}
+li{margin-bottom:.4rem}
+.subtitle{color:var(--muted);font-style:italic;margin-bottom:.4rem;font-size:.95rem}
+.course-meta{background:var(--acl);border-left:4px solid var(--acm);padding:.9rem 1.3rem;border-radius:0 8px 8px 0;margin:1.5rem 0 2.5rem;font-size:.92rem;font-family:var(--sans);line-height:1.7}
+.sn{display:inline-flex;align-items:center;justify-content:center;background:var(--acm);color:#fff;border-radius:50%;width:1.75rem;height:1.75rem;font-family:var(--sans);font-size:.82rem;font-weight:700;margin-right:.5rem;vertical-align:middle;flex-shrink:0}
+.toc{background:var(--surface);border:1px solid var(--rule);border-radius:10px;padding:1.2rem 1.6rem;margin:0 0 3rem;font-size:.88rem}
+.toc-h{font-family:var(--sans);font-weight:700;font-size:.76rem;text-transform:uppercase;letter-spacing:.12em;color:var(--muted);margin-bottom:.7rem}
+.toc ol{padding-left:1.4rem}
+.toc li{margin-bottom:.25rem}
+.toc a{color:var(--acm);text-decoration:none}
+.toc a:hover{text-decoration:underline}
+.callout{border-left:4px solid;border-radius:0 8px 8px 0;padding:.95rem 1.3rem;margin:1.6rem 0;font-size:.92rem;line-height:1.7}
+.callout-title{font-family:var(--sans);font-weight:700;font-size:.79rem;text-transform:uppercase;letter-spacing:.07em;margin-bottom:.45rem}
+.callout p{margin-bottom:.5rem}
+.callout p:last-child{margin-bottom:0}
+.callout.definition{background:var(--def-bg);border-color:var(--def-br)}.callout.definition .callout-title{color:var(--def-br)}
+.callout.intuition{background:var(--int-bg);border-color:var(--int-br)}.callout.intuition .callout-title{color:var(--int-br)}
+.callout.history{background:var(--his-bg);border-color:var(--his-br)}.callout.history .callout-title{color:var(--his-br)}
+.callout.demography{background:var(--dem-bg);border-color:var(--dem-br)}.callout.demography .callout-title{color:var(--dem-br)}
+.callout.note{background:var(--nte-bg);border-color:var(--nte-br)}.callout.note .callout-title{color:var(--nte-br)}
+.callout.mistake{background:#fff7ed;border-color:#ea580c}.callout.mistake .callout-title{color:#ea580c}
+.callout.realworld{background:#f0fdf4;border-color:#059669}.callout.realworld .callout-title{color:#059669}
+.fb{background:#0f172a;color:#e2e8f0;border-radius:10px;padding:1.2rem 1.8rem;margin:1.5rem 0;overflow-x:auto;text-align:center;font-size:1.05rem}
+.fb .fl{text-align:left;font-family:var(--sans);font-size:.74rem;color:#94a3b8;text-transform:uppercase;letter-spacing:.09em;margin-bottom:.5rem}
+.eq-table{width:100%;border-collapse:collapse;margin:1.4rem 0;font-size:.91rem}
+.eq-table th{background:var(--accent);color:#fff;padding:.5rem .9rem;text-align:left;font-family:var(--sans);font-weight:600}
+.eq-table td{padding:.5rem .9rem;border-bottom:1px solid var(--rule);vertical-align:middle}
+.eq-table tr:nth-child(even) td{background:#f8fafc}
+.widget{background:var(--surface);border:1.5px solid #cbd5e1;border-radius:12px;padding:1.5rem 1.6rem;margin:2.2rem 0;box-shadow:0 2px 12px rgba(0,0,0,.07)}
+.widget-title{font-family:var(--sans);font-size:.97rem;font-weight:700;color:var(--acm);margin-bottom:.25rem;display:flex;align-items:center;gap:.5rem}
+.widget-title::before{content:'⚙';font-size:1rem}
+.ws{font-family:var(--sans);font-size:.85rem;color:var(--muted);margin-bottom:1.2rem}
+.sr{display:flex;align-items:center;gap:.8rem;margin-bottom:.75rem;flex-wrap:wrap}
+.sr label{font-family:var(--sans);font-size:.86rem;color:var(--muted);min-width:200px}
+.sr input[type=range]{flex:1;min-width:120px;accent-color:var(--acm)}
+.sv{font-family:var(--mono);font-size:.88rem;font-weight:700;color:var(--acm);min-width:60px;text-align:right}
+.cb{position:relative;height:280px;margin:1rem 0}
+.cb-sm{position:relative;height:220px;margin:1rem 0}
+.wo{background:#f1f5f9;border-radius:8px;padding:.85rem 1.1rem;font-family:var(--sans);font-size:.86rem;margin-top:.8rem;line-height:1.75}
+.wo .big{font-size:1.4rem;font-weight:700;color:var(--acm)}
+.bg{display:flex;gap:.5rem;margin-bottom:.8rem;flex-wrap:wrap}
+.tb{font-family:var(--sans);font-size:.81rem;padding:.3rem .9rem;border:1.5px solid var(--acm);border-radius:20px;background:#fff;color:var(--acm);cursor:pointer;transition:all .15s}
+.tb.active,.tb:hover{background:var(--acm);color:#fff}
+hr{border:none;border-top:1px solid var(--rule);margin:3rem 0}
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:1.2rem;margin:1rem 0}
+.highlight-box{background:var(--acl);border:2px solid var(--acm);border-radius:8px;padding:.8rem 1.2rem;text-align:center;font-size:1.1rem;margin:1.2rem 0}
+.euler-lotka-box{background:linear-gradient(135deg,#1e3a8a,#dc2626);color:#fff;border-radius:12px;padding:1.4rem 1.8rem;margin:2rem 0;text-align:center}
+.euler-lotka-box .el-label{font-family:var(--sans);font-size:.78rem;font-weight:700;text-transform:uppercase;letter-spacing:.15em;opacity:.8;margin-bottom:.6rem}
+.euler-lotka-box .el-eq{font-size:1.3rem;line-height:2}
+.euler-lotka-box .el-sub{font-family:var(--sans);font-size:.84rem;opacity:.85;margin-top:.4rem}
+.disclaimer-banner{background:#fffbeb;border:1.5px solid #f59e0b;border-radius:10px;padding:1rem 1.4rem;margin:0 0 2rem;font-family:var(--sans);font-size:.875rem;line-height:1.7;color:#78350f}
+.disclaimer-banner strong{color:#92400e}
+.matrix-grid{display:grid;grid-template-columns:repeat(10,1fr);gap:3px;margin:1rem 0;font-family:var(--mono);font-size:.72rem}
+.mc{background:#f1f5f9;border:1px solid #cbd5e1;border-radius:3px;padding:.25rem .1rem;text-align:center;min-height:1.8rem;display:flex;align-items:center;justify-content:center}
+.mc.fertility{background:#fef3c7;border-color:#d97706;color:#92400e;font-weight:700}
+.mc.survivorship{background:#dbeafe;border-color:#2563eb;color:#1e3a8a;font-weight:700}
+.mc.zero{background:#f8fafc;color:#cbd5e1}
+.roadmap-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:1rem;margin:1.5rem 0}
+.roadmap-card{background:#fff;border:1.5px solid var(--rule);border-radius:10px;padding:1rem 1.1rem;font-family:var(--sans);font-size:.85rem}
+.roadmap-card h4{font-size:.82rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;margin-bottom:.6rem}
+.roadmap-card.today{border-color:#2563eb;background:#eff6ff}
+.roadmap-card.today h4{color:#1e3a8a}
+.roadmap-card.tomorrow{border-color:#7c3aed;background:#faf5ff}
+.roadmap-card.tomorrow h4{color:#6d28d9}
+.roadmap-card.maybe{border-color:#94a3b8;background:#f8fafc}
+.roadmap-card.maybe h4{color:#64748b}
+@media(max-width:700px){.roadmap-grid{grid-template-columns:1fr}.two-col{grid-template-columns:1fr}}
+
+/* DAY NAVIGATION */
+.day-nav{display:flex;gap:.45rem;margin:0 0 1.5rem;flex-wrap:wrap;font-family:var(--sans);font-size:.84rem;align-items:center}
+.day-nav .dn-label{color:var(--muted);font-size:.76rem;text-transform:uppercase;letter-spacing:.1em;margin-right:.2rem}
+.day-nav a{display:inline-flex;align-items:center;padding:.32rem .82rem;border:1.5px solid var(--rule);border-radius:20px;text-decoration:none;color:var(--muted);transition:all .15s}
+.day-nav a:hover{border-color:#2563eb;color:#2563eb}
+.day-nav a.current{background:#2563eb;border-color:#2563eb;color:#fff;font-weight:600}
+
+/* KEY TAKEAWAYS */
+.key-takeaways{background:linear-gradient(135deg,#1e3a8a 0%,#2563eb 100%);color:#fff;border-radius:12px;padding:1.3rem 1.6rem;margin:0 0 2.5rem}
+.key-takeaways .kt-heading{font-family:var(--sans);font-weight:700;font-size:.78rem;text-transform:uppercase;letter-spacing:.13em;margin-bottom:.9rem;opacity:.85}
+.key-takeaways ol{padding-left:1.4rem;margin:0}
+.key-takeaways li{margin-bottom:.5rem;font-size:.92rem;line-height:1.65;opacity:.95}
+.key-takeaways li:last-child{margin-bottom:0}
+
+/* FLOATING TOC */
+#float-toc{display:none;position:fixed;top:50%;right:1rem;transform:translateY(-50%);background:#fff;border:1px solid #e2e8f0;border-radius:10px;padding:.75rem .95rem;max-height:80vh;overflow-y:auto;font-family:var(--sans);font-size:.74rem;width:190px;box-shadow:0 4px 20px rgba(0,0,0,.09);z-index:100}
+#float-toc .ft-label{font-weight:700;font-size:.68rem;text-transform:uppercase;letter-spacing:.1em;color:#64748b;margin-bottom:.5rem}
+#float-toc ol{padding-left:1rem;margin:0}
+#float-toc li{margin-bottom:.22rem;line-height:1.35}
+#float-toc a{color:#94a3b8;text-decoration:none;transition:color .12s}
+#float-toc a:hover,#float-toc a.ft-active{color:#2563eb;font-weight:600}
+@media(min-width:1180px){#float-toc{display:block}}
+
+/* TOOLTIP */
+.tip{position:relative;cursor:help;border-bottom:1px dashed #94a3b8}
+.tip::after{content:attr(data-tip);position:absolute;bottom:calc(100% + 6px);left:50%;transform:translateX(-50%);background:#1e293b;color:#f1f5f9;font-size:.73rem;line-height:1.45;padding:.35rem .65rem;border-radius:6px;white-space:nowrap;max-width:260px;white-space:normal;pointer-events:none;opacity:0;transition:opacity .15s;z-index:50;font-family:var(--sans);font-style:normal;font-weight:400}
+.tip:hover::after{opacity:1}
+@media(max-width:620px){body{font-size:15px;padding:1rem 1rem 5rem}h1{font-size:1.7rem}h2{font-size:1.3rem}.sr label{min-width:140px}}
+</style>
+</head>
+<body>
+
+<!-- DAY NAVIGATION -->
+<nav class="day-nav">
+  <span class="dn-label">Days:</span>
+  <a href="day1_enhanced.html">Day 1 — Growth</a>
+  <a href="day2_enhanced.html">Day 2 — Life Table</a>
+  <a href="day3_enhanced.html">Day 3 — Fertility</a>
+  <a href="day4_enhanced.html" class="current">Day 4 — Projection</a>
+  <a href="glossary.html">Glossary</a>
+</nav>
+
+<div class="disclaimer-banner">
+  <strong>⚠ Draft — AI-assisted notes, not yet reviewed.</strong>
+  These notes were produced with AI assistance from handwritten lecture notes and the instructor's materials. They have not been checked for accuracy, may contain errors or omissions, and are subject to revision.
+</div>
+
+<p class="subtitle">Robert Chung's Informal Introduction to Formal Demography · Cambridge, 26 March 2026</p>
+<h1>Day 4: The Leslie Matrix, the Renewal Equation, and the Euler–Lotka Equation</h1>
+
+<div class="course-meta">
+  Day 4 is the day all the threads come together. We have mortality (the life table), we have fertility (TFR, GRR, NRR), and now we need a machine that can take an <em>actual population</em> with a real age structure and project it forward in time. That machine is the <strong>Leslie matrix</strong> — a piece of linear algebra that turns population projection into a single matrix multiplication. The day opens with a cleanup of the mean age of fertility from Day 3, shows some useful rules of thumb, then builds up the projection framework step by step. It closes with arguably the most important equation in all of formal demography: the <strong>Euler–Lotka equation</strong>, which unifies births, survival, and growth into a single expression and reveals the properties of a stable population.
+</div>
+
+<!-- KEY TAKEAWAYS -->
+<div class="key-takeaways">
+  <div class="kt-heading">⭐ Day 4 Key Takeaways</div>
+  <ol>
+    <li>The <strong>net maternity function</strong> \(\phi(x) = f(x)\,l(x)\) combines fertility and survival; its mean is the mean age of childbearing weighted by survival.</li>
+    <li>Population projection is just <strong>repeated matrix multiplication</strong>: \(\mathbf{K}(t+1) = \mathbf{A}\,\mathbf{K}(t)\). The Leslie matrix \(\mathbf{A}\) encodes the life table (survivorship on the sub-diagonal) and fertility (on the top row).</li>
+    <li>Under fixed rates, any starting population will converge to a <strong>stable age distribution</strong> and a constant <strong>intrinsic growth rate</strong> \(r\). This follows from the Perron–Frobenius theorem. In the lecture demonstration: \(r \approx 0.0157\,\text{yr}^{-1}\).</li>
+    <li>The <strong>Euler–Lotka equation</strong> \(1 = \int_0^\omega e^{-rx}\,l(x)\,f(x)\,dx\) is derived by substituting the stable-state birth series into the renewal equation. It is "the most important equation in all of formal demography."</li>
+    <li>A <strong>stationary population</strong> is simply the special case of a stable population where \(r = 0\). Setting \(r=0\) in the Euler–Lotka equation immediately gives the Day 1 identity \(b \cdot e_0 = 1\).</li>
+  </ol>
+</div>
+
+<!-- FLOATING TOC -->
+<div id="float-toc">
+  <div class="ft-label">Contents</div>
+  <ol>
+    <li><a href="#s1">Mean Age Cleanup</a></li>
+    <li><a href="#s2">Rules of Thumb</a></li>
+    <li><a href="#s3">E&amp;W Life Tables</a></li>
+    <li><a href="#s4">Roadmap</a></li>
+    <li><a href="#s5">Projection Framework</a></li>
+    <li><a href="#s6">Renewal Equation</a></li>
+    <li><a href="#s7">Leslie Matrix</a></li>
+    <li><a href="#s8">Matrix Entries</a></li>
+    <li><a href="#s9">Demonstration</a></li>
+    <li><a href="#s10">Eigenvalues</a></li>
+    <li><a href="#s11">The Stable State</a></li>
+    <li><a href="#s12">Euler–Lotka</a></li>
+    <li><a href="#s13">Stable Distribution</a></li>
+  </ol>
+</div>
+
+<!-- INLINE TOC -->
+<nav class="toc">
+  <div class="toc-h">Contents — Day 4</div>
+  <ol>
+    <li><a href="#s1">Clean-Up from Day 3: Mean Age of Fertility and the Net Maternity Function</a></li>
+    <li><a href="#s2">Cocktail Party Rules of Thumb for \(\mu\) and \(r\) &nbsp;⚙ Widget 1</a></li>
+    <li><a href="#s3">England &amp; Wales Life Tables: 1841 vs 1930 &nbsp;⚙ Widget 2</a></li>
+    <li><a href="#s4">Roadmap: Today, Tomorrow, and Probably Not</a></li>
+    <li><a href="#s5">The Population Projection Framework: Thinking About the Arrows</a></li>
+    <li><a href="#s6">The Renewal Equation: Births Today Depend on Past Births</a></li>
+    <li><a href="#s7">The Leslie Matrix: Organising the Arrows into a Machine</a></li>
+    <li><a href="#s8">Matrix Entries: Sub-Diagonal and Top Row</a></li>
+    <li><a href="#s9">Demonstration: Fifty Projections &nbsp;⚙ Widget 3</a></li>
+    <li><a href="#s10">The Perron–Frobenius Theorem and Eigenvalues</a></li>
+    <li><a href="#s11">The Stable State and Its Properties</a></li>
+    <li><a href="#s12">The Euler–Lotka Equation: The Most Important Equation &nbsp;⚙ Widget 4</a></li>
+    <li><a href="#s13">The Stable Age Distribution and the Stationary Population &nbsp;⚙ Widget 5</a></li>
+  </ol>
+</nav>
+
+
+<!-- ===== SECTION 1 ===== -->
+<h2 id="s1"><span class="sn">1</span> Clean-Up from Day 3: Mean Age of Fertility and the Net Maternity Function</h2>
+
+<p>Day 4 began — as every day in the course does — with a short "clean-up" from the previous session. Day 3 had introduced the mean age of childbearing <span class="tip" data-tip="The average age at which a woman in this population bears a child, under current rates">\(\mu\)</span> without quite finishing the story. Two versions of the mean age were distinguished, and the discrete approximations used in practice were tidied up.</p>
+
+<h3>The Two Versions of the Mean Age</h3>
+
+<p>The simplest mean age is just the average of the fertility schedule \(f(x)\), weighted by \(f(x)\) itself — essentially asking "what is the average age at which births happen, ignoring mortality?"</p>
+
+<div class="fb">
+  <div class="fl">Mean age of fertility — ignoring mortality (continuous version)</div>
+  \[
+    \bar{m} \;=\; \frac{\displaystyle\int x\,f(x)\,dx}{\displaystyle\int f(x)\,dx}
+  \]
+</div>
+
+<p>But for a real cohort of women, not all of them survive to every age of childbearing. A woman who dies at 25 cannot have children at 30. The demographic mean age — <em>the mean age at which actual births occur in the cohort</em> — should be weighted by both fertility <em>and</em> survival:</p>
+
+<div class="fb">
+  <div class="fl">Mean age of childbearing — weighted by survival (continuous version)</div>
+  \[
+    \mu \;=\; \frac{\displaystyle\int x\,f(x)\,l(x)\,dx}{\displaystyle\int f(x)\,l(x)\,dx}
+  \]
+</div>
+
+<div class="callout definition">
+  <div class="callout-title">📖 Definition — Net Maternity Function</div>
+  <p>The product \(\phi(x) = f(x)\,l(x)\) is called the <strong>net maternity function</strong>. It gives the expected number of (female) births per woman still alive at age \(x\), weighted by the probability of surviving to that age from birth. Integrating it gives the NRR:
+  \[\text{NRR} = F_{\text{FAB}} \int \phi(x)\,dx = F_{\text{FAB}} \int f(x)\,l(x)\,dx\]
+  The mean \(\mu\) is therefore the mean of this curve — the centre of mass of the net maternity function.</p>
+  <p>The discrete version used in practice replaces \(f(x)\,l(x)\) with \({}_nF_x \cdot {}_nL_x\), where \({}_nF_x\) is the age-specific fertility rate and \({}_nL_x\) is the life-table person-years lived.</p>
+</div>
+
+<h3>Discrete Versions for Computation</h3>
+
+<p>In practice with 5-year age groups (so \(n = 5\)) and age-group midpoints \(x + n/2\):</p>
+
+<div class="fb">
+  <div class="fl">Discrete mean age formulas (5-year age groups)</div>
+  \[
+    \bar{m} \;=\; \frac{\displaystyle\sum_x \!\left(x + \tfrac{n}{2}\right) {}_nF_x}{\displaystyle\sum_x {}_nF_x}
+    \qquad\quad
+    \mu \;=\; \frac{\displaystyle\sum_x \!\left(x + \tfrac{n}{2}\right) {}_nF_x \cdot {}_nL_x}{\displaystyle\sum_x {}_nF_x \cdot {}_nL_x}
+  \]
+</div>
+
+<p>The \(F_{\text{FAB}}/n\) factors in the numerator and denominator cancel when computing the ratio, so they don't affect \(\mu\) itself.</p>
+
+<div class="callout note">
+  <div class="callout-title">📐 Higher Moments — Variance of Childbearing Age</div>
+  <p>The same approach generalises to higher moments. The <strong>variance</strong> of the childbearing age distribution uses \((x + n/2)^2\) as the weight instead of \((x + n/2)\), and the <strong>skewness</strong> uses \((x + n/2)^3\). These matter for understanding whether a fertility schedule is early-skewed (lots of teenage births) or late-skewed (births concentrated at 30+). The mean alone doesn't tell you the whole shape.</p>
+</div>
+
+
+<!-- ===== SECTION 2 ===== -->
+<h2 id="s2"><span class="sn">2</span> Cocktail Party Rules of Thumb for \(\mu\) and \(r\)</h2>
+
+<p>The lecture made an empirical observation that is useful for back-of-envelope calculations. For almost every national-level population in the world, the mean age of childbearing <span class="tip" data-tip="Mean age of childbearing weighted by survival — the 'generation length'">\(\mu\)</span> falls within a surprisingly narrow range:</p>
+
+<div class="highlight-box">
+  \(\mu \in [\approx 25,\; \approx 39]\) for virtually all national populations — typically around 28–30.
+</div>
+
+<p>Some specific examples from the lecture: <strong>East Asia</strong> (Japan, South Korea, Taiwan) has a very late mean age, around \(\mu \approx 33\), reflecting the extremely delayed childbearing in these countries. The <strong>USA in 1934</strong> had an unusually early mean age, around \(\mu \approx 26\), reflecting the Depression-era pattern of early marriage and high fertility in young women.</p>
+
+<p>Using \(r \approx \ln(\text{NRR})/\mu\) from Day 3, and plugging in \(\mu \approx 28\) as a universal approximation:</p>
+
+<div class="callout intuition">
+  <div class="callout-title">💡 Intuition — The Cocktail Party Rules of Thumb</div>
+  <p>With \(\mu \approx 28\) as a universal approximation, we get three quick-and-dirty formulas that you can use at a party to impress demographers (or bore non-demographers):</p>
+  <p style="margin:.6rem 0 .6rem 1.2rem">
+    \[\text{NRR} \approx e^{28r} \qquad \Longleftrightarrow \qquad r \approx \frac{\ln(\text{NRR})}{28} \qquad \Longleftrightarrow \qquad \frac{\ln(\text{NRR})}{28} \approx r\]
+  </p>
+  <p>A more memorable form: \(r \approx \dfrac{\log_e \text{NRR}}{28}\). Since \(\log_e \text{NRR} \approx \text{NRR}-1\) for NRR near 1 (first-order Taylor expansion), an even rougher approximation is \(r \approx (\text{NRR}-1)/28\).</p>
+</div>
+
+<!-- Widget 1: Mean age comparison -->
+<div class="widget" id="w1">
+  <div class="widget-title">Widget 1: Mean Age of Childbearing Across Countries</div>
+  <div class="ws">Explore how mean age \(\mu\) and NRR vary across the five populations in the course dataset (USA 1934, Canada, Kenya, Brazil, Niger). The rule of thumb \(r \approx \ln(\text{NRR})/\mu\) is computed for each. Use the fertility multiplier to see how shifting TFR affects r.</div>
+
+  <div class="sr">
+    <label>Fertility multiplier (scales all Fx values): <span class="sv" id="fmult-lbl">1.00</span></label>
+    <input type="range" id="fmult" min="0.3" max="3.0" step="0.05" value="1.0">
+  </div>
+
+  <div class="cb"><canvas id="muChart"></canvas></div>
+
+  <div class="wo" id="muOutput">
+    Computing…
+  </div>
+</div>
+
+
+<!-- ===== SECTION 3 ===== -->
+<h2 id="s3"><span class="sn">3</span> England &amp; Wales Life Tables: 1841 vs 1930 Cohorts</h2>
+
+<p>The lecture briefly showed graphs comparing <strong>cohort life tables</strong> for England and Wales (both sexes combined) for two birth cohorts: those born in <strong>1841</strong> and those born in <strong>1930</strong>. These are 5-year abridged tables from the Human Mortality Database. The comparison is striking.</p>
+
+<div class="callout note">
+  <div class="callout-title">📐 Cohort vs Period Life Tables</div>
+  <p>A <em>cohort</em> life table follows an actual group of people born in the same year and records how they actually died over their lifetimes. A <em>period</em> life table takes age-specific death rates from a single calendar year and asks "what would happen to a hypothetical cohort?" The England &amp; Wales tables shown here are cohort tables — so the 1841 table really does track people born in 1841, most of whom would have died by around 1920.</p>
+</div>
+
+<!-- Widget 2: E&W Life Table -->
+<div class="widget" id="w2">
+  <div class="widget-title">Widget 2: England &amp; Wales Cohort Life Tables, 1841 &amp; 1930</div>
+  <div class="ws">Compare the survival, death probability, death distribution, and life expectancy curves for the two birth cohorts. Use the buttons to switch between l(x), q(x), d(x), and e(x).</div>
+  <div class="bg">
+    <button class="tb active" onclick="showLT('lx')">l(x) — Survivorship</button>
+    <button class="tb" onclick="showLT('qx')">q(x) — Death Probability</button>
+    <button class="tb" onclick="showLT('dx')">d(x) — Deaths</button>
+    <button class="tb" onclick="showLT('ex')">e(x) — Life Expectancy</button>
+  </div>
+  <div class="cb"><canvas id="ltChart"></canvas></div>
+  <div class="wo" id="ltOutput"></div>
+</div>
+
+<div class="callout demography">
+  <div class="callout-title">🌍 Real World — What Changed Between 1841 and 1930?</div>
+  <p>The dramatic difference between the 1841 and 1930 cohorts is almost entirely driven by improvements in <strong>infant and child mortality</strong> in the early portion of life. Improvements in sanitation (clean water, sewage systems), nutrition, and eventually medical care (vaccines, antibiotics) radically reduced the number of children dying before age 5. Life expectancy at birth rose from around 41 years (1841 cohort) to around 63 years (1930 cohort) — a gain of 22 years in less than a century. Note that life expectancy at age 65 improved much less — most of the gain was at the young end.</p>
+</div>
+
+
+<!-- ===== SECTION 4 ===== -->
+<h2 id="s4"><span class="sn">4</span> Roadmap: Today, Tomorrow, and Probably Not</h2>
+
+<p>Before the main content of the day, Robert gave a brief map of what remains in the course:</p>
+
+<div class="roadmap-grid">
+  <div class="roadmap-card today">
+    <h4>Today (Day 4)</h4>
+    <ul>
+      <li>Projection using matrix operations</li>
+      <li>The renewal equation</li>
+      <li>Consequences of fixed rates</li>
+      <li>Applied workshop (the R code)</li>
+    </ul>
+  </div>
+  <div class="roadmap-card tomorrow">
+    <h4>Tomorrow (Day 5)</h4>
+    <ul>
+      <li>Mortality modelling → Lee–Carter</li>
+      <li>Reproductive value</li>
+      <li>Population momentum</li>
+    </ul>
+  </div>
+  <div class="roadmap-card maybe">
+    <h4>Probably not covered</h4>
+    <ul>
+      <li>Interacting pops → infectious disease epidemiology</li>
+      <li>Higher-order dynamics (with &amp; without fixed rates)</li>
+      <li>Fertility modelling</li>
+      <li>Multiple causes of death</li>
+    </ul>
+  </div>
+</div>
+
+
+<!-- ===== SECTION 5 ===== -->
+<h2 id="s5"><span class="sn">5</span> The Population Projection Framework: Thinking About the Arrows</h2>
+
+<p>To project a population forward, we need to track what happens to each age group over one time step. The lecture introduced the framework using a diagram of boxes (age groups) connected by arrows (transitions).</p>
+
+<h3>The One-Sex Model and Its Assumptions</h3>
+
+<p>The model is deliberately simplified:</p>
+
+<ul>
+  <li><strong>One sex</strong> — we track only <em>females</em> (or only males). This avoids the complication of how male and female populations interact in producing births.</li>
+  <li><strong>Projection period = age group size</strong> — we use 5-year age groups and project in 5-year steps, so each age group cohort moves up exactly one slot per step.</li>
+  <li><strong>Closed to migration</strong> — all changes come from births and deaths only. (This is a modelling choice; migration can be added as an extra term.)</li>
+  <li><strong>Exclusive</strong> — a woman can only be in one age group at a time (no ambiguity about age).</li>
+</ul>
+
+<h3>Notation</h3>
+
+<p>Let <span class="tip" data-tip="The number of women aged exactly x at calendar time t">\(K(x, t)\)</span> denote the number of women aged \(x\) at time \(t\). The subscript \(t-x\) then refers to the <strong>birth cohort</strong> — women who were born at time \(t - x\). So:</p>
+
+<ul>
+  <li><span class="tip" data-tip="Fertility rate for girl babies of women aged x from birth cohort t−x">\(f(x, t-x)\)</span> = fertility rate for girl babies of women aged \(x\) from birth cohort \(t-x\)</li>
+  <li><span class="tip" data-tip="Probability a woman from cohort t−x survives from birth to age x">\(l(x, t-x)\)</span> = survivorship from birth cohort \(t-x\) to age \(x\)</li>
+</ul>
+
+<p>The key identity connecting these quantities: if \(B(t)\) = total births (girl babies) in year \(t\), then the number of women aged \(x\) in year \(t\) is just the number born \(x\) years ago, multiplied by the probability of surviving to age \(x\):</p>
+
+<div class="fb">
+  <div class="fl">Cohort-component identity</div>
+  \[
+    K(x,\,t) \;=\; B(t-x)\cdot l(x,\;t-x)
+  \]
+</div>
+
+<p>Read this as: "the women who are \(x\) years old today were born \(x\) years ago, and a fraction \(l(x, t-x)\) of them survived." As a specific example from the notes:</p>
+
+<p style="margin-left:1.3rem;border-left:3px solid var(--acm);padding-left:1rem;font-style:italic;">
+  \(K(25, 2026)\) = women aged 25 in 2026 = \(B(2001) \cdot l(25, 2001)\).
+  Women aged 25 in 2026 were born in 2001; the fraction that survived from birth to age 25 is \(l(25, 2001)\).
+</p>
+
+<div class="callout intuition">
+  <div class="callout-title">💡 Intuition — The Lexis Diagram Connection</div>
+  <p>The diagram Robert drew is just the Lexis diagram from Day 2, but with the arrows made explicit. Moving diagonally up-right along a cohort line represents women ageing through time. The 5-year boxes are the periods of the projection. Each arrow from age group \(x\) to age group \(x+5\) after 5 years carries a survivorship weight \({}_5p_x = l(x+5)/l(x)\).</p>
+  <p>The fertility arrows are different: they point from each age group <em>downward</em> to the 0–4 box, because women of each age can contribute births. These are the top row entries of the Leslie matrix.</p>
+</div>
+
+
+<!-- ===== SECTION 6 ===== -->
+<h2 id="s6"><span class="sn">6</span> The Renewal Equation: Births Today Depend on Past Births</h2>
+
+<p>How many girl babies are born in year \(t\)? Any woman who is age \(x\) in year \(t\) can contribute. The number aged \(x\) is \(K(x,t) = B(t-x)\cdot l(x,t-x)\), and their contribution to births is \(K(x,t)\cdot f(x, t-x)\). Integrating over all reproductive ages:</p>
+
+<div class="fb">
+  <div class="fl">Adding up babies from all age groups</div>
+  \[
+    \int_0^{100} K(x,t)\cdot f(x,t-x)\,dx \;=\; B(t)
+  \]
+</div>
+
+<p>Substituting the cohort-component identity \(K(x,t) = B(t-x)\cdot l(x,t-x)\):</p>
+
+<div class="fb">
+  <div class="fl">The Renewal Equation (general form)</div>
+  \[
+    B(t) \;=\; \int_0^\omega B(t-x)\underbrace{\vphantom{\Big|}l(x,\,t-x)}_{\text{survived}\atop\text{\(x\) years}}\underbrace{\vphantom{\Big|}f(x,\,t-x)}_{\text{gave kids}\atop\text{when age \(x\)}}\,dx
+  \]
+</div>
+
+<p>Here \(\omega\) is the oldest age of childbearing (around 50). This equation says: <em>births today are a weighted sum of births in the past, with the weights given by survivorship and fertility.</em> Robert emphasised: <strong>"This equation is important and ubiquitous."</strong> It appears in almost every area of mathematical biology and engineering under various names (renewal theory, Volterra integral equations).</p>
+
+<div class="callout history">
+  <div class="callout-title">📜 History — Renewal Theory</div>
+  <p>The renewal equation was first studied in a demographic context by <strong>Leonhard Euler</strong> in 1760 — long before Volterra or Lotka. The general theory of renewal processes was later developed by <strong>Alfred Lotka</strong> in the 1920s and 1930s, and again independently in the engineering literature in the context of reliability theory. The word "renewal" comes from the industrial analogy: if light bulbs burn out and are replaced (renewed), how many replacements happen per unit time? The demographic analogy: each birth is a "renewal" of the reproductive pool.</p>
+</div>
+
+<h3>The Fixed-Rates Simplification</h3>
+
+<p>The general form allows \(l\) and \(f\) to vary by birth cohort — reflecting the real world where each generation faces different mortality and fertility. But right now, and for the rest of the day, we assume <strong>fixed rates</strong>: the same \(l(x)\) and \(f(x)\) apply to every birth cohort. This makes the notation cleaner and leads to the stable population theory:</p>
+
+<div class="fb">
+  <div class="fl">Renewal equation — fixed rates (rates do not vary by cohort)</div>
+  \[
+    B(t) \;=\; \int_0^\omega B(t-x)\,l(x)\,f(x)\,dx
+  \]
+</div>
+
+<p>This simplification — replacing \(l(x, t-x)\) with just \(l(x)\) and \(f(x, t-x)\) with \(f(x)\) — is the key step that makes analytical progress possible. We are now in the world of the <em>stable population model</em>.</p>
+
+
+<!-- ===== SECTION 7 ===== -->
+<h2 id="s7"><span class="sn">7</span> The Leslie Matrix: Organising the Arrows into a Machine</h2>
+
+<p>The renewal equation (and all those arrows in the box diagram) can be written compactly as a single matrix multiplication. Re-organise the arrows into a matrix where rows are age groups at time \(t+5\) and columns are age groups at time \(t\):</p>
+
+<ul>
+  <li><strong>Top row (row 0):</strong> fertility coefficients — the number of girl babies produced by each age group. These are non-zero wherever a woman can have children (ages 15–49 roughly).</li>
+  <li><strong>Sub-diagonal (A[i][i-1]):</strong> survivorship — the fraction of women in age group \(i-1\) who survive to become age group \(i\).</li>
+  <li><strong>Zeros everywhere else:</strong> you can't jump age groups; a 20-year-old doesn't become a 35-year-old in one 5-year step.</li>
+</ul>
+
+<h3>The Matrix Structure for 10 Age Groups (0–4 to 45–49)</h3>
+
+<p>Here is the 10×10 Leslie matrix pattern. Cells highlighted in <span style="background:#fef3c7;padding:0 4px;border-radius:3px;color:#92400e;font-weight:600">amber</span> are fertility (top row); cells in <span style="background:#dbeafe;padding:0 4px;border-radius:3px;color:#1e3a8a;font-weight:600">blue</span> are survivorship (sub-diagonal); all others are structural zeros.</p>
+
+<div style="overflow-x:auto;margin:1.2rem 0">
+<div class="matrix-grid" style="font-size:.65rem">
+  <!-- Row 0: fertility top row -->
+  <div class="mc zero">0</div>
+  <div class="mc zero">0</div>
+  <div class="mc fertility">F₁₅</div>
+  <div class="mc fertility">F₂₀</div>
+  <div class="mc fertility">F₂₅</div>
+  <div class="mc fertility">F₃₀</div>
+  <div class="mc fertility">F₃₅</div>
+  <div class="mc fertility">F₄₀</div>
+  <div class="mc fertility">F₄₅</div>
+  <div class="mc zero">0</div>
+  <!-- Row 1 -->
+  <div class="mc survivorship">S₀</div>
+  <div class="mc zero">0</div><div class="mc zero">0</div><div class="mc zero">0</div><div class="mc zero">0</div>
+  <div class="mc zero">0</div><div class="mc zero">0</div><div class="mc zero">0</div><div class="mc zero">0</div><div class="mc zero">0</div>
+  <!-- Row 2 -->
+  <div class="mc zero">0</div>
+  <div class="mc survivorship">S₅</div>
+  <div class="mc zero">0</div><div class="mc zero">0</div><div class="mc zero">0</div>
+  <div class="mc zero">0</div><div class="mc zero">0</div><div class="mc zero">0</div><div class="mc zero">0</div><div class="mc zero">0</div>
+  <!-- Row 3 -->
+  <div class="mc zero">0</div><div class="mc zero">0</div>
+  <div class="mc survivorship">S₁₀</div>
+  <div class="mc zero">0</div><div class="mc zero">0</div>
+  <div class="mc zero">0</div><div class="mc zero">0</div><div class="mc zero">0</div><div class="mc zero">0</div><div class="mc zero">0</div>
+  <!-- Row 4 -->
+  <div class="mc zero">0</div><div class="mc zero">0</div><div class="mc zero">0</div>
+  <div class="mc survivorship">S₁₅</div>
+  <div class="mc zero">0</div>
+  <div class="mc zero">0</div><div class="mc zero">0</div><div class="mc zero">0</div><div class="mc zero">0</div><div class="mc zero">0</div>
+  <!-- Row 5 -->
+  <div class="mc zero">0</div><div class="mc zero">0</div><div class="mc zero">0</div><div class="mc zero">0</div>
+  <div class="mc survivorship">S₂₀</div>
+  <div class="mc zero">0</div><div class="mc zero">0</div><div class="mc zero">0</div><div class="mc zero">0</div><div class="mc zero">0</div>
+  <!-- Row 6 -->
+  <div class="mc zero">0</div><div class="mc zero">0</div><div class="mc zero">0</div><div class="mc zero">0</div><div class="mc zero">0</div>
+  <div class="mc survivorship">S₂₅</div>
+  <div class="mc zero">0</div><div class="mc zero">0</div><div class="mc zero">0</div><div class="mc zero">0</div>
+  <!-- Row 7 -->
+  <div class="mc zero">0</div><div class="mc zero">0</div><div class="mc zero">0</div><div class="mc zero">0</div><div class="mc zero">0</div><div class="mc zero">0</div>
+  <div class="mc survivorship">S₃₀</div>
+  <div class="mc zero">0</div><div class="mc zero">0</div><div class="mc zero">0</div>
+  <!-- Row 8 -->
+  <div class="mc zero">0</div><div class="mc zero">0</div><div class="mc zero">0</div><div class="mc zero">0</div><div class="mc zero">0</div><div class="mc zero">0</div><div class="mc zero">0</div>
+  <div class="mc survivorship">S₃₅</div>
+  <div class="mc zero">0</div><div class="mc zero">0</div>
+  <!-- Row 9 -->
+  <div class="mc zero">0</div><div class="mc zero">0</div><div class="mc zero">0</div><div class="mc zero">0</div><div class="mc zero">0</div><div class="mc zero">0</div><div class="mc zero">0</div><div class="mc zero">0</div>
+  <div class="mc survivorship">S₄₀</div>
+  <div class="mc zero">0</div>
+</div>
+<p style="font-family:var(--sans);font-size:.78rem;color:var(--muted);margin-top:.4rem">10×10 matrix; age groups 0–4, 5–9, …, 45–49. S_x = survivorship coefficient; F_x = fertility coefficient.</p>
+</div>
+
+<div class="callout history">
+  <div class="callout-title">📜 History — Leslie, Bernardelli, and Caswell</div>
+  <p>This structure is called the <strong>Leslie matrix</strong> after <strong>P.H. Leslie</strong>, who published the definitive paper in <em>Biometrika</em> in 1945. But the idea was independently discovered earlier by <strong>H. Bernardelli</strong> in 1941 (applied to beetle populations — demography and ecology have always shared tools). In population ecology, Hal Caswell's book <em>Matrix Population Models</em> became the standard reference, and Caswell's work got interleaved with Keyfitz's <em>Applied Mathematical Demography</em> in a productive collision of two bodies of literature.</p>
+  <p>The matrix approach transformed demography from a collection of numerical recipes into a coherent linear-algebraic theory, allowing all the power of eigenvalue analysis, sensitivity analysis, and Markov chain theory to be brought to bear.</p>
+</div>
+
+
+<!-- ===== SECTION 8 ===== -->
+<h2 id="s8"><span class="sn">8</span> Matrix Entries: Sub-Diagonal and Top Row</h2>
+
+<h3>Sub-Diagonal: Survivorship</h3>
+
+<p>The sub-diagonal entry \(A_{i,i-1}\) is the fraction of women in age group \(x\) who survive to be in age group \(x+5\) five years later. With a life table, this is just the ratio of person-years in adjacent age groups:</p>
+
+<div class="fb">
+  <div class="fl">Sub-diagonal entries (survivorship between age groups)</div>
+  \[
+    A_{i,\,i-1} \;=\; \frac{{}_5L_{x+5}}{{}_5L_x}
+  \]
+</div>
+
+<p>Why \({}_5L_{x+5}/{}_5L_x\) rather than \(l(x+5)/l(x)\)? Because both the women entering and the women already in the 5-year group can die during the interval — the \(nL\) ratio correctly accounts for the exposure time within each group. From the Lexis diagram "zoomed-in view" on the board: the sub-diagonal represents the yellow arrow moving the cohort diagonally up-right.</p>
+
+<div class="callout note">
+  <div class="callout-title">📐 Note — Two Versions of the Survivorship Ratio</div>
+  <p>A simpler approximation for the sub-diagonal is \(l(x+5)/l(x)\) — the probability of surviving from exact age \(x\) to exact age \(x+5\). This differs from \({}_5L_{x+5}/{}_5L_x\) because \({}_5L_x\) is the <em>average</em> of the survivorship curve over the interval, not the survivorship at the exact age. In practice the two are very close, especially at older ages where mortality is smooth. The \(nL\) ratio is the more correct form when the projection period exactly equals the age-group width.</p>
+</div>
+
+<h3>Top Row: Fertility Coefficients</h3>
+
+<p>The top row entry \(A_{0,j}\) is the number of girl babies born and surviving to age 0–4 per woman in age group \(j\) at the start of the period. A crude approximation just averages the fertility rates at the start and end of the interval:</p>
+
+\[
+  A_{0,j} \;\approx\; \frac{{}_5F_x + {}_5F_{x+5}}{2} \qquad \text{(simple approximation)}
+\]
+
+<p>The better entry from the notes, accounting for the mortality of mothers <em>and</em> the mortality of the babies themselves during the 0–4 period:</p>
+
+<div class="fb">
+  <div class="fl">Top-row fertility entries — the better formula</div>
+  \[
+    A_{0,j} \;=\; F_{\text{FAB}} \cdot \frac{l_0}{2}\!\left[F_x \;+\; F_{x+5}\cdot\frac{{}_5L_{x+5}}{{}_5L_x}\right] \cdot \frac{{}_5L_0}{l_0}
+  \]
+</div>
+
+<p>Breaking this apart:</p>
+<ul>
+  <li>\(F_{\text{FAB}}\) converts total births to <em>female</em> births (fraction female at birth ≈ 0.4886).</li>
+  <li>\(F_x + F_{x+5}\cdot{}_5L_{x+5}/{}_5L_x\) averages the fertility at the start and (projected) end of the interval, with the end weighted by survivorship of the mothers.</li>
+  <li>\({}_5L_0/l_0\) is the probability that a baby survives through the first 5-year period — accounting for infant and child mortality that whittles down the birth cohort before it reaches the next census.</li>
+</ul>
+
+<p>In compact form (as in the R code from the Day 4 Activity sheet), with all age-groups at once:</p>
+
+<div class="fb">
+  <div class="fl">Top row formula — compact R-style notation</div>
+  \[
+    \mathbf{A}[1,\;] \;=\; F_{\text{FAB}}\cdot l_0 \cdot \frac{\mathbf{f}[1:n] \;+\; \mathbf{f}[2:(n+1)]\cdot\mathbf{l}[2:(n+1)]/\mathbf{l}[1:n]}{2}
+  \]
+</div>
+
+where \(\mathbf{l}\) and \(\mathbf{f}\) are vectors of the Lx and Fx values (with \(l_0 = {}_5L_0\) in 5-year-group notation).
+
+
+<!-- ===== SECTION 9 ===== -->
+<h2 id="s9"><span class="sn">9</span> Demonstration: Fifty Projections with the USA 1934 Leslie Matrix</h2>
+
+<p>Robert's demonstration (a live R session, helped by course participants Wen and Felipe) used the <strong>USA 1934</strong> life table and fertility schedule to construct a Leslie matrix \(\mathbf{A}\), then applied it to an arbitrary starting population — the <strong>Russian female age distribution</strong> — and projected 50 steps of 5 years each (250 years total).</p>
+
+<p>The results: after some transient period, the <strong>growth rate stabilised at approximately \(r = 0.0157\;\text{yr}^{-1}\)</strong>, and the <strong>age structure stabilised</strong> as well (approximately 14% in 0–4, 13% in 5–9, 6.5% in 45–49). This is called the <strong>stable state</strong> — a property that follows from deep linear algebra.</p>
+
+<!-- Widget 3: Leslie Matrix Projection -->
+<div class="widget" id="w3">
+  <div class="widget-title">Widget 3: Leslie Matrix Population Projection</div>
+  <div class="ws">This widget exactly replicates the R demonstration. USA 1934 rates are applied to the Russian initial age structure, 50 five-year steps. Watch the growth rate and age distribution converge. Switch between views using the buttons.</div>
+
+  <div class="bg">
+    <button class="tb active" onclick="showProj('pop')">Total Population</button>
+    <button class="tb" onclick="showProj('rate')">Growth Rate Convergence</button>
+    <button class="tb" onclick="showProj('age')">Age Structure</button>
+  </div>
+
+  <div class="cb" style="height:320px"><canvas id="projChart"></canvas></div>
+
+  <div class="wo" id="projOutput"></div>
+</div>
+
+<div class="callout realworld">
+  <div class="callout-title">🌍 Real World — Mixing Rates from Different Countries</div>
+  <p>The demonstration deliberately mixed <em>USA 1934 mortality and fertility</em> with a <em>Russian initial age structure</em>. This is not a realistic projection of Russia — it's a mathematical demonstration that the stable state depends only on the rates (the Leslie matrix), not on the starting population. Whatever starting distribution you choose, after enough steps you converge to the same stable age structure and the same \(r\). The initial conditions are "forgotten." This is the demographic version of the ergodic theorem: the long-run behaviour is determined by the rates alone.</p>
+</div>
+
+
+<!-- ===== SECTION 10 ===== -->
+<h2 id="s10"><span class="sn">10</span> The Perron–Frobenius Theorem and Eigenvalues</h2>
+
+<p>Why does the Leslie matrix always converge to a stable state? The answer is the <strong>Perron–Frobenius theorem</strong>, a foundational result in linear algebra that applies to non-negative matrices with certain irreducibility properties.</p>
+
+<div class="callout definition">
+  <div class="callout-title">📖 Definition — Perron–Frobenius Theorem (demographic statement)</div>
+  <p>A Leslie matrix \(\mathbf{A}\) that is <em>primitive</em> (roughly: the population is not split into isolated sub-populations that never interbreed) has a unique dominant real eigenvalue \(\lambda_1 > 0\) that is strictly larger than all other eigenvalues in absolute value. The corresponding eigenvector has all positive entries and gives the stable age distribution. Long-run population growth is determined solely by \(\lambda_1\), with intrinsic growth rate \(r = \ln(\lambda_1)/n\) where \(n\) is the projection interval.</p>
+</div>
+
+<p>A 10×10 Leslie matrix has <strong>10 eigenvalues</strong> (counting multiplicity). The largest real one gives \(r\); all the others are smaller and their contributions decay away over time. The <strong>complex eigenvalues</strong> cause the oscillations you see in the growth rate in Widget 3 before it stabilises — they correspond to periodic fluctuations in age structure driven by echo effects of past fertility waves.</p>
+
+<h3>The Complex Eigenvalues and Euler's Formula</h3>
+
+<p>A complex eigenvalue \(\lambda = a + ib\) contributes a term to the population trajectory that oscillates over time. Why? Because of Euler's formula. Recall:</p>
+
+<div class="fb">
+  <div class="fl">Euler's formula (the bridge between exponentials and trigonometry)</div>
+  \[
+    e^{i\theta} \;=\; \cos\theta + i\sin\theta
+  \]
+</div>
+
+<p>So the growth factor \(e^{\lambda t} = e^{(a+ib)t} = e^{at}\cdot e^{ibt}\) has a real growing/decaying part \(e^{at}\) and a sinusoidal oscillating part \(e^{ibt} = \cos(bt) + i\sin(bt)\). The complex eigenvalues of the Leslie matrix produce exactly these oscillations in the population over time — "echo effects" from past baby booms rippling through the age structure.</p>
+
+<div class="callout history">
+  <div class="callout-title">📜 History — Euler's Identity</div>
+  <p>The special case \(\theta = \pi\) gives \(e^{i\pi} = \cos\pi + i\sin\pi = -1 + 0 = -1\), usually written as \(e^{i\pi} + 1 = 0\). This is often called <strong>Euler's identity</strong> and voted the most beautiful equation in mathematics — it connects the five fundamental constants \(e, i, \pi, 1, 0\) in a single relation. Richard Feynman called it "the most remarkable formula in mathematics." In our context, this identity says that the complex part of a Leslie eigenvalue at period \(\pi\) of its oscillation contributes a factor of exactly \(-1\) — a perfect 180° phase flip — to the age structure.</p>
+</div>
+
+<p>The lecture summarised this elegantly: <em>"The eigenvalues, whether real or complex, are the exponents in the exponential growth model \(e^{rt}\). The complex parts look like \(e^{i\pi t}\)"</em>, meaning they oscillate. The eigendecomposition of the Leslie matrix is therefore a compact summary of everything encoded in the \({}_nL_x\)'s and \({}_nF_x\)'s.</p>
+
+
+<!-- ===== SECTION 11 ===== -->
+<h2 id="s11"><span class="sn">11</span> The Stable State and Its Properties</h2>
+
+<p>In the stable state, the entire population grows at the same constant rate \(r\). Not just the total — every age group grows at rate \(r\), the number of births grows at rate \(r\), and the age distribution (the proportions) is constant over time. As Robert put it: imagine a pie chart that grows but keeps the same slice proportions.</p>
+
+<h3>The Mathematical Conditions</h3>
+
+<p>If the population is in stable state and growing at rate \(r\), then advancing by \(n\) years just multiplies the population by \(e^{rn}\):</p>
+
+<div class="fb">
+  <div class="fl">Stable state: each age group grows at the same rate r</div>
+  \[\begin{aligned}
+    K(x,\,t+n) &= K(x,\,t)\cdot e^{rn} \\[4pt]
+    B(t+n) &= B(t)\cdot e^{rn} \\[4pt]
+    B(t-x) &= B(t)\cdot e^{-rx}
+  \end{aligned}\]
+</div>
+
+<p>The last line is the key: in stable state, <em>births \(x\) years ago</em> are related to <em>births today</em> by a simple factor \(e^{-rx}\). This is exactly what the stable state assumption says — births have been growing at rate \(r\) all along.</p>
+
+<div class="callout intuition">
+  <div class="callout-title">💡 Intuition — The Growing Pie</div>
+  <p>Imagine two pie charts side by side. The right one is bigger (total population is larger) but the slices are the same proportions (same age distribution). Moving from today's pie to tomorrow's (5 years later), every slice — every age group — has grown by the same factor \(e^{5r}\). Even the births-slice (0–4) has grown by the same factor. This is the meaning of the stable state: all age groups "forget" their initial conditions and lock into the same growth rate, determined by the Leslie matrix.</p>
+</div>
+
+
+<!-- ===== SECTION 12 ===== -->
+<h2 id="s12"><span class="sn">12</span> The Euler–Lotka Equation: The Most Important Equation</h2>
+
+<p>Now the payoff. If the population is in stable state with births growing at rate \(r\), we can substitute \(B(t-x) = B(t)e^{-rx}\) directly into the renewal equation (with fixed rates):</p>
+
+<div class="fb">
+  <div class="fl">Deriving the Euler–Lotka equation — step by step</div>
+  \[\begin{aligned}
+    B(t) &= \int_0^\omega B(t-x)\,l(x)\,f(x)\,dx \\[4pt]
+         &= \int_0^\omega B(t)\,e^{-rx}\,l(x)\,f(x)\,dx
+           && \text{(stable state: } B(t-x) = B(t)e^{-rx}\text{)} \\[4pt]
+         &= B(t)\int_0^\omega e^{-rx}\,l(x)\,f(x)\,dx
+           && \text{(factor out } B(t)\text{)} \\[4pt]
+    1 &= \int_0^\omega e^{-rx}\,l(x)\,f(x)\,dx
+           && \text{(divide both sides by }B(t)\text{)}
+  \end{aligned}\]
+</div>
+
+<div class="euler-lotka-box">
+  <div class="el-label">⭐ The Euler–Lotka Equation (1760) — "The most important equation in all of formal demography"</div>
+  <div class="el-eq">
+    \[1 \;=\; \int_0^\omega e^{-rx}\,l(x)\,f(x)\,dx\]
+  </div>
+  <div class="el-sub">Where \(r\) is the intrinsic growth rate, \(l(x)\) is the survival function, \(f(x)\) is the age-specific fertility rate, and \(\omega\) is the age beyond which no births occur.</div>
+</div>
+
+<p>The remarkable thing is what this equation does: it <em>implicitly defines</em> the intrinsic rate of growth \(r\) entirely in terms of the life table \(l(x)\) and the fertility schedule \(f(x)\). You don't need to observe any population dynamics directly — you just need age-specific rates, and \(r\) is the unique real number that makes this integral equal to 1.</p>
+
+<div class="callout history">
+  <div class="callout-title">📜 History — Euler and Lotka</div>
+  <p><strong>Leonhard Euler</strong> first derived this equation in 1760, in a paper analysing an annuity scheme — a problem about compounding interest rates that turned out to be mathematically equivalent to stable population theory. He was 53 years old and had already been largely blind for nearly two decades.</p>
+  <p><strong>Alfred J. Lotka</strong> independently rediscovered it around 1907 (published fully in the 1920s) in the context of biological populations, and proved the existence and uniqueness of a real solution \(r\). Lotka also coined the term "intrinsic rate of natural increase." The equation is now often called the <strong>Lotka characteristic equation</strong>, or the <strong>Euler–Lotka equation</strong>.</p>
+  <p>Lotka's 1925 book <em>Elements of Physical Biology</em> was perhaps the first unified mathematical theory of ecology and demography. He spent his career at the Metropolitan Life Insurance Company — a reminder that actuarial science and demography have always been intertwined.</p>
+</div>
+
+<div class="callout intuition">
+  <div class="callout-title">💡 Intuition — What Does the Integral Say?</div>
+  <p>Think of \(e^{-rx}\,l(x)\,f(x)\) as the <em>discounted net maternity function</em>. The term \(l(x)f(x)\) is the net maternity function from Day 3 — the expected (female) births per woman at age \(x\). But we discount it by \(e^{-rx}\): births that happen far in the future (large \(x\)) are worth less in present-value terms because the population has grown by a factor \(e^{rx}\) in the meantime. The Euler–Lotka equation says: the present value of all future (female) births per woman, discounted at rate \(r\), must equal exactly 1. This is a biological "break-even" condition — each woman exactly replaces herself in present-value terms.</p>
+</div>
+
+<!-- Widget 4: Euler-Lotka Explorer -->
+<div class="widget" id="w4">
+  <div class="widget-title">Widget 4: Euler–Lotka Equation Explorer</div>
+  <div class="ws">For USA 1934 data, the function \(g(r) = \int e^{-rx}\,l(x)\,f(x)\,dx\) is plotted. The Euler–Lotka equation asks: where does \(g(r) = 1\)? The blue line is \(g(r)\); the dashed red line is 1. Their intersection is the intrinsic growth rate \(r^*\). Adjust the fertility multiplier to see how \(r^*\) changes.</div>
+
+  <div class="sr">
+    <label>Fertility multiplier (scale all F_x values): <span class="sv" id="el-fmult-lbl">1.00</span></label>
+    <input type="range" id="el-fmult" min="0.2" max="3.0" step="0.05" value="1.0">
+  </div>
+
+  <div class="cb"><canvas id="elChart"></canvas></div>
+
+  <div class="wo" id="elOutput"></div>
+</div>
+
+<div class="callout mistake">
+  <div class="callout-title">⚠ Common Mistake — Confusing NRR with the Euler–Lotka Condition</div>
+  <p>The NRR is \(\int l(x)\,f(x)\,dx\cdot F_\text{FAB}\) — the integral of the net maternity function with no discounting (equivalently, the Euler–Lotka integral evaluated at \(r=0\)). The Euler–Lotka equation is the same integral but discounted by \(e^{-rx}\) and set equal to 1. So <strong>NRR &gt; 1 ⟺ \(r > 0\)</strong> (positive growth) and <strong>NRR = 1 ⟺ \(r = 0\)</strong> (stationary), but NRR is <em>not</em> the same as the Euler–Lotka integral in general. NRR tells you the direction of growth; \(r\) tells you the speed.</p>
+</div>
+
+
+<!-- ===== SECTION 13 ===== -->
+<h2 id="s13"><span class="sn">13</span> The Stable Age Distribution and the Stationary Population</h2>
+
+<p>Now we can work out what the stable age structure looks like. In stable state, \(K(x,t) = B(t-x)\cdot l(x)\), and in stable state \(B(t-x) = B(t)\cdot e^{-rx}\), so:</p>
+
+\[
+  K(x,t) = B(t)\,e^{-rx}\,l(x)
+\]
+
+The total population is \(K(t) = \int_0^\omega K(x,t)\,dx = B(t)\int_0^\omega e^{-rx}l(x)\,dx\). So the proportion aged \(x\) is:
+
+<div class="fb">
+  <div class="fl">Stable age distribution</div>
+  \[
+    c(x) \;=\; \frac{K(x,t)}{K(t)} \;=\; b\,\cdot l(x)\,\cdot e^{-rx}
+  \]
+</div>
+
+where <span class="tip" data-tip="The crude birth rate in the stable population: births per person per year">\(b\)</span> is the crude birth rate, defined by the normalisation condition:
+
+\[
+  \int_0^\omega c(x)\,dx = 1 \;\Rightarrow\; b = \frac{1}{\displaystyle\int_0^\omega l(x)\,e^{-rx}\,dx}
+\]
+
+<div class="callout definition">
+  <div class="callout-title">📖 Definition — Stable Age Distribution</div>
+  <p>The stable age distribution is \(c(x) = b\,l(x)\,e^{-rx}\), where \(b\) is the crude birth rate normalised so that \(\int c(x)\,dx = 1\). Key features:
+  <br>— In a <em>growing</em> population (\(r > 0\)): the \(e^{-rx}\) discounting makes the distribution younger — more weight at low \(x\).
+  <br>— In a <em>declining</em> population (\(r < 0\)): the \(e^{rx}\) amplification makes the distribution older.
+  <br>— In a <em>stationary</em> population (\(r = 0\)): the distribution is simply \(c(x) = b\cdot l(x)\), proportional to survivorship.
+  </p>
+</div>
+
+<h3>The Special Case: Stationary Population and \(b \cdot e_0 = 1\)</h3>
+
+<p>Set \(r = 0\). The stable age distribution becomes \(c(x) = b\cdot l(x)\), and the normalisation gives:</p>
+
+\[
+  \frac{1}{b} = \int_0^\omega l(x)\,e^{0}\,dx = \int_0^\omega l(x)\,dx = e_0
+\]
+
+so \(b\cdot e_0 = 1\). But this is exactly the <strong>identity from Day 1</strong> — the relationship between the crude birth rate and life expectancy in a stationary population! We have now derived it from first principles as a consequence of the stable population model.</p>
+
+<div class="callout note">
+  <div class="callout-title">📐 Full Circle: From Day 1 to Day 4</div>
+  <p>On Day 1, the identity \(b \cdot e_0 = 1\) (or equivalently \(\bar{b} \cdot T = N\) in the Lexis diagram) was presented as an empirical observation and intuitive fact. Now, at the end of Day 4, it emerges as a <em>theorem</em>: a stationary population is a stable population with \(r = 0\), and in that case the Euler–Lotka normalisation gives exactly \(b\cdot e_0 = 1\). The Day 1 result was never just a coincidence — it was stable population theory in disguise.</p>
+</div>
+
+<!-- Widget 5: Stable Age Distribution -->
+<div class="widget" id="w5">
+  <div class="widget-title">Widget 5: Stable Age Distribution \(c(x) = b\,l(x)\,e^{-rx}\)</div>
+  <div class="ws">Adjust the intrinsic growth rate r to see how the stable age distribution (using USA 1934 life table) changes. Positive r produces a younger population; negative r produces an older one. At r=0 the distribution is proportional to l(x) — the stationary case.</div>
+
+  <div class="sr">
+    <label>Intrinsic growth rate \(r\) (per year): <span class="sv" id="cxr-lbl">0.000</span></label>
+    <input type="range" id="cxr" min="-0.025" max="0.040" step="0.001" value="0.0">
+  </div>
+
+  <div class="cb"><canvas id="cxChart"></canvas></div>
+
+  <div class="wo" id="cxOutput"></div>
+</div>
+
+<div class="callout demography">
+  <div class="callout-title">🌍 Real World — Momentum and the Stable State</div>
+  <p>Most real populations are not in stable state — they have "too many" or "too few" young people relative to what the current rates would eventually produce. A country that has recently reduced its fertility (like China after the one-child policy) has an age structure built up from the high-fertility past, meaning it still has many young women who will have children even at the new lower rates. The population keeps growing for decades after fertility drops to replacement level. This is <strong>population momentum</strong> — one of the topics for Day 5 — and it is entirely explained by the gap between the current age structure and the eventual stable age structure.</p>
+</div>
+
+
+<hr>
+
+<!-- FOOTER NOTE -->
+<div class="callout note">
+  <div class="callout-title">📐 Cross-Day Summary — The Arc of the Course So Far</div>
+  <p><strong>Day 1</strong> introduced population growth models (geometric, exponential, logistic), the Lexis diagram, and the \(b\cdot e_0 = 1\) identity for stationary populations.</p>
+  <p><strong>Day 2</strong> built the life table: \(l(x)\), \({}_nq_x\), \({}_np_x\), \({}_nL_x\), \(T_x\), \(e_x\), the hazard rate \(\mu(x)\).</p>
+  <p><strong>Day 3</strong> added fertility: TFR, GRR, NRR = \(\int l(x)f(x)dx\cdot F_\text{FAB}\), the Leslie matrix preview, and the rule of thumb \(r \approx \ln(\text{NRR})/\mu\).</p>
+  <p><strong>Day 4</strong> completed the machinery: the renewal equation \(B(t) = \int B(t-x)l(x)f(x)dx\), the Leslie matrix \(\mathbf{K}_{t+1} = \mathbf{A}\mathbf{K}_t\), convergence to stable state by Perron–Frobenius, and the Euler–Lotka equation \(1 = \int e^{-rx}l(x)f(x)dx\) — which encapsulates all of stable population theory in a single expression.</p>
+  <p><strong>Day 5</strong> will cover mortality modelling (Lee–Carter), reproductive value, and population momentum.</p>
+</div>
+
+<p style="text-align:center;font-family:var(--sans);font-size:.8rem;color:var(--muted);margin-top:3rem">
+  Day 4 notes · Robert Chung's Informal Introduction to Formal Demography · Cambridge, 26 March 2026
+</p>
+
+
+<!-- ===================================================
+     JAVASCRIPT: ALL WIDGETS
+     =================================================== -->
+<script>
+// ===== COURSE DATA (from projection-rates.csv) =====
+const DATA = {
+  x: [0,5,10,15,20,25,30,35,40,45,50],
+  USA1934: {
+    Lx: [4.77,4.726,4.712,4.698,4.681,4.662,4.637,4.604,4.561,4.503,0],
+    Fx: [0,0,0,0.0811,0.2384,0.1969,0.1033,0.0313,0.0046,0.0009,0]
+  },
+  Canada: {
+    Lx: [4.9772,4.9755,4.9744,4.973,4.9707,4.9673,4.9627,4.9557,4.9433,4.919,0],
+    Fx: [0,0,0,0.0322,0.0886,0.1184,0.0907,0.0404,0.0138,0.0023,0]
+  },
+  Kenya: {
+    Lx: [4.1062,3.8073,3.7214,3.6294,3.5129,3.3786,3.2326,3.076,2.9111,2.7369,0],
+    Fx: [0,0,0,0,0,0,0,0,0,0,0]   // Kenya Fx not in dataset, use Niger
+  },
+  Brazil: {
+    Lx: [4.9772,4.9755,4.9744,4.973,4.9707,4.9673,4.9627,4.9557,4.9433,4.919,0], // use Canada Lx as proxy
+    Fx: [0,0,0,0.0322,0.0886,0.1184,0.0907,0.0404,0.0138,0.0023,0]
+  },
+  Niger: {
+    Lx: [4.1062,3.8073,3.7214,3.6294,3.5129,3.3786,3.2326,3.076,2.9111,2.7369,0], // Kenya Lx
+    Fx: [0,0,0,0.2205,0.4239,0.321,0.2789,0.2028,0.1223,0.0397,0]
+  },
+  Russia_Kx: [3021,3137,3896,5761,5851,5352,4999,4657,5773,6341]
+};
+const FFAB = 0.4877;
+const n = 5; // age group width in years
+const NGROUPS = 10; // number of age groups (0-4 to 45-49)
+const AGE_LABELS = ['0-4','5-9','10-14','15-19','20-24','25-29','30-34','35-39','40-44','45-49'];
+
+// ===== UTILITY FUNCTIONS =====
+function computeTFR(Fx) {
+  return n * Fx.slice(0,NGROUPS).reduce((a,b)=>a+b,0);
+}
+function computeNRR(Lx, Fx, ffab=FFAB) {
+  let s = 0;
+  for (let i=0; i<NGROUPS; i++) s += Lx[i]*Fx[i];
+  return ffab * s;
+}
+function computeMu(Lx, Fx) {
+  let num=0, den=0;
+  for (let i=0; i<NGROUPS; i++) {
+    const mid = DATA.x[i] + n/2;
+    num += mid * Fx[i] * Lx[i];
+    den += Fx[i] * Lx[i];
+  }
+  return den>0 ? num/den : 0;
+}
+function computeMuBar(Fx) {
+  let num=0, den=0;
+  for (let i=0; i<NGROUPS; i++) {
+    const mid = DATA.x[i] + n/2;
+    num += mid * Fx[i];
+    den += Fx[i];
+  }
+  return den>0 ? num/den : 0;
+}
+// Leslie matrix construction (matches R code exactly)
+function buildLeslie(Lx, Fx, ffab=FFAB) {
+  const A = [];
+  for (let i=0; i<NGROUPS; i++) { A.push(new Array(NGROUPS).fill(0)); }
+  // Top row
+  for (let j=0; j<NGROUPS; j++) {
+    A[0][j] = ffab * Lx[0] * (Fx[j] + Fx[j+1]*Lx[j+1]/Lx[j]) / 2;
+  }
+  // Sub-diagonal
+  for (let i=1; i<NGROUPS; i++) {
+    A[i][i-1] = Lx[i] / Lx[i-1];
+  }
+  return A;
+}
+function matVec(A, v) {
+  const n = v.length;
+  const result = new Array(n).fill(0);
+  for (let i=0; i<n; i++) for (let j=0; j<n; j++) result[i] += A[i][j]*v[j];
+  return result;
+}
+function vecSum(v) { return v.reduce((a,b)=>a+b,0); }
+
+// ===== WIDGET 1: MEAN AGE COMPARISON =====
+let muChart = null;
+const countries = ['USA1934','Canada','Niger'];
+const countryLabels = ['USA 1934','Canada (modern)','Niger (modern)'];
+const countryColors = ['#2563eb','#16a34a','#dc2626'];
+
+function buildW1() {
+  const fmultEl = document.getElementById('fmult');
+  const fmultLbl = document.getElementById('fmult-lbl');
+  fmultEl.addEventListener('input', updateW1);
+
+  const ctx = document.getElementById('muChart').getContext('2d');
+  muChart = new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: countryLabels,
+      datasets: [
+        { label: 'μ (mean age, mortality-weighted)', data: [], backgroundColor: '#dbeafe', borderColor: '#2563eb', borderWidth:1.5, yAxisID:'y' },
+        { label: 'r = ln(NRR)/μ (per year)', data: [], backgroundColor: '#fef3c7', borderColor: '#d97706', borderWidth:1.5, yAxisID:'y2', type:'line', tension:0.3, pointRadius:5 }
+      ]
+    },
+    options: {
+      responsive:true, maintainAspectRatio:false,
+      scales: {
+        y:{ title:{display:true,text:'Mean age μ (years)'}, min:20, max:40 },
+        y2:{ position:'right', title:{display:true,text:'r (per year)'}, min:-0.02, max:0.06, grid:{drawOnChartArea:false} }
+      },
+      plugins:{ legend:{position:'top'} }
+    }
+  });
+  updateW1();
+}
+
+function updateW1() {
+  const k = parseFloat(document.getElementById('fmult').value);
+  document.getElementById('fmult-lbl').textContent = k.toFixed(2);
+  const mus=[], rs=[], tfrArr=[], nrrArr=[];
+  countries.forEach(c => {
+    const Lx = DATA[c].Lx;
+    const Fx = DATA[c].Fx.map(f=>f*k);
+    const mu = computeMu(Lx, Fx);
+    const nrr = computeNRR(Lx, Fx);
+    const tfr = computeTFR(Fx);
+    const r = nrr>0 ? Math.log(nrr)/mu : -999;
+    mus.push(mu.toFixed(1));
+    rs.push(r.toFixed(4));
+    tfrArr.push(tfr.toFixed(2));
+    nrrArr.push(nrr.toFixed(3));
+  });
+  muChart.data.datasets[0].data = mus;
+  muChart.data.datasets[1].data = rs;
+  muChart.update();
+  document.getElementById('muOutput').innerHTML =
+    `<table style="width:100%;border-collapse:collapse;font-size:.83rem">
+    <tr style="background:#e2e8f0"><th style="padding:.3rem .6rem;text-align:left">Country</th><th>TFR</th><th>NRR</th><th>μ (years)</th><th>r (yr⁻¹)</th><th>Doubling time</th></tr>
+    ${countries.map((c,i)=>{
+      const nrr=parseFloat(nrrArr[i]),r=parseFloat(rs[i]);
+      const dbl = r>0 ? (Math.log(2)/r).toFixed(0)+' yr' : (r<0?'Declining':'∞');
+      return `<tr style="border-top:1px solid #e2e8f0"><td style="padding:.3rem .6rem">${countryLabels[i]}</td><td style="text-align:center">${tfrArr[i]}</td><td style="text-align:center">${nrr.toFixed(3)}</td><td style="text-align:center">${mus[i]}</td><td style="text-align:center">${r.toFixed(4)}</td><td style="text-align:center">${dbl}</td></tr>`;
+    }).join('')}
+    </table>`;
+}
+
+// ===== WIDGET 2: E&W LIFE TABLES =====
+// Approximate historical values for England & Wales cohort life tables
+const EW = {
+  x: [0,5,10,15,20,25,30,35,40,45,50,55,60,65,70,75,80],
+  lx1841: [1,.697,.671,.654,.635,.609,.577,.541,.500,.453,.395,.325,.248,.175,.107,.054,.020],
+  lx1930: [1,.936,.926,.919,.908,.893,.876,.853,.820,.774,.709,.617,.498,.362,.228,.113,.041],
+  ex1841: [40.9,54.2,53.0,49.1,45.2,41.6,38.3,35.2,32.2,29.2,26.4,23.5,20.6,17.7,15.0,12.2,9.5],
+  ex1930: [63.5,61.8,57.3,52.6,47.9,43.3,38.8,34.4,30.1,26.0,22.1,18.5,15.2,12.1,9.5,7.3,5.5]
+};
+
+let ltChart = null;
+let ltMode = 'lx';
+
+function showLT(mode) {
+  ltMode = mode;
+  document.querySelectorAll('#w2 .tb').forEach(b=>b.classList.remove('active'));
+  event.target.classList.add('active');
+  updateLT();
+}
+
+function buildW2() {
+  const ctx = document.getElementById('ltChart').getContext('2d');
+  ltChart = new Chart(ctx, {
+    type:'line',
+    data:{ labels: EW.x, datasets:[] },
+    options:{
+      responsive:true, maintainAspectRatio:false,
+      scales:{
+        x:{ title:{display:true, text:'Age x'} },
+        y:{ title:{display:true, text:''} }
+      },
+      plugins:{ legend:{position:'top'} }
+    }
+  });
+  updateLT();
+}
+
+function updateLT() {
+  let d1841, d1930, ylabel, note;
+  if (ltMode==='lx') {
+    d1841 = EW.lx1841; d1930 = EW.lx1930;
+    ylabel = 'l(x) — survivors per birth';
+    note = `<b>l(x) — Survivorship.</b> Starting from l(0)=1.00, each value is the fraction of the birth cohort still alive at age x.
+    The 1841 cohort (black) shows steep early-life losses — roughly 30% dead before age 5.
+    The 1930 cohort (red) shows much gentler early mortality but similar old-age decline.
+    e₀(1841) ≈ 40.9 years | e₀(1930) ≈ 63.5 years`;
+  } else if (ltMode==='qx') {
+    const qx1841=[], qx1930=[];
+    for (let i=0;i<EW.x.length-1;i++){
+      qx1841.push(1-EW.lx1841[i+1]/EW.lx1841[i]);
+      qx1930.push(1-EW.lx1930[i+1]/EW.lx1930[i]);
+    }
+    qx1841.push(1); qx1930.push(1);
+    d1841=qx1841; d1930=qx1930;
+    ylabel = '₅qₓ — probability of dying in next 5 years';
+    note = `<b>q(x) — Death Probability.</b> The probability a person alive at age x dies before age x+5.
+    The 1841 cohort has dramatically higher early-life death probabilities (infant mortality 5q0 ≈ 30%).
+    Both cohorts show the characteristic "bathtub" shape — high in infancy, low in midlife, rising in old age.`;
+  } else if (ltMode==='dx') {
+    const dx1841=[], dx1930=[];
+    for (let i=0;i<EW.x.length-1;i++){
+      dx1841.push(EW.lx1841[i]-EW.lx1841[i+1]);
+      dx1930.push(EW.lx1930[i]-EW.lx1930[i+1]);
+    }
+    dx1841.push(EW.lx1841[EW.x.length-1]);
+    dx1930.push(EW.lx1930[EW.x.length-1]);
+    d1841=dx1841; d1930=dx1930;
+    ylabel = '₅dₓ — proportion dying in each 5-year period';
+    note = `<b>d(x) — Death Distribution.</b> The proportion of the original cohort that dies between age x and x+5.
+    In 1841 the mode of deaths is in infancy (the left "hump"). In 1930 the infant hump has largely disappeared
+    and deaths are concentrated in old age — the classic "rectangularisation" of the survival curve.`;
+  } else {
+    d1841=EW.ex1841; d1930=EW.ex1930;
+    ylabel = 'e(x) — remaining life expectancy (years)';
+    note = `<b>e(x) — Life Expectancy.</b> The expected number of additional years lived by someone alive at age x.
+    Note that e(5) > e(0) for the 1841 cohort — if you survived infancy, you could expect to live longer than
+    a newborn (because so many newborns died). By 1930, e(5) < e(0) because infant mortality was low enough
+    that survival past infancy added relatively little. At age 65, the difference between cohorts is much smaller.`;
+  }
+  ltChart.data.datasets = [
+    { label:'1841 cohort', data:d1841, borderColor:'#1e293b', backgroundColor:'transparent', tension:.3, borderWidth:2.5 },
+    { label:'1930 cohort', data:d1930, borderColor:'#dc2626', backgroundColor:'rgba(220,38,38,.08)', fill:true, tension:.3, borderWidth:2.5 }
+  ];
+  ltChart.options.scales.y.title.text = ylabel;
+  ltChart.update();
+  document.getElementById('ltOutput').innerHTML = note;
+}
+
+// ===== WIDGET 3: LESLIE MATRIX PROJECTION =====
+let projChart = null;
+let projMode = 'pop';
+let projData = null;
+
+function runProjection() {
+  const Lx = DATA.USA1934.Lx;
+  const Fx = DATA.USA1934.Fx;
+  const A = buildLeslie(Lx, Fx);
+  let K = [...DATA.Russia_Kx]; // initial population (first 10 age groups)
+  const STEPS = 50;
+  const totalPop = [], growthRates = [], ageStructures = [];
+  totalPop.push(vecSum(K));
+  ageStructures.push(K.map(v=>v/vecSum(K)));
+  for (let t=0; t<STEPS; t++) {
+    const Knew = matVec(A, K);
+    const tot = vecSum(Knew);
+    const prevTot = vecSum(K);
+    growthRates.push((tot/prevTot - 1)/n); // annualised growth rate
+    totalPop.push(tot);
+    ageStructures.push(Knew.map(v=>v/tot));
+    K = Knew;
+  }
+  projData = { totalPop, growthRates, ageStructures, STEPS, A };
+}
+
+function showProj(mode) {
+  projMode = mode;
+  document.querySelectorAll('#w3 .tb').forEach(b=>b.classList.remove('active'));
+  event.target.classList.add('active');
+  updateProj();
+}
+
+function buildW3() {
+  runProjection();
+  const ctx = document.getElementById('projChart').getContext('2d');
+  projChart = new Chart(ctx, { type:'line', data:{labels:[], datasets:[]},
+    options:{ responsive:true, maintainAspectRatio:false, scales:{ x:{title:{display:true,text:''}}, y:{title:{display:true,text:''}} }, plugins:{legend:{position:'top'}} }
+  });
+  updateProj();
+}
+
+function updateProj() {
+  if (!projData) return;
+  const { totalPop, growthRates, ageStructures, STEPS } = projData;
+  if (projMode==='pop') {
+    const years = Array.from({length:STEPS+1},(_,i)=>i*5);
+    // Normalise to 1 at start
+    const norm0 = totalPop[0];
+    projChart.config.type = 'line';
+    projChart.data.labels = years.map(y=>y+' yr');
+    projChart.data.datasets = [{ label:'Total female population (relative)', data:totalPop.map(p=>p/norm0), borderColor:'#2563eb', backgroundColor:'rgba(37,99,235,.07)', fill:true, tension:.3, borderWidth:2.5, pointRadius:2 }];
+    projChart.options.scales.x.title.text = 'Years from start (Russia initial, USA 1934 rates)';
+    projChart.options.scales.y.title.text = 'Population (relative to start)';
+    projChart.options.scales.y.min = 0;
+    delete projChart.options.scales.y.max;
+    projChart.update();
+    const finalR = growthRates[STEPS-1];
+    document.getElementById('projOutput').innerHTML = `<b>Total population</b> after 250 years grows by a factor of <span class="big">${(totalPop[STEPS]/totalPop[0]).toFixed(1)}×</span>. The growth eventually becomes perfectly geometric at r ≈ ${(finalR).toFixed(4)} yr⁻¹ (doubling time ${(Math.log(2)/finalR).toFixed(0)} years).`;
+  } else if (projMode==='rate') {
+    const years = Array.from({length:STEPS},(_,i)=>(i+1)*5);
+    projChart.config.type = 'line';
+    projChart.data.labels = years.map(y=>y+' yr');
+    projChart.data.datasets = [
+      { label:'Annual growth rate r(t)', data:growthRates, borderColor:'#16a34a', backgroundColor:'transparent', tension:.3, borderWidth:2, pointRadius:3 },
+      { label:`Stable r ≈ ${growthRates[STEPS-1].toFixed(4)}`, data:new Array(STEPS).fill(growthRates[STEPS-1]), borderColor:'#dc2626', borderDash:[6,4], borderWidth:1.5, pointRadius:0 }
+    ];
+    projChart.options.scales.x.title.text = 'Years from start';
+    projChart.options.scales.y.title.text = 'Annual growth rate r (yr⁻¹)';
+    delete projChart.options.scales.y.min;
+    delete projChart.options.scales.y.max;
+    projChart.update();
+    const finalR = growthRates[STEPS-1];
+    document.getElementById('projOutput').innerHTML = `The growth rate starts near <b>${growthRates[0].toFixed(4)}</b> yr⁻¹ (reflecting Russia's initial age structure) and converges to the stable intrinsic growth rate <span class="big">r ≈ ${finalR.toFixed(4)} yr⁻¹</span>. This matches the lecture value of r ≈ 0.0157 yr⁻¹. The oscillations en route are caused by complex eigenvalues of the Leslie matrix.`;
+  } else {
+    // Age structure — show a few selected time points as bar chart
+    const palette = ['#94a3b8','#60a5fa','#2563eb','#1e3a8a'];
+    const steps = [0, 5, 20, 50]; // time step indices
+    const stepLabels = steps.map(s=>s===0?'Start (t=0)':`t = ${s*5} yr`);
+    projChart.config.type = 'bar';
+    projChart.data.labels = AGE_LABELS;
+    projChart.data.datasets = steps.map((s,i)=>({
+      label: stepLabels[i],
+      data: ageStructures[s].map(v=>(v*100).toFixed(2)),
+      backgroundColor: palette[i]+'aa',
+      borderColor: palette[i],
+      borderWidth:1.5
+    }));
+    projChart.options.scales.x.title.text = 'Age group';
+    projChart.options.scales.y.title.text = 'Proportion (%)';
+    delete projChart.options.scales.y.min;
+    delete projChart.options.scales.y.max;
+    projChart.update();
+    const finalAge = ageStructures[50];
+    document.getElementById('projOutput').innerHTML = `Stable age distribution: <b>${(finalAge[0]*100).toFixed(1)}%</b> aged 0–4, <b>${(finalAge[1]*100).toFixed(1)}%</b> aged 5–9, <b>${(finalAge[9]*100).toFixed(1)}%</b> aged 45–49. Note how the initial Russian age structure (older, heavier in working ages) converges to the stable structure dictated by the USA 1934 rates (younger, high fertility weights the 0–4 group heavily).`;
+  }
+}
+
+// ===== WIDGET 4: EULER-LOTKA EXPLORER =====
+let elChart = null;
+
+function eulerLotkaIntegral(r, Lx, Fx, ffab=FFAB) {
+  let s = 0;
+  for (let i=0; i<NGROUPS; i++) {
+    const xmid = DATA.x[i] + n/2;
+    s += Math.exp(-r*xmid) * Lx[i] * Fx[i];
+  }
+  return ffab * s;
+}
+
+function findRoot(Lx, Fx, ffab=FFAB) {
+  // Bisection to find r where g(r)=1
+  let lo=-0.05, hi=0.1;
+  if (eulerLotkaIntegral(lo,Lx,Fx,ffab)<1 && eulerLotkaIntegral(hi,Lx,Fx,ffab)<1) return null;
+  for (let i=0;i<60;i++){
+    const mid=(lo+hi)/2;
+    if (eulerLotkaIntegral(mid,Lx,Fx,ffab)>1) lo=mid; else hi=mid;
+  }
+  return (lo+hi)/2;
+}
+
+function buildW4() {
+  const ctx = document.getElementById('elChart').getContext('2d');
+  elChart = new Chart(ctx, {
+    type:'line', data:{labels:[], datasets:[]},
+    options:{ responsive:true, maintainAspectRatio:false,
+      scales:{ x:{title:{display:true,text:'Intrinsic growth rate r (yr⁻¹)'}}, y:{title:{display:true,text:'g(r) = ∫e^{-rx}l(x)f(x)dx'}, min:0, max:3} },
+      plugins:{ legend:{position:'top'} }
+    }
+  });
+  document.getElementById('el-fmult').addEventListener('input', updateW4);
+  updateW4();
+}
+
+function updateW4() {
+  const k = parseFloat(document.getElementById('el-fmult').value);
+  document.getElementById('el-fmult-lbl').textContent = k.toFixed(2);
+  const Lx = DATA.USA1934.Lx;
+  const Fx = DATA.USA1934.Fx.map(f=>f*k);
+  const rVals = [], gVals = [];
+  for (let ri=-50; ri<=100; ri++) {
+    const r = ri*0.001;
+    rVals.push(r.toFixed(3));
+    gVals.push(eulerLotkaIntegral(r, Lx, Fx));
+  }
+  const rStar = findRoot(Lx, Fx);
+  const nrrVal = computeNRR(Lx, Fx);
+  elChart.data.labels = rVals;
+  elChart.data.datasets = [
+    { label:'g(r) = ∫e^{−rx}l(x)f(x)dx', data:gVals, borderColor:'#2563eb', backgroundColor:'rgba(37,99,235,.07)', fill:true, tension:.4, borderWidth:2.5, pointRadius:0 },
+    { label:'g(r) = 1 (Euler–Lotka condition)', data:new Array(rVals.length).fill(1), borderColor:'#dc2626', borderDash:[7,4], borderWidth:1.5, pointRadius:0 },
+    { label:'g(0) = NRR', data:new Array(rVals.length).fill(nrrVal), borderColor:'#d97706', borderDash:[3,3], borderWidth:1.5, pointRadius:0 }
+  ];
+  elChart.update();
+  const muVal = computeMu(Lx, Fx);
+  const rApprox = Math.log(nrrVal)/muVal;
+  document.getElementById('elOutput').innerHTML =
+    `NRR = <span class="big">${nrrVal.toFixed(3)}</span> &nbsp;|&nbsp;
+     μ = <span class="big">${muVal.toFixed(1)} yr</span> &nbsp;|&nbsp;
+     r* (exact Euler–Lotka) = <span class="big">${rStar!==null?rStar.toFixed(4):'N/A'}</span> yr⁻¹ &nbsp;|&nbsp;
+     r (rule of thumb ln(NRR)/μ) = <b>${rApprox.toFixed(4)}</b> yr⁻¹
+     <br><span style="color:var(--muted);font-size:.82rem">The rule of thumb approximation is ${rStar!==null?Math.abs((rApprox-rStar)/rStar*100).toFixed(1):'—'}% away from the exact solution for this dataset.</span>`;
+}
+
+// ===== WIDGET 5: STABLE AGE DISTRIBUTION =====
+let cxChart = null;
+
+function buildW5() {
+  const ctx = document.getElementById('cxChart').getContext('2d');
+  cxChart = new Chart(ctx, {
+    type:'bar',
+    data:{ labels: AGE_LABELS, datasets:[] },
+    options:{
+      responsive:true, maintainAspectRatio:false,
+      scales:{
+        x:{ title:{display:true,text:'Age group'} },
+        y:{ title:{display:true,text:'Proportion c(x)'}, min:0 }
+      },
+      plugins:{ legend:{position:'top'} }
+    }
+  });
+  document.getElementById('cxr').addEventListener('input', updateW5);
+  updateW5();
+}
+
+function updateW5() {
+  const r = parseFloat(document.getElementById('cxr').value);
+  document.getElementById('cxr-lbl').textContent = r.toFixed(3);
+  const Lx = DATA.USA1934.Lx;
+  const cx = [];
+  for (let i=0; i<NGROUPS; i++) {
+    const xmid = DATA.x[i] + n/2;
+    cx.push(Math.exp(-r*xmid) * Lx[i]);
+  }
+  const total = cx.reduce((a,b)=>a+b,0);
+  const cxNorm = cx.map(v=>v/total);
+
+  // For comparison, show the l(x)-proportional (r=0) case in grey
+  const cx0 = Lx.slice(0,NGROUPS).map(l=>l/Lx.slice(0,NGROUPS).reduce((a,b)=>a+b,0));
+
+  // Compute b and e0
+  const e0 = Lx.slice(0,NGROUPS).reduce((a,b)=>a+b,0) * n; // approximate
+  const b = 1/total;
+
+  cxChart.data.datasets = [
+    { label: `c(x) with r = ${r.toFixed(3)}`, data: cxNorm.map(v=>v.toFixed(4)), backgroundColor:'rgba(37,99,235,.75)', borderColor:'#2563eb', borderWidth:1.5 },
+    { label: 'c(x) with r = 0 (stationary)', data: cx0.map(v=>v.toFixed(4)), backgroundColor:'rgba(100,116,139,.3)', borderColor:'#64748b', borderWidth:1.5 }
+  ];
+  cxChart.update();
+
+  const meanAge = cxNorm.reduce((s,cx,i)=>s+cx*(DATA.x[i]+n/2),0);
+  document.getElementById('cxOutput').innerHTML =
+    `With r = ${r.toFixed(3)} yr⁻¹: mean age of stable distribution = <span class="big">${meanAge.toFixed(1)} years</span>.
+    ${r>0.005?`Growing population (r > 0) → age structure skewed <b>young</b>.`:
+      r<-0.005?`Declining population (r < 0) → age structure skewed <b>old</b>.`:
+      `Near-stationary (r ≈ 0) → age structure ≈ proportional to l(x).`}
+    <br><small style="color:var(--muted)">At r=0: 1/b = ∫l(x)dx ≈ e₀, giving b·e₀ = 1 (the Day 1 identity).</small>`;
+}
+
+// ===== FLOATING TOC SCROLL HIGHLIGHT =====
+function setupScrollSpy() {
+  const sections = document.querySelectorAll('h2[id]');
+  const links = document.querySelectorAll('#float-toc a');
+  window.addEventListener('scroll', ()=>{
+    let cur = '';
+    sections.forEach(s=>{ if (window.scrollY >= s.offsetTop-120) cur=s.id; });
+    links.forEach(l=>{ l.classList.toggle('ft-active', l.getAttribute('href')==='#'+cur); });
+  }, {passive:true});
+}
+
+// ===== INIT =====
+window.addEventListener('DOMContentLoaded', ()=>{
+  buildW1();
+  buildW2();
+  buildW3();
+  buildW4();
+  buildW5();
+  setupScrollSpy();
+});
+</script>
+</body>
+</html>
