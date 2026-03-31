@@ -158,6 +158,7 @@ hr{border:none;border-top:1px solid var(--rule);margin:3rem 0}
 <div id="float-toc">
   <div class="ft-label">Contents</div>
   <ol>
+    <li><a href="#s0">Clean-up: b·e₀</a></li>
     <li><a href="#s1">Stable Age Distribution</a></li>
     <li><a href="#s2">Birth Rate as Mean Fertility</a></li>
     <li><a href="#s3">b − d = r</a></li>
@@ -176,6 +177,7 @@ hr{border:none;border-top:1px solid var(--rule);margin:3rem 0}
 <nav class="toc">
   <div class="toc-h">Contents — Day 5</div>
   <ol>
+    <li><a href="#s0">Clean-up from Day 4: The Full Story of \(b \cdot e_0\)</a></li>
     <li><a href="#s1">The Stable Age Distribution \(c(x)\): Deriving the Formula</a></li>
     <li><a href="#s2">The Birth Rate \(b\) as a Weighted Mean of Fertility</a></li>
     <li><a href="#s3">The Fundamental Identity: \(b - d = r\) via Integration by Parts</a></li>
@@ -191,10 +193,53 @@ hr{border:none;border-top:1px solid var(--rule);margin:3rem 0}
 </nav>
 
 
+<!-- ===== CLEAN-UP ===== -->
+<h2 id="s0"><span class="sn" style="background:#059669">✦</span> Clean-up from Day 4: The Full Story of \(b \cdot e_0\)</h2>
+
+<p>Day 5 opened with a call-back to a question Robert had posed much earlier in the week — on Day 1, when he first introduced the <strong>stationary population identity</strong> \(b \cdot e_0 = 1\). After establishing it for the stationary case (\(r = 0\)), he had asked the class: <em>what do you think happens to \(b \cdot e_0\) when \(r \neq 0\)?</em></p>
+
+<p>Bernice answered: "If \(r > 0\), we should expect \(b \cdot e_0 > 1\)." Robert confirmed: <em>right intuition — and that's 95% of the story.</em> The reasoning is straightforward: a faster-growing population has a higher birth rate \(b\) (more births relative to population), and life expectancy \(e_0\) doesn't change (it depends only on mortality), so their product should exceed 1.</p>
+
+<div class="callout intuition">
+  <div class="callout-title">💡 Intuition — Bernice's 95%</div>
+  <p>Think of \(b \cdot e_0\) as a rough measure of "how many life-years does the average birth produce, relative to what a stationary population would need?" In a growing population (\(r > 0\)), births are coming in faster than deaths, so \(b\) is large. Life expectancy \(e_0\) is unchanged. So \(b \cdot e_0 > 1\). In a shrinking population (\(r < 0\)), births are slow, \(b\) is small, and \(b \cdot e_0 < 1\). This is exactly the right intuition.</p>
+</div>
+
+<h3>The Remaining 5%: The Age Distribution Changes Too</h3>
+
+<p>After deriving the Euler–Lotka equation on Day 4, the full picture becomes clear. Recall that the birth rate in the stable population is:</p>
+
+<div class="fb">
+  <div class="fl">Intrinsic birth rate in the stable population</div>
+  \[b = \frac{1}{\displaystyle\int_0^\omega e^{-rx}\,l(x)\,dx}\]
+</div>
+
+<p>So \(\dfrac{1}{b} = \int_0^\omega e^{-rx}\,l(x)\,dx\), and therefore:</p>
+
+<div class="fb">
+  <div class="fl">The product b · e₀ when r ≠ 0</div>
+  \[b \cdot e_0 = \frac{e_0}{\displaystyle\int_0^\omega e^{-rx}\,l(x)\,dx} = \frac{\displaystyle\int_0^\omega l(x)\,dx}{\displaystyle\int_0^\omega e^{-rx}\,l(x)\,dx}\]
+</div>
+
+<p>When \(r = 0\): the \(e^{-rx}\) factor is 1 everywhere, so numerator and denominator are equal, giving \(b \cdot e_0 = 1\). ✓</p>
+
+<p>When \(r > 0\): the factor \(e^{-rx} < 1\) for all \(x > 0\), so the denominator is <em>smaller</em> than the numerator, giving \(b \cdot e_0 > 1\). ✓ Bernice was right.</p>
+
+<p>When \(r < 0\): the factor \(e^{-rx} > 1\) for all \(x > 0\), so the denominator is <em>larger</em>, giving \(b \cdot e_0 < 1\).</p>
+
+<p>The <strong>other 5%</strong> is the reason the product isn't <em>just</em> \(b\) scaling up or down: the denominator \(\int e^{-rx}\,l(x)\,dx\) is not simply \(e_0\) rescaled — it is a <em>different weighted integral</em>, one that weights older ages less (if \(r > 0\)) or more (if \(r < 0\)). In other words, the <strong>age distribution \(c(x)\) changes with \(r\)</strong>, and this is precisely what the rest of today's lecture unpacks. The identity \(b \cdot e_0 = 1\) is a special case of a richer family of relationships parameterised by \(r\).</p>
+
+<div class="callout note">
+  <div class="callout-title">📝 Note — A Consistency Check</div>
+  <p>You can verify the formula immediately for the US 1934 cohort from Day 4. We found \(r = 0.0157\,\text{yr}^{-1}\) and \(e_0 \approx 62\,\text{yr}\). Since \(r > 0\), we expect \(b > 1/e_0 \approx 0.0161\,\text{yr}^{-1}\). Indeed, the intrinsic birth rate works out to slightly above this — the growing population has a slightly elevated birth rate relative to the stationary baseline.</p>
+</div>
+
+<hr>
+
 <!-- ===== SECTION 1 ===== -->
 <h2 id="s1"><span class="sn">1</span> The Stable Age Distribution \(c(x)\): Deriving the Formula</h2>
 
-<p>Day 5 opened by unpacking a formula that was written down at the end of Day 4 without full explanation. In the stable state, Robert had shown that \(K(x,t) = B(t-x)\,l(x)\) — the number of women aged \(x\) at time \(t\) equals the number of births \(x\) years ago, scaled by the survival probability. And in the stable state, births grow exponentially: \(B(t-x) = B(t)\,e^{-rx}\). Substituting:</p>
+<p>With the clean-up complete, Robert moved to the main business of the day: unpacking the formula that was written down at the end of Day 4 without full explanation. In the stable state, Robert had shown that \(K(x,t) = B(t-x)\,l(x)\) — the number of women aged \(x\) at time \(t\) equals the number of births \(x\) years ago, scaled by the survival probability. And in the stable state, births grow exponentially: \(B(t-x) = B(t)\,e^{-rx}\). Substituting:</p>
 
 <div class="fb">
   <div class="fl">Women of age x at time t in the stable population</div>
