@@ -115,9 +115,205 @@ hr{border:none;border-top:1px solid var(--rule);margin:3rem 0}
 .proof-block .step{margin-bottom:.6rem;padding-left:1rem;border-left:3px solid var(--acm)}
 @media(max-width:700px){.two-col{grid-template-columns:1fr}}
 @media(max-width:620px){body{font-size:15px;padding:1rem 1rem 5rem}h1{font-size:1.7rem}h2{font-size:1.3rem}.sr label{min-width:140px}}
+
+/* =============================================
+   PROGRESS BAR  (#4)
+   ============================================= */
+#prog-bar {
+  position: fixed; top: 0; left: 0;
+  height: 3px; width: 0%;
+  background: linear-gradient(90deg, var(--accent-mid), #60a5fa);
+  z-index: 9999;
+  transition: width .08s ease;
+  box-shadow: 0 0 8px rgba(37,99,235,.45);
+  pointer-events: none;
+}
+
+/* =============================================
+   DERIVATION EXPANDERS  (#2)
+   ============================================= */
+details.deriv {
+  background: #f8fafc;
+  border: 1.5px solid #cbd5e1;
+  border-radius: 10px;
+  margin: 1.4rem 0;
+}
+details.deriv > summary {
+  padding: .75rem 1.25rem;
+  font-family: var(--sans);
+  font-size: .9rem;
+  font-weight: 600;
+  color: var(--accent);
+  cursor: pointer;
+  list-style: none;
+  display: flex;
+  align-items: center;
+  gap: .55rem;
+  user-select: none;
+}
+details.deriv > summary::-webkit-details-marker { display: none; }
+details.deriv > summary .deriv-arrow {
+  display: inline-block;
+  font-size: .7rem;
+  transition: transform .2s;
+  color: var(--accent-mid);
+}
+details.deriv[open] > summary .deriv-arrow { transform: rotate(90deg); }
+details.deriv > summary .deriv-icon { font-size: .95rem; }
+.deriv-body {
+  padding: .4rem 1.3rem 1.1rem;
+  border-top: 1px solid #e2e8f0;
+}
+.deriv-body p:last-child { margin-bottom: 0; }
+
+/* =============================================
+   NOTATION KEYS  (#3)
+   ============================================= */
+details.notation {
+  font-family: var(--sans);
+  font-size: .83rem;
+  margin: -.3rem 0 1.1rem;
+}
+details.notation > summary {
+  cursor: pointer;
+  color: #94a3b8;
+  font-size: .79rem;
+  list-style: none;
+  display: inline-flex;
+  align-items: center;
+  gap: .3rem;
+  padding: .2rem .35rem;
+  border-radius: 4px;
+  transition: background .12s;
+  user-select: none;
+}
+details.notation > summary:hover { background: #f1f5f9; color: #475569; }
+details.notation > summary::-webkit-details-marker { display: none; }
+details.notation > summary .nk-arrow {
+  display: inline-block;
+  font-size: .65rem;
+  transition: transform .2s;
+}
+details.notation[open] > summary .nk-arrow { transform: rotate(90deg); }
+.nk-table {
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  gap: .2rem .85rem;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  padding: .65rem 1rem;
+  margin-top: .3rem;
+}
+.nk-sym {
+  font-family: var(--mono);
+  font-weight: 700;
+  color: var(--accent-mid);
+  white-space: nowrap;
+  padding: .05rem 0;
+}
+.nk-def { color: #475569; padding: .05rem 0; line-height: 1.45; }
+
+/* =============================================
+   STEP-THROUGH DERIVATIONS  (#11)
+   ============================================= */
+.stepper {
+  background: var(--surface);
+  border: 1.5px solid #a5b4fc;
+  border-radius: 12px;
+  padding: 1.4rem 1.6rem;
+  margin: 2.2rem 0;
+  box-shadow: 0 2px 14px rgba(99,102,241,.1);
+}
+.stepper-title {
+  font-family: var(--sans);
+  font-size: .95rem;
+  font-weight: 700;
+  color: var(--accent);
+  margin-bottom: .2rem;
+  display: flex;
+  align-items: center;
+  gap: .5rem;
+}
+.stepper-title::before { content: '🪜'; font-size: .95rem; }
+.stepper-subtitle {
+  font-family: var(--sans);
+  font-size: .82rem;
+  color: var(--muted);
+  margin-bottom: 1rem;
+}
+.step-panels { min-height: 120px; }
+.step-panel {
+  display: none;
+  padding: .8rem 1.1rem;
+  background: #eef2ff;
+  border-left: 3px solid var(--accent-mid);
+  border-radius: 0 8px 8px 0;
+  animation: fadeIn .25s ease;
+}
+@keyframes fadeIn { from { opacity:0; transform:translateY(4px); } to { opacity:1; transform:translateY(0); } }
+.step-panel.stp-visible { display: block; }
+.step-num {
+  font-family: var(--sans);
+  font-size: .7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .08em;
+  color: #6366f1;
+  margin-bottom: .3rem;
+}
+.step-eq { margin: .35rem 0; font-size: .97rem; }
+.step-gloss {
+  font-family: var(--sans);
+  font-size: .83rem;
+  color: var(--muted);
+  margin-top: .3rem;
+  border-top: 1px solid #c7d2fe;
+  padding-top: .3rem;
+}
+.stepper-nav {
+  display: flex;
+  align-items: center;
+  gap: .6rem;
+  margin-top: .8rem;
+}
+.stp-btn {
+  font-family: var(--sans);
+  font-size: .82rem;
+  padding: .35rem .9rem;
+  border: 1.5px solid var(--accent-mid);
+  border-radius: 20px;
+  background: #fff;
+  color: var(--accent-mid);
+  cursor: pointer;
+  transition: all .15s;
+}
+.stp-btn:hover:not(:disabled) { background: var(--accent-mid); color: #fff; }
+.stp-btn:disabled { opacity: .35; cursor: default; }
+.stp-counter {
+  font-family: var(--sans);
+  font-size: .8rem;
+  color: #94a3b8;
+  flex: 1;
+  text-align: center;
+}
+.stp-showall {
+  font-family: var(--sans);
+  font-size: .78rem;
+  color: #94a3b8;
+  background: none;
+  border: none;
+  cursor: pointer;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+.stp-showall:hover { color: var(--accent-mid); }
+
 </style>
 </head>
 <body>
+<div id="prog-bar"></div>
+
 
 <!-- DAY NAVIGATION -->
 <nav class="day-nav">
@@ -1123,5 +1319,55 @@ window.addEventListener('DOMContentLoaded', ()=>{
   setupScrollSpy();
 });
 </script>
+
+<script>
+/* ---- Progress Bar (#4) ---- */
+(function(){
+  var bar = document.getElementById('prog-bar');
+  if(!bar) return;
+  function upd(){
+    var h = document.documentElement;
+    var pct = (h.scrollTop / (h.scrollHeight - h.clientHeight)) * 100;
+    bar.style.width = Math.min(pct,100) + '%';
+  }
+  document.addEventListener('scroll', upd, {passive:true});
+  upd();
+})();
+
+/* ---- Step-through stepper (#11) ---- */
+function initStepper(id){
+  var panels = document.querySelectorAll('#'+id+' .step-panel');
+  var ctr    = document.getElementById(id+'-ctr');
+  var prev   = document.getElementById(id+'-prev');
+  var next   = document.getElementById(id+'-next');
+  var all    = document.getElementById(id+'-all');
+  if(!panels.length) return;
+  var cur = 0; var showingAll = false;
+  function render(){
+    if(showingAll){
+      panels.forEach(function(p){ p.classList.add('stp-visible'); });
+      if(ctr) ctr.textContent = 'All ' + panels.length + ' steps shown';
+      if(prev) prev.disabled = true;
+      if(next) next.disabled = true;
+      if(all)  all.textContent = 'Show one at a time';
+      return;
+    }
+    panels.forEach(function(p,i){ p.classList.toggle('stp-visible', i===cur); });
+    if(ctr) ctr.textContent = 'Step '+(cur+1)+' of '+panels.length;
+    if(prev) prev.disabled = (cur===0);
+    if(next) next.disabled = (cur===panels.length-1);
+    if(all)  all.textContent = 'Show all steps';
+    /* re-typeset MathJax in visible panel */
+    if(window.MathJax && MathJax.typesetPromise){
+      MathJax.typesetPromise([panels[cur]]).catch(function(){});
+    }
+  }
+  if(prev) prev.addEventListener('click', function(){ if(cur>0){ cur--; showingAll=false; render(); } });
+  if(next) next.addEventListener('click', function(){ if(cur<panels.length-1){ cur++; showingAll=false; render(); } });
+  if(all)  all.addEventListener('click',  function(){ showingAll=!showingAll; render(); });
+  render();
+}
+</script>
+
 </body>
 </html>

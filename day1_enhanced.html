@@ -284,10 +284,206 @@ hr { border: none; border-top: 1px solid var(--rule); margin: 3rem 0; }
 #float-toc a:hover,#float-toc a.ft-active{color:#2563eb;font-weight:600}
 @media(min-width:1180px){#float-toc{display:block}}
 
+
+/* =============================================
+   PROGRESS BAR  (#4)
+   ============================================= */
+#prog-bar {
+  position: fixed; top: 0; left: 0;
+  height: 3px; width: 0%;
+  background: linear-gradient(90deg, var(--accent-mid), #60a5fa);
+  z-index: 9999;
+  transition: width .08s ease;
+  box-shadow: 0 0 8px rgba(37,99,235,.45);
+  pointer-events: none;
+}
+
+/* =============================================
+   DERIVATION EXPANDERS  (#2)
+   ============================================= */
+details.deriv {
+  background: #f8fafc;
+  border: 1.5px solid #cbd5e1;
+  border-radius: 10px;
+  margin: 1.4rem 0;
+}
+details.deriv > summary {
+  padding: .75rem 1.25rem;
+  font-family: var(--sans);
+  font-size: .9rem;
+  font-weight: 600;
+  color: var(--accent);
+  cursor: pointer;
+  list-style: none;
+  display: flex;
+  align-items: center;
+  gap: .55rem;
+  user-select: none;
+}
+details.deriv > summary::-webkit-details-marker { display: none; }
+details.deriv > summary .deriv-arrow {
+  display: inline-block;
+  font-size: .7rem;
+  transition: transform .2s;
+  color: var(--accent-mid);
+}
+details.deriv[open] > summary .deriv-arrow { transform: rotate(90deg); }
+details.deriv > summary .deriv-icon { font-size: .95rem; }
+.deriv-body {
+  padding: .4rem 1.3rem 1.1rem;
+  border-top: 1px solid #e2e8f0;
+}
+.deriv-body p:last-child { margin-bottom: 0; }
+
+/* =============================================
+   NOTATION KEYS  (#3)
+   ============================================= */
+details.notation {
+  font-family: var(--sans);
+  font-size: .83rem;
+  margin: -.3rem 0 1.1rem;
+}
+details.notation > summary {
+  cursor: pointer;
+  color: #94a3b8;
+  font-size: .79rem;
+  list-style: none;
+  display: inline-flex;
+  align-items: center;
+  gap: .3rem;
+  padding: .2rem .35rem;
+  border-radius: 4px;
+  transition: background .12s;
+  user-select: none;
+}
+details.notation > summary:hover { background: #f1f5f9; color: #475569; }
+details.notation > summary::-webkit-details-marker { display: none; }
+details.notation > summary .nk-arrow {
+  display: inline-block;
+  font-size: .65rem;
+  transition: transform .2s;
+}
+details.notation[open] > summary .nk-arrow { transform: rotate(90deg); }
+.nk-table {
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  gap: .2rem .85rem;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  padding: .65rem 1rem;
+  margin-top: .3rem;
+}
+.nk-sym {
+  font-family: var(--mono);
+  font-weight: 700;
+  color: var(--accent-mid);
+  white-space: nowrap;
+  padding: .05rem 0;
+}
+.nk-def { color: #475569; padding: .05rem 0; line-height: 1.45; }
+
+/* =============================================
+   STEP-THROUGH DERIVATIONS  (#11)
+   ============================================= */
+.stepper {
+  background: var(--surface);
+  border: 1.5px solid #a5b4fc;
+  border-radius: 12px;
+  padding: 1.4rem 1.6rem;
+  margin: 2.2rem 0;
+  box-shadow: 0 2px 14px rgba(99,102,241,.1);
+}
+.stepper-title {
+  font-family: var(--sans);
+  font-size: .95rem;
+  font-weight: 700;
+  color: var(--accent);
+  margin-bottom: .2rem;
+  display: flex;
+  align-items: center;
+  gap: .5rem;
+}
+.stepper-title::before { content: '🪜'; font-size: .95rem; }
+.stepper-subtitle {
+  font-family: var(--sans);
+  font-size: .82rem;
+  color: var(--muted);
+  margin-bottom: 1rem;
+}
+.step-panels { min-height: 120px; }
+.step-panel {
+  display: none;
+  padding: .8rem 1.1rem;
+  background: #eef2ff;
+  border-left: 3px solid var(--accent-mid);
+  border-radius: 0 8px 8px 0;
+  animation: fadeIn .25s ease;
+}
+@keyframes fadeIn { from { opacity:0; transform:translateY(4px); } to { opacity:1; transform:translateY(0); } }
+.step-panel.stp-visible { display: block; }
+.step-num {
+  font-family: var(--sans);
+  font-size: .7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .08em;
+  color: #6366f1;
+  margin-bottom: .3rem;
+}
+.step-eq { margin: .35rem 0; font-size: .97rem; }
+.step-gloss {
+  font-family: var(--sans);
+  font-size: .83rem;
+  color: var(--muted);
+  margin-top: .3rem;
+  border-top: 1px solid #c7d2fe;
+  padding-top: .3rem;
+}
+.stepper-nav {
+  display: flex;
+  align-items: center;
+  gap: .6rem;
+  margin-top: .8rem;
+}
+.stp-btn {
+  font-family: var(--sans);
+  font-size: .82rem;
+  padding: .35rem .9rem;
+  border: 1.5px solid var(--accent-mid);
+  border-radius: 20px;
+  background: #fff;
+  color: var(--accent-mid);
+  cursor: pointer;
+  transition: all .15s;
+}
+.stp-btn:hover:not(:disabled) { background: var(--accent-mid); color: #fff; }
+.stp-btn:disabled { opacity: .35; cursor: default; }
+.stp-counter {
+  font-family: var(--sans);
+  font-size: .8rem;
+  color: #94a3b8;
+  flex: 1;
+  text-align: center;
+}
+.stp-showall {
+  font-family: var(--sans);
+  font-size: .78rem;
+  color: #94a3b8;
+  background: none;
+  border: none;
+  cursor: pointer;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+.stp-showall:hover { color: var(--accent-mid); }
+
 </style>
 </head>
 
 <body>
+<div id="prog-bar"></div>
+
 
 <!-- DAY NAVIGATION -->
 <nav class="day-nav">
@@ -951,20 +1147,26 @@ hr { border: none; border-top: 1px solid var(--rule); margin: 3rem 0; }
 
 <p>Births themselves grow exponentially at the same rate \(r\). Total births from time \(a\) to \(b\) (using \(b\) as the upper limit here, not the birth rate) is the area under the exponential birth curve:</p>
 
-<div class="formula-block">
-  <div class="flabel">Total Births Over a Period — Full Derivation</div>
-  \[
-    \int_a^b B(x)\,dx
-    = \int_a^b B(0)\,e^{rx}\,dx
-    = B(0)\int_a^b e^{rx}\,dx
-    = B(0)\cdot\frac{1}{r}\,e^{rx}\Big|_a^b
-  \]
-  \[
-    = \frac{B(0)}{r}\left[e^{rb} - e^{ra}\right]
-    = \frac{B(0)e^{rb} - B(0)e^{ra}}{r}
-    = \frac{B(b) - B(a)}{r}
-  \]
-</div>
+<details class="deriv">
+  <summary><span class="deriv-icon">∫</span> <span class="deriv-arrow">▶</span> Show full derivation: integrating the exponential birth curve</summary>
+  <div class="deriv-body">
+  <div class="formula-block">
+    <div class="flabel">Total Births Over a Period — Full Derivation</div>
+    \[
+      \int_a^b B(x)\,dx
+      = \int_a^b B(0)\,e^{rx}\,dx
+      = B(0)\int_a^b e^{rx}\,dx
+      = B(0)\cdot\frac{1}{r}\,e^{rx}\Big|_a^b
+    \]
+    \[
+      = \frac{B(0)}{r}\left[e^{rb} - e^{ra}\right]
+      = \frac{B(0)e^{rb} - B(0)e^{ra}}{r}
+      = \frac{B(b) - B(a)}{r}
+    \]
+  </div>
+  <p style="font-family:var(--sans);font-size:.84rem;color:var(--muted);margin-top:.4rem;margin-bottom:0">Key rule used: \(\int e^{rx}\,dx = \frac{1}{r}e^{rx} + C\). The integral of an exponential is the exponential divided by the coefficient in the exponent. The endpoint values \(B(a)\) and \(B(b)\) are just the births at those two dates.</p>
+  </div>
+</details>
 
 <p>The last step uses \(B(b) = B(0)e^{rb}\) and \(B(a) = B(0)e^{ra}\). So the integral collapses to just the difference of two birth-function values divided by \(r\) — no need to know \(B(0)\) at all.</p>
 
@@ -1136,11 +1338,64 @@ hr { border: none; border-top: 1px solid var(--rule); margin: 3rem 0; }
 
 <h3>Deriving Form 2 from Form 1</h3>
 
-<p>Start from \(K(t) = K(0)\,e^{rt}\) and differentiate with respect to \(t\):</p>
+<!-- STEPPER: Three-forms derivation (#11) -->
+<div class="stepper" id="stp-3forms">
+  <div class="stepper-title">Connecting the Three Forms of Exponential Growth</div>
+  <div class="stepper-subtitle">Step through the derivation — each step links Form 1 to Form 2 to Form 3.</div>
+  <div class="step-panels" id="stp-3forms">
+    <div class="step-panel">
+      <div class="step-num">Step 1 of 5 — Start: Form 1</div>
+      <div class="step-eq">\[ K(t) = K(0)\,e^{rt} \]</div>
+      <div class="step-gloss">This is the explicit solution. Population at time \(t\) equals its initial value scaled by the exponential factor. We <em>know</em> this is correct because it satisfies all the growth intuition we've built up. Now we derive the other two forms from it.</div>
+    </div>
+    <div class="step-panel">
+      <div class="step-num">Step 2 of 5 — Differentiate Form 1 with respect to \(t\)</div>
+      <div class="step-eq">\[ \frac{d}{dt}K(t) = K(0)\cdot r\,e^{rt} \]</div>
+      <div class="step-gloss">The chain rule: differentiating \(e^{rt}\) with respect to \(t\) brings down the coefficient \(r\). The constant \(K(0)\) is unaffected.</div>
+    </div>
+    <div class="step-panel">
+      <div class="step-num">Step 3 of 5 — Recognise \(K(0)e^{rt} = K(t)\)</div>
+      <div class="step-eq">\[ \frac{d}{dt}K(t) = r\cdot\underbrace{K(0)\,e^{rt}}_{=\,K(t)} = r\cdot K(t) \]</div>
+      <div class="step-gloss">The bracketed expression is just Form 1 again. Substituting it gives us Form 2: \(dK/dt = rK\). The ODE says "the rate of change of population is proportional to the population itself."</div>
+    </div>
+    <div class="step-panel">
+      <div class="step-num">Step 4 of 5 — Divide both sides by \(K(t)\)</div>
+      <div class="step-eq">\[ r = \frac{dK/dt}{K(t)} = \text{proportional rate of change of }K \]</div>
+      <div class="step-gloss">\(r\) is the <em>instantaneous proportional</em> growth rate. Every 1% increase in population size produces a 1% increase in the absolute rate of growth — that's what "proportional" means.</div>
+    </div>
+    <div class="step-panel">
+      <div class="step-num">Step 5 of 5 — Apply the log-derivative identity to get Form 3</div>
+      <div class="step-eq">\[ \frac{d}{dt}\ln K(t) = \frac{K'(t)}{K(t)} = r \]</div>
+      <div class="step-gloss">The chain rule gives \(\frac{d}{dt}\ln f = f'/f\). Applying it to \(K\) gives exactly \(r\). So Form 3 says: "the log-population grows linearly at slope \(r\)." This is why plotting \(\ln K\) against \(t\) produces a straight line when growth is exponential.</div>
+    </div>
+  </div>
+  <div class="stepper-nav">
+    <button class="stp-btn" id="stp-3forms-prev" disabled>← Prev</button>
+    <span class="stp-counter" id="stp-3forms-ctr">Step 1 of 5</span>
+    <button class="stp-btn" id="stp-3forms-next">Next →</button>
+    <button class="stp-showall" id="stp-3forms-all">Show all steps</button>
+  </div>
+</div>
+<script>initStepper('stp-3forms');</script>
 
-\[
-  \frac{d}{dt}K(t) = K(0)\cdot r\,e^{rt} = r\cdot\underbrace{K(0)\,e^{rt}}_{=\,K(t)} = r\cdot K(t)
-\]
+<details class="deriv">
+  <summary><span class="deriv-icon">📐</span> <span class="deriv-arrow">▶</span> Show compact algebraic derivation (Forms 1 → 2 → 3)</summary>
+  <div class="deriv-body">
+  <p>Start from \(K(t) = K(0)\,e^{rt}\) and differentiate with respect to \(t\):</p>
+  \[
+    \frac{d}{dt}K(t) = K(0)\cdot r\,e^{rt} = r\cdot\underbrace{K(0)\,e^{rt}}_{=\,K(t)} = r\cdot K(t)
+  \]
+  <p>So \(\dfrac{dK}{dt} = r\,K(t)\) — Form 2. Dividing both sides by \(K(t)\):</p>
+  \[
+    r = \frac{\dfrac{d}{dt}K(t)}{K(t)} = \text{proportional change in }K(t)
+  \]
+  <p>For Form 3, use the chain-rule identity \(\dfrac{d}{dt}\ln f(t) = \dfrac{f'(t)}{f(t)}\), applied with \(f = K\):</p>
+  \[
+    \frac{d}{dt}\ln K(t) = \frac{K'(t)}{K(t)} = r
+  \]
+  <p style="margin-bottom:0">So Form 3 follows directly — the slope of \(\log K\) plotted against \(t\) is \(r\).</p>
+  </div>
+</details>
 
 <p>So \(\dfrac{dK}{dt} = r\,K(t)\). The change in <span class="tip" data-key="Kt">\(K(t)\)</span> is proportional to <span class="tip" data-key="Kt">\(K(t)\)</span> itself, with proportionality constant \(r\). This is called a <strong>differential equation (ODE)</strong> — it is just another way to express the same exponential model.</p>
 
@@ -1151,6 +1406,16 @@ hr { border: none; border-top: 1px solid var(--rule); margin: 3rem 0; }
 \[
   r = \frac{\dfrac{d}{dt}K(t)}{K(t)} = \frac{\text{change in }K(t)}{K(t)} = \text{proportional change in }K(t)
 \]
+
+<details class="notation">
+  <summary><span class="nk-arrow">▶</span> 🔣 Notation key for this equation</summary>
+  <div class="nk-table">
+    <span class="nk-sym">\(r\)</span>          <span class="nk-def">Intrinsic (continuous) growth rate — the instantaneous proportional rate of change of population</span>
+    <span class="nk-sym">\(K(t)\)</span>       <span class="nk-def">Total population size at time \(t\)</span>
+    <span class="nk-sym">\(dK/dt\)</span>      <span class="nk-def">Rate of change of population with respect to time (the "velocity" of population growth)</span>
+    <span class="nk-sym">\(dK/dt\,/\,K\)</span><span class="nk-def">Proportional (relative) growth rate — change per unit of existing population</span>
+  </div>
+</details>
 
 <p>So \(r\) is the <em>instantaneous proportional rate of change</em> of the population. This is what we've been computing all along from \(r = (\ln K_t - \ln K_0)/t\) — now we see it as the slope of \(\log K\) from the ODE perspective.</p>
 
@@ -2213,6 +2478,56 @@ document.readyState==='loading'?document.addEventListener('DOMContentLoaded',ini
   window.addEventListener('scroll', ()=>{ if(!ticking){ requestAnimationFrame(update); ticking=true; } }, {passive:true});
   update();
 })();
+</script>
+
+
+<script>
+/* ---- Progress Bar (#4) ---- */
+(function(){
+  var bar = document.getElementById('prog-bar');
+  if(!bar) return;
+  function upd(){
+    var h = document.documentElement;
+    var pct = (h.scrollTop / (h.scrollHeight - h.clientHeight)) * 100;
+    bar.style.width = Math.min(pct,100) + '%';
+  }
+  document.addEventListener('scroll', upd, {passive:true});
+  upd();
+})();
+
+/* ---- Step-through stepper (#11) ---- */
+function initStepper(id){
+  var panels = document.querySelectorAll('#'+id+' .step-panel');
+  var ctr    = document.getElementById(id+'-ctr');
+  var prev   = document.getElementById(id+'-prev');
+  var next   = document.getElementById(id+'-next');
+  var all    = document.getElementById(id+'-all');
+  if(!panels.length) return;
+  var cur = 0; var showingAll = false;
+  function render(){
+    if(showingAll){
+      panels.forEach(function(p){ p.classList.add('stp-visible'); });
+      if(ctr) ctr.textContent = 'All ' + panels.length + ' steps shown';
+      if(prev) prev.disabled = true;
+      if(next) next.disabled = true;
+      if(all)  all.textContent = 'Show one at a time';
+      return;
+    }
+    panels.forEach(function(p,i){ p.classList.toggle('stp-visible', i===cur); });
+    if(ctr) ctr.textContent = 'Step '+(cur+1)+' of '+panels.length;
+    if(prev) prev.disabled = (cur===0);
+    if(next) next.disabled = (cur===panels.length-1);
+    if(all)  all.textContent = 'Show all steps';
+    /* re-typeset MathJax in visible panel */
+    if(window.MathJax && MathJax.typesetPromise){
+      MathJax.typesetPromise([panels[cur]]).catch(function(){});
+    }
+  }
+  if(prev) prev.addEventListener('click', function(){ if(cur>0){ cur--; showingAll=false; render(); } });
+  if(next) next.addEventListener('click', function(){ if(cur<panels.length-1){ cur++; showingAll=false; render(); } });
+  if(all)  all.addEventListener('click',  function(){ showingAll=!showingAll; render(); });
+  render();
+}
 </script>
 
 </body>

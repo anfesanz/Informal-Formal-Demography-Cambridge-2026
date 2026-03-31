@@ -65,6 +65,8 @@ h1{font-size:2rem;color:var(--accent);margin-bottom:.3rem;line-height:1.2}
 .tag.fertility{background:#f0fdf4;color:#166534}
 .tag.growth{background:#fff7ed;color:#c2410c}
 .tag.method{background:#f8fafc;color:#475569}
+.tag.day4{background:#d1fae5;color:#065f46}
+.tag.day5{background:#fce7f3;color:#9d174d}
 .term-body{font-size:.92rem;line-height:1.75;color:var(--text)}
 .term-body p{margin-bottom:.6rem}
 .term-body p:last-child{margin-bottom:0}
@@ -96,7 +98,7 @@ h1{font-size:2rem;color:var(--accent);margin-bottom:.3rem;line-height:1.2}
 <p class="subtitle">Robert Chung's Informal Introduction to Formal Demography · Cambridge, March 2026</p>
 
 <div class="about-box">
-  All terms encountered across the five-day course — now covering <strong>~60 entries</strong> across all three days. Hover or tap any <em>underlined dashed</em> term in the day notes to see a quick tooltip; come here for the full definition, formula, historical context, and cross-references. Use the search box to filter by any keyword.
+  All terms encountered across the five-day course — <strong>~75 entries</strong> spanning population growth, mortality analysis, fertility measures, stable population theory, mortality forecasting, and key mathematical methods. Day 4 and Day 5 terms are tagged in green and pink respectively. Hover or tap any <em>underlined dashed</em> term in the day notes to see a quick tooltip; come here for the full definition, formula, historical context, and cross-references. Use the search box to filter by any keyword.
 </div>
 
 <!-- STICKY SEARCH -->
@@ -187,6 +189,21 @@ h1{font-size:2rem;color:var(--accent);margin-bottom:.3rem;line-height:1.2}
       <p><strong>UDD assumption:</strong> if deaths are uniformly distributed within the interval, \({}_na_x = n/2\). This fails at age 0 (infant deaths cluster in the first weeks of life, so \({}_1a_0 \approx 0.1\text{–}0.3\)) and at the very oldest ages. The value of \({}_na_x\) is critical for converting observed rates \({}_nM_x\) to probabilities \({}_nq_x\): \({}_nq_x = n\,{}_nM_x / (1 + (n - {}_na_x)\,{}_nM_x)\).</p>
     </div>
     <div class="term-links">→ Day 2, §9</div>
+  </div>
+
+  <div class="term-card" data-terms="age pyramid population pyramid age structure bar chart c(x) demographic window dividend">
+    <div class="term-header">
+      <span class="term-name">Age pyramid (population pyramid)</span>
+    </div>
+    <div class="term-tags"><span class="tag day4">Day 4</span><span class="tag day5">Day 5</span><span class="tag method">Method</span></div>
+    <div class="term-body">
+      <p>A back-to-back horizontal bar chart showing the number (or proportion) of males and females in each age group — males on the left, females on the right, age increasing upward. Three archetypal shapes emerge from the stable population formula: a wide-based <strong>pyramid</strong> (\(r > 0\), high growth); a near-rectangular <strong>column</strong> (\(r \approx 0\), stationary); and an <strong>urn</strong> or inverted shape (\(r < 0\), sustained sub-replacement decline).</p>
+      <p>In the stable population, the age distribution is fully determined by \(r\) and the survival function:</p>
+      <div class="term-formula">\[ c(x) = b\,e^{-rx}\,l(x) \]</div>
+      <p>A higher \(r\) steepens the \(e^{-rx}\) discount and compresses the pyramid base inward; a negative \(r\) reverses the gradient. The age pyramid is therefore the visual signature of demographic history — a youth bulge marks past high fertility; a large elderly cohort marks past fertility decline or post-war mortality improvement.</p>
+      <p><strong>Demographic dividend:</strong> the transitional phase when the working-age population is large relative to both children and elderly (both dependency groups small). If well-managed through investment in education and institutions, this "demographic window" can fuel rapid economic growth — as seen in East Asia from the 1960s–90s.</p>
+    </div>
+    <div class="term-links">→ Day 5, §6 · Day 4, §9</div>
   </div>
 
 </div>
@@ -421,6 +438,34 @@ h1{font-size:2rem;color:var(--accent);margin-bottom:.3rem;line-height:1.2}
     <div class="term-links">→ Day 2, §8</div>
   </div>
 
+  <div class="term-card" data-terms="eigenvalue eigenvector dominant lambda Leslie matrix long-run growth stable convergence">
+    <div class="term-header">
+      <span class="term-name">Eigenvalue / eigenvector</span>
+      <span class="term-symbol">\(\lambda_1, \mathbf{v}\)</span>
+    </div>
+    <div class="term-tags"><span class="tag day4">Day 4</span><span class="tag day5">Day 5</span><span class="tag method">Method</span></div>
+    <div class="term-body">
+      <p>For a matrix \(\mathbf{A}\), a scalar \(\lambda\) and a vector \(\mathbf{v} \neq \mathbf{0}\) satisfy \(\mathbf{A}\mathbf{v} = \lambda\mathbf{v}\) — the matrix scales the vector without rotating it. In the Leslie matrix, the <strong>dominant eigenvalue</strong> \(\lambda_1\) (the largest in absolute value) determines the long-run growth rate: \(r = \ln\lambda_1\). The corresponding right eigenvector gives the stable age distribution \(c(x)\); the left eigenvector gives reproductive value \(v(x)\).</p>
+      <p>Sub-dominant eigenvalues \(\lambda_2, \lambda_3, \ldots\) control the transient oscillations as the population converges to its stable structure — "echoes" of the initial age distribution that decay at rate \(|\lambda_k/\lambda_1|^t \to 0\). The Perron-Frobenius theorem guarantees that \(\lambda_1\) is real, positive, and unique for any realistic Leslie matrix.</p>
+      <p><strong>Rule of thumb:</strong> \(\lambda_1 \approx \text{NRR}^{1/\bar{\mu}}\), so \(r = \ln\lambda_1 \approx \ln(\text{NRR})/\bar{\mu}\). This connects the algebraic quantity (eigenvalue) to the demographic intuition (generation-time compounding of the NRR).</p>
+    </div>
+    <div class="term-links">→ Day 4, §7–§8 · Day 5, §7</div>
+  </div>
+
+  <div class="term-card" data-terms="Euler Lotka characteristic equation renewal equation intrinsic r integral births stable 1760 Lotka 1907">
+    <div class="term-header">
+      <span class="term-name">Euler-Lotka equation</span>
+    </div>
+    <div class="term-tags"><span class="tag day4">Day 4</span><span class="tag day5">Day 5</span><span class="tag method">Method</span></div>
+    <div class="term-body">
+      <p>The characteristic equation that defines the intrinsic growth rate \(r\) of a stable population. In the stable state, births grow as \(B(t) = B(0)e^{rt}\). Substituting this into the renewal equation (total births = women in each age group × their fertility) and simplifying yields:</p>
+      <div class="term-formula">\[ 1 = \int_{15}^{50} e^{-rx}\,\phi(x)\,dx = \int_{15}^{50} e^{-rx}\,f(x)\,\frac{l(x)}{l(0)}\,F_{\text{FAB}}\,dx \]</div>
+      <p>This is one equation in one unknown (\(r\)) and must generally be solved numerically. Setting \(r = 0\) recovers NRR = 1 — exact replacement is the \(r = 0\) case. The rule-of-thumb approximation \(r \approx \ln(\text{NRR})/\bar{\mu}\) comes from expanding \(e^{-rx}\) to first order around the mean age of childbearing \(\bar{\mu}\).</p>
+      <p><strong>History:</strong> Leonhard Euler sketched the idea in a 1760 letter to a German clergyman (Johann Peter Süssmilch); Alfred Lotka placed it on rigorous footing in 1907. The equation is also called the "renewal equation" — births are the "renewal" of the population. Structurally identical equations appear in queueing theory, reliability engineering, and epidemiology (\(R_0 = 1\) for disease invasion).</p>
+    </div>
+    <div class="term-links">→ Day 4, §5–§6 · Day 5, §2</div>
+  </div>
+
   <div class="term-card" data-terms="exponential growth continuous growth Malthusian ODE e^rt">
     <div class="term-header">
       <span class="term-name">Exponential growth</span>
@@ -598,6 +643,20 @@ h1{font-size:2rem;color:var(--accent);margin-bottom:.3rem;line-height:1.2}
     <div class="term-links">→ Day 2, §6 · Day 3, §5</div>
   </div>
 
+  <div class="term-card" data-terms="integration by parts calculus product rule proof stable population b minus d equals r identity">
+    <div class="term-header">
+      <span class="term-name">Integration by parts</span>
+    </div>
+    <div class="term-tags"><span class="tag day5">Day 5</span><span class="tag method">Method</span></div>
+    <div class="term-body">
+      <p>A calculus technique for integrating a product of two functions, derived from the product rule for differentiation:</p>
+      <div class="term-formula">\[ \int_a^b u\,dv = \left[u\,v\right]_a^b - \int_a^b v\,du \]</div>
+      <p>In formal demography, integration by parts proves one of the most satisfying stable-population identities: that the crude birth rate minus the crude death rate equals the intrinsic growth rate <em>exactly</em>, not just approximately. Starting from the stable age distribution \(c(x) = b\,e^{-rx}\,l(x)\), differentiating and integrating by parts shows that \(\int_0^\omega (-c'(x))\,dx = b - r\), so the total death rate \(d = b - r\), giving \(b - d = r\).</p>
+      <p>The same technique appears in proving the relationship between \(T_x\) and \(e_x\), and in deriving the sensitivity of demographic quantities to changes in \(r\) — making it one of the most productive tools in the formal demographer's toolkit. The trick is always choosing \(u\) and \(dv\) so that the boundary term vanishes (usually because \(c(\omega) = 0\)) and the remaining integral simplifies.</p>
+    </div>
+    <div class="term-links">→ Day 5, §4</div>
+  </div>
+
 </div>
 
 <!-- ─── K ─── -->
@@ -713,6 +772,21 @@ h1{font-size:2rem;color:var(--accent);margin-bottom:.3rem;line-height:1.2}
     <div class="term-links">→ Day 1, §13</div>
   </div>
 
+  <div class="term-card" data-terms="Lee Carter mortality forecasting log death rate time series SVD principal component kappa alpha beta JASA 1992">
+    <div class="term-header">
+      <span class="term-name">Lee-Carter model</span>
+    </div>
+    <div class="term-tags"><span class="tag day5">Day 5</span><span class="tag mortality">Mortality</span><span class="tag method">Method</span></div>
+    <div class="term-body">
+      <p>The dominant approach to mortality forecasting, introduced by Ronald Lee and Lawrence Carter (1992). The model decomposes the log of the age-specific mortality rate into a time-invariant age profile plus a single time-varying mortality index:</p>
+      <div class="term-formula">\[ \ln m(x, t) = \alpha(x) + \beta(x)\,\kappa(t) + \varepsilon(x,t) \]</div>
+      <p>\(\alpha(x)\) captures the average age pattern of mortality; \(\kappa(t)\) is a time index summarising overall mortality level; \(\beta(x)\) describes how sensitive each age group is to changes in \(\kappa\). The parameters are estimated by singular value decomposition (SVD) — effectively a principal components decomposition of the matrix of log-rates. The index \(\kappa(t)\) is then projected forward using a <strong>random walk with drift</strong>: \(\kappa(t+1) = \kappa(t) + d + \varepsilon_t\), where \(d\) is the observed average annual decline in mortality.</p>
+      <p>The Lee-Carter model is now used by the US Social Security Administration, the UK Office for National Statistics, and many actuarial bodies for official mortality projections. Its main limitation: it assumes a single dominant trend axis (\(\beta\kappa\)), missing age-specific structural changes (e.g., the AIDS epidemic hitting prime-age adults disproportionately, or COVID-19 disproportionately affecting the very old).</p>
+      <p><strong>Historical note:</strong> the 1992 paper was initially reviewed without a demographer among the referees at JASA. Lee and Carter had to explain why mortality forecasting mattered. It is now among the most cited papers in actuarial science and the direct ancestor of the multi-factor Li-Lee and Cairns-Blake-Dowd models used in pension risk management.</p>
+    </div>
+    <div class="term-links">→ Day 5, §9</div>
+  </div>
+
   <div class="term-card" data-terms="l(mu) survivorship mean age childbearing lmu NRR GRR decomposition">
     <div class="term-header">
       <span class="term-name">l(μ) — survivorship at mean age of childbearing</span>
@@ -743,6 +817,19 @@ h1{font-size:2rem;color:var(--accent);margin-bottom:.3rem;line-height:1.2}
       <p>The Markov assumption is also implicit in the standard life table: the probability of dying in \([2n, 3n)\) depends only on being alive at age \(2n\), not on how "easily" you survived to that age. This is an approximation — in reality, frail survivors carry their frailty forward. But it is a tractable and usually reasonable simplification.</p>
     </div>
     <div class="term-links">→ Day 3, §12</div>
+  </div>
+
+  <div class="term-card" data-terms="model life table Coale Demeny West East North South WHO standard schedule indirect estimation 1966">
+    <div class="term-header">
+      <span class="term-name">Model life tables</span>
+    </div>
+    <div class="term-tags"><span class="tag day5">Day 5</span><span class="tag mortality">Mortality</span><span class="tag method">Method</span></div>
+    <div class="term-body">
+      <p>Standardised sets of life tables representing the typical age patterns of mortality across a range of overall mortality levels. Used when complete empirical data are unavailable — most commonly in high-mortality countries lacking reliable vital registration. The most widely used set, the <strong>Coale-Demeny model life tables</strong> (Ansley Coale and Paul Demeny, 1966), organised 326 national life tables into four regional "families": <strong>West</strong> (most European populations), <strong>East</strong> (higher early adult mortality), <strong>North</strong> (higher old-age mortality), and <strong>South</strong> (higher infant mortality relative to child mortality).</p>
+      <p>Given a single empirical indicator — e.g., child mortality \({}_5q_0\) from a household survey — a demographer can select the appropriate family and "look up" a full life table consistent with that indicator. The Brass relational logit model is a flexible alternative that expresses any life table as a two-parameter transformation of a standard: a country's data only needs to identify \(\alpha\) and \(\beta\) to pin down the full schedule.</p>
+      <p><strong>Why they work:</strong> human mortality patterns are surprisingly constrained — at any given level of overall mortality, the relative rates by age are predictable within a narrow band. This regularity is the empirical foundation of all indirect estimation in countries without complete death registration.</p>
+    </div>
+    <div class="term-links">→ Day 5, §8 · Day 3, §2</div>
   </div>
 
   <div class="term-card" data-terms="mean age childbearing mu bar generation length intrinsic rate rule thumb">
@@ -802,6 +889,22 @@ h1{font-size:2rem;color:var(--accent);margin-bottom:.3rem;line-height:1.2}
 <div class="letter-section" id="letter-O">
   <div class="letter-heading">O</div>
 
+  <div class="term-card" data-terms="old-age dependency ratio OADR elderly working age support ratio ageing pension r sensitivity c(x) Japan">
+    <div class="term-header">
+      <span class="term-name">Old-age dependency ratio (OADR)</span>
+      <span class="term-symbol">OADR</span>
+    </div>
+    <div class="term-tags"><span class="tag day5">Day 5</span><span class="tag method">Method</span></div>
+    <div class="term-body">
+      <p>The ratio of the elderly population (conventionally aged 65+) to the working-age population (aged 20–64), a summary measure of the "burden" an ageing population places on the workforce:</p>
+      <div class="term-formula">\[ \text{OADR} = \frac{\int_{65}^{\omega} c(x)\,dx}{\int_{20}^{64} c(x)\,dx} \]</div>
+      <p>In a stable population both integrals can be computed using \(c(x) = b\,e^{-rx}\,l(x)\), making OADR a function of \(r\). As \(r\) decreases (fertility falls or population ages), OADR rises — and Robert's analysis showed the sensitivity is large: a 1 percentage-point reduction in \(r\) can substantially increase the OADR over a generation.</p>
+      <p><strong>Why it matters for policy:</strong> pay-as-you-go pension systems are essentially transfers from workers to retirees; the OADR governs the required contribution rate. Japan (2023): OADR ≈ 0.52 (roughly one worker per two pensioners). Most Sub-Saharan African countries: OADR &lt; 0.10. The divergence is the defining fiscal challenge for high-income countries over the coming decades.</p>
+      <p><strong>Boundary sensitivity:</strong> the choice of cutoffs (65+ vs. 60+; 15–64 vs. 20–64) affects the ratio substantially and varies across countries and contexts. Some researchers use a "prospective" definition — age at which remaining life expectancy is 15 years — rather than the fixed age of 65.</p>
+    </div>
+    <div class="term-links">→ Day 5, §11</div>
+  </div>
+
   <div class="term-card" data-terms="ODE ordinary differential equation dK/dt rate change function derivative solve">
     <div class="term-header">
       <span class="term-name">ODE (Ordinary Differential Equation)</span>
@@ -821,6 +924,20 @@ h1{font-size:2rem;color:var(--accent);margin-bottom:.3rem;line-height:1.2}
 <!-- ─── P ─── -->
 <div class="letter-section" id="letter-P">
   <div class="letter-heading">P</div>
+
+  <div class="term-card" data-terms="Perron Frobenius theorem non-negative matrix eigenvalue dominant convergence stable age Leslie irreducibility 1907 1912">
+    <div class="term-header">
+      <span class="term-name">Perron-Frobenius theorem</span>
+    </div>
+    <div class="term-tags"><span class="tag day4">Day 4</span><span class="tag method">Method</span></div>
+    <div class="term-body">
+      <p>A foundational result in linear algebra guaranteeing that any non-negative matrix satisfying mild irreducibility conditions has a unique largest real eigenvalue \(\lambda_1 > 0\) — the <strong>dominant eigenvalue</strong> — with a corresponding eigenvector of all-positive entries. Proved independently by Oskar Perron (1907, for positive matrices) and Georg Frobenius (1912, extended to non-negative irreducible matrices).</p>
+      <p>Applied to the Leslie matrix, Perron-Frobenius guarantees that any starting age distribution converges to the same stable age structure (the dominant right eigenvector) growing at rate \(r = \ln\lambda_1\), regardless of initial conditions. This is the mathematical explanation of why population projections "forget" their starting age composition after a few generations — a property the Day 4 demonstration with the US 1934 life table and Russian age structure made vivid.</p>
+      <p>The speed of convergence is controlled by the ratio \(|\lambda_2|/\lambda_1\): smaller ratios mean faster convergence. Sub-dominant eigenvalues produce damped oscillations — "echoes" of the starting age structure that fade over time, each with period governed by the argument of the complex eigenvalue.</p>
+      <p><strong>Irreducibility condition:</strong> the matrix must allow "communication" between all age groups via births and survival. This requires at least one age group with positive fertility, and no break in the survival chain. Met by every realistic human population.</p>
+    </div>
+    <div class="term-links">→ Day 4, §7</div>
+  </div>
 
   <div class="term-card" data-terms="period analysis cross-sectional current rates snapshot vertical Lexis">
     <div class="term-header">
@@ -888,6 +1005,25 @@ h1{font-size:2rem;color:var(--accent);margin-bottom:.3rem;line-height:1.2}
 
 </div>
 
+<!-- ─── Q ─── -->
+<div class="letter-section" id="letter-Q">
+  <div class="letter-heading">Q</div>
+
+  <div class="term-card" data-terms="quantum fertility ultimate level lifetime births cohort completed fertility tempo timing adjustment Bongaarts Feeney">
+    <div class="term-header">
+      <span class="term-name">Quantum (fertility)</span>
+    </div>
+    <div class="term-tags"><span class="tag day3">Day 3</span><span class="tag day5">Day 5</span><span class="tag fertility">Fertility</span></div>
+    <div class="term-body">
+      <p>The ultimate <em>level</em> of fertility — the total number of children a cohort will eventually bear, independent of the timing of those births. Contrasted with <strong>tempo</strong>, which describes when in the life course those births occur.</p>
+      <p>Cohort completed fertility is the gold-standard quantum measure: the actual average number of births per woman for a cohort that has finished its reproductive years. Period TFR conflates quantum and tempo: when women systematically postpone births (rising mean age of childbearing), the same cohort quantum generates a <em>lower</em> period TFR during the postponement phase — not because fewer births will eventually occur, but because births are being pushed into the future.</p>
+      <p>The Bongaarts-Feeney (1998) adjustment recovers an estimate of quantum from period data: tempo-adjusted TFR ≈ period TFR / (1 − \(\dot{\mu}\)), where \(\dot{\mu}\) is the annual rate of increase in the mean age of childbearing. Most of the dramatic TFR decline in Southern and Eastern Europe in the 1990s was subsequently shown to be a tempo distortion — cohort completed fertility fell much less than the period TFR implied. The Baby Boom of the 1950s was partly a tempo effect in reverse: women were bringing births <em>forward</em>, inflating period TFRs above cohort quantum.</p>
+    </div>
+    <div class="term-links">→ Day 3, §6 · Day 5, §10 (see also: Tempo effect)</div>
+  </div>
+
+</div>
+
 <!-- ─── R ─── -->
 <div class="letter-section" id="letter-R">
   <div class="letter-heading">R</div>
@@ -916,6 +1052,23 @@ h1{font-size:2rem;color:var(--accent);margin-bottom:.3rem;line-height:1.2}
       <p>The long-run intrinsic growth rate consistent with given mortality and fertility schedules can be approximated as \(r \approx \ln(\text{NRR})\,/\,\bar{\mu}\), where \(\bar{\mu}\) is the mean age of childbearing.</p>
     </div>
     <div class="term-links">→ Day 1, §3 · Day 3, §10</div>
+  </div>
+
+  <div class="term-card" data-terms="reproductive value v(x) Fisher 1930 future contribution births eigenvalue left eigenvector conservation selection">
+    <div class="term-header">
+      <span class="term-name">Reproductive value</span>
+      <span class="term-symbol">\(v(x)\)</span>
+    </div>
+    <div class="term-tags"><span class="tag day5">Day 5</span><span class="tag fertility">Fertility</span><span class="tag method">Method</span></div>
+    <div class="term-body">
+      <p>The expected future contribution of an individual aged \(x\) to the long-run growth of the population, normalised relative to a newborn. In a stable population growing at rate \(r\):</p>
+      <div class="term-formula">\[ v(x) = \frac{e^{rx}}{l(x)} \int_x^{\infty} e^{-ra}\,\phi(a)\,da \]</div>
+      <p>\(v(x)\) is highest in early adulthood — just before peak childbearing — because those individuals have the most high-value reproduction still ahead of them, and are already past the high mortality risk of infancy. At birth \(v(0) = 1\) by normalisation; at old age \(v(x) \to 0\) as reproductive years run out.</p>
+      <p><strong>History:</strong> introduced by Ronald Fisher in <em>The Genetical Theory of Natural Selection</em> (1930), where Fisher argued that natural selection acts to maximise reproductive value, not raw current fertility. This insight connects formal demography to evolutionary biology.</p>
+      <p>In the Leslie matrix, \(v(x)\) is the left eigenvector corresponding to \(\lambda_1\), while the stable age distribution \(c(x)\) is the right eigenvector. Together they decompose any initial population into stable-state components and determine how much each age group "matters" for long-run population growth.</p>
+      <p><strong>Applied use:</strong> reproductive value guides conservation prioritisation — if resources are limited, protecting pre-reproductive individuals (highest \(v\)) maximises long-run population recovery.</p>
+    </div>
+    <div class="term-links">→ Day 5, §7</div>
   </div>
 
   <div class="term-card" data-terms="replacement level TFR 2.1 NRR 1 replacement fertility">
@@ -961,6 +1114,22 @@ h1{font-size:2rem;color:var(--accent);margin-bottom:.3rem;line-height:1.2}
       <p>The same steps solve the growth ODE: \(dK/K = r\,dt \Rightarrow \ln K = rt + C \Rightarrow K(t) = K_0 e^{rt}\). In both cases, separation turns a differential equation into two straightforward integrals. It works whenever the ODE can be written as \(f(y)\,dy = g(x)\,dx\).</p>
     </div>
     <div class="term-links">→ Day 1, §12 · Day 3, §1</div>
+  </div>
+
+  <div class="term-card" data-terms="stable age distribution c(x) cx proportion age group r exponential discount survival formula eigenvector">
+    <div class="term-header">
+      <span class="term-name">Stable age distribution</span>
+      <span class="term-symbol">\(c(x)\)</span>
+    </div>
+    <div class="term-tags"><span class="tag day4">Day 4</span><span class="tag day5">Day 5</span><span class="tag growth">Growth</span></div>
+    <div class="term-body">
+      <p>The proportion of the population at exact age \(x\) in a stable population — the age structure that a population converges to after long exposure to constant vital rates. Derived by substituting the stable-state assumption \(B(t-x) = B(t)\,e^{-rx}\) into the basic accounting identity:</p>
+      <div class="term-formula">\[ c(x) = b\,e^{-rx}\,l(x), \qquad \int_0^\omega c(x)\,dx = 1 \]</div>
+      <p>The formula has an elegant three-way interpretation: \(b\) is a normalisation constant (the birth rate); \(e^{-rx}\) discounts back to birth (faster growing populations have more younger people); \(l(x)\) removes those who died before reaching age \(x\). In the stationary case (\(r = 0\)), it simplifies to \(c(x) = l(x)/e_0\) — the age structure is purely a function of survival.</p>
+      <p>Crucially, \(c(x)\) depends on \(r\) through the exponential discount — two populations with identical life tables but different growth rates will have different age structures. A population currently below replacement can still have a young age structure (and therefore many births) because of its recent high-fertility past — this is the essence of population momentum.</p>
+      <p>\(c(x)\) is the dominant right eigenvector of the Leslie matrix, normalised to sum to 1.</p>
+    </div>
+    <div class="term-links">→ Day 4, §9 · Day 5, §1–§2 · Day 5, §6</div>
   </div>
 
   <div class="term-card" data-terms="stable population stable age structure eigenvalue Lotka intrinsic growth rate">
